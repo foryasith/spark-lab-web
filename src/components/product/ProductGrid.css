@@ -29,6 +29,10 @@
   color: var(--color-text-muted);
 }
 
+.product-grid-empty .btn {
+  margin-top: var(--space-sm);
+}
+
 @media (max-width: 72rem) {
   .product-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));

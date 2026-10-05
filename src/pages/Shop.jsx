@@ -1,7 +1,9 @@
-import { Search } from 'lucide-react'
+import { useState } from 'react'
 import PageHeader from '../components/common/PageHeader'
 import ProductGrid from '../components/product/ProductGrid'
+import ProductSearch from '../components/shop/ProductSearch'
 import { products } from '../data/products'
+import { filterProductsBySearch } from '../utils/productSearch'
 import './Shop.css'
 
 const activeProducts = products.filter((product) => product.active)
@@ -18,6 +20,10 @@ const categoryQuickLinks = [
 ]
 
 function Shop() {
+  const [searchTerm, setSearchTerm] = useState('')
+  const displayedProducts = filterProductsBySearch(activeProducts, searchTerm)
+  const searchIsActive = searchTerm.trim().length > 0
+
   return (
     <div className="shop-page tech-grid">
       <section className="shop-header section">
@@ -33,16 +39,11 @@ function Shop() {
       <section className="shop-catalog section" aria-label="Product catalog">
         <div className="container">
           <div className="shop-toolbar" aria-label="Shop controls preview">
-            <label className="shop-search-preview">
-              <span className="sr-only">Search products</span>
-              <Search aria-hidden="true" size={19} />
-              <input
-                type="search"
-                placeholder="Search products"
-                readOnly
-                aria-describedby="shop-controls-note"
-              />
-            </label>
+            <ProductSearch
+              value={searchTerm}
+              onChange={setSearchTerm}
+              onClear={() => setSearchTerm('')}
+            />
 
             <label className="shop-select-preview">
               <span>Category</span>
@@ -58,9 +59,13 @@ function Shop() {
               </select>
             </label>
 
-            <p className="shop-result-count">{activeProducts.length} products</p>
+            <p className="shop-result-count" aria-live="polite">
+              {searchIsActive
+                ? `${displayedProducts.length} products found`
+                : `${displayedProducts.length} products`}
+            </p>
             <p id="shop-controls-note" className="sr-only">
-              Search, category and sorting controls are being prepared for a later update.
+              Category and sorting controls are being prepared for a later update.
             </p>
           </div>
 
@@ -74,7 +79,26 @@ function Shop() {
             </ul>
           </nav>
 
-          <ProductGrid products={activeProducts} />
+          <ProductGrid
+            products={displayedProducts}
+            emptyTitle={searchIsActive ? 'No components found' : undefined}
+            emptyMessage={
+              searchIsActive
+                ? 'Try another product name, category or keyword.'
+                : undefined
+            }
+            emptyAction={
+              searchIsActive ? (
+                <button
+                  className="btn btn-outline"
+                  type="button"
+                  onClick={() => setSearchTerm('')}
+                >
+                  Clear Search
+                </button>
+              ) : null
+            }
+          />
         </div>
       </section>
     </div>

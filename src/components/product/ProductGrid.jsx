@@ -2,13 +2,19 @@ import { PackageOpen } from 'lucide-react'
 import ProductCard from './ProductCard'
 import './ProductGrid.css'
 
-function ProductGrid({ products }) {
+function ProductGrid({
+  products,
+  emptyTitle = 'No products available yet.',
+  emptyMessage = 'New components are being added to Spark Lab.',
+  emptyAction,
+}) {
   if (products.length === 0) {
     return (
       <div className="product-grid-empty">
         <PackageOpen aria-hidden="true" size={36} strokeWidth={1.5} />
-        <h2>No products available yet.</h2>
-        <p>New components are being added to Spark Lab.</p>
+        <h2>{emptyTitle}</h2>
+        <p>{emptyMessage}</p>
+        {emptyAction}
       </div>
     )
   }
