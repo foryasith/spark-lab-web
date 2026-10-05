@@ -2,27 +2,33 @@ import { useState } from 'react'
 import PageHeader from '../components/common/PageHeader'
 import ProductGrid from '../components/product/ProductGrid'
 import ProductSearch from '../components/shop/ProductSearch'
+import ShopFilters from '../components/shop/ShopFilters'
 import { products } from '../data/products'
+import { filterProducts, getProductCategories } from '../utils/productFilters'
 import { filterProductsBySearch } from '../utils/productSearch'
 import './Shop.css'
 
 const activeProducts = products.filter((product) => product.active)
 
-const categoryQuickLinks = [
-  'All',
-  'Development Boards',
-  'Sensors',
-  'Modules',
-  'Robotics',
-  'Components',
-  'Tools',
-  'Kits',
-]
+const categoryOptions = getProductCategories(activeProducts)
 
 function Shop() {
   const [searchTerm, setSearchTerm] = useState('')
-  const displayedProducts = filterProductsBySearch(activeProducts, searchTerm)
+  const [selectedCategory, setSelectedCategory] = useState('all')
+  const [availability, setAvailability] = useState('all')
+  const searchedProducts = filterProductsBySearch(activeProducts, searchTerm)
+  const displayedProducts = filterProducts(
+    searchedProducts,
+    selectedCategory,
+    availability,
+  )
   const searchIsActive = searchTerm.trim().length > 0
+  const filtersAreActive = selectedCategory !== 'all' || availability !== 'all'
+
+  const clearFilters = () => {
+    setSelectedCategory('all')
+    setAvailability('all')
+  }
 
   return (
     <div className="shop-page tech-grid">
@@ -45,46 +51,40 @@ function Shop() {
               onClear={() => setSearchTerm('')}
             />
 
-            <label className="shop-select-preview">
-              <span>Category</span>
-              <select defaultValue="all" aria-describedby="shop-controls-note">
-                <option value="all">All Categories</option>
-              </select>
-            </label>
+            <ShopFilters
+              categories={categoryOptions}
+              selectedCategory={selectedCategory}
+              onCategoryChange={setSelectedCategory}
+              availability={availability}
+              onAvailabilityChange={setAvailability}
+              onClear={clearFilters}
+              isActive={filtersAreActive}
+            />
 
             <label className="shop-select-preview">
               <span>Sort</span>
-              <select defaultValue="featured" aria-describedby="shop-controls-note">
+              <select defaultValue="featured">
                 <option value="featured">Featured</option>
               </select>
             </label>
 
             <p className="shop-result-count" aria-live="polite">
-              {searchIsActive
+              {searchIsActive || filtersAreActive
                 ? `${displayedProducts.length} products found`
                 : `${displayedProducts.length} products`}
             </p>
-            <p id="shop-controls-note" className="sr-only">
-              Category and sorting controls are being prepared for a later update.
-            </p>
           </div>
-
-          <nav className="shop-category-strip" aria-label="Product category quick links">
-            <ul>
-              {categoryQuickLinks.map((category, index) => (
-                <li key={category} aria-current={index === 0 ? 'page' : undefined}>
-                  {category}
-                </li>
-              ))}
-            </ul>
-          </nav>
 
           <ProductGrid
             products={displayedProducts}
-            emptyTitle={searchIsActive ? 'No components found' : undefined}
+            emptyTitle={
+              searchIsActive || filtersAreActive ? 'No components found' : undefined
+            }
             emptyMessage={
-              searchIsActive
-                ? 'Try another product name, category or keyword.'
+              filtersAreActive
+                ? 'Try adjusting your category or availability filters.'
+                : searchIsActive
+                  ? 'Try another product name, category or keyword.'
                 : undefined
             }
             emptyAction={
