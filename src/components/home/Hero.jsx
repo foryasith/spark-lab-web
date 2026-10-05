@@ -30,7 +30,6 @@ function Hero() {
     <section className="home-hero" aria-labelledby="home-hero-title">
       <div className="container hero-layout">
         <div className="hero-content">
-          <p className="hero-eyebrow">IoT • Robotics • Maker Solutions</p>
           <h1 id="home-hero-title" className="hero-title">
             Turn Your Ideas
             <span className="hero-title-accent">Into Real Projects.</span>
