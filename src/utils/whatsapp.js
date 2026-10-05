@@ -164,3 +164,86 @@ export function createContactMessage(formData) {
 export function createContactUrl(formData) {
   return createWhatsAppUrl(createContactMessage(formData))
 }
+
+export function createAiProjectRequestMessage({
+  projectData,
+  advisorResult,
+  selectedComponents = [],
+  requestType = 'full',
+  clarificationAnswers = {},
+}) {
+  const projectName = getCleanSupportValue(projectData?.projectName) || 'Custom project idea'
+  const description = getCleanSupportValue(projectData?.description) || 'Not provided'
+  const expectedFunctionality =
+    getCleanSupportValue(projectData?.expectedFunctionality) || 'Not provided'
+  const experienceLevel = getCleanSupportValue(projectData?.experienceLevel) || 'Not Sure'
+  const budgetRange = getCleanSupportValue(projectData?.budgetRange) || 'Not Sure'
+  const platform =
+    getCleanSupportValue(advisorResult?.recommended_platform) || 'Needs confirmation'
+  const requestedComponents = selectedComponents.filter(
+    (component) => requestType !== 'missing' || !component.product,
+  )
+  const missingComponents = requestedComponents.filter((component) => !component.product)
+  const messageLines = [
+    'Hello Spark Lab,',
+    '',
+    'I would like assistance with a project.',
+    '',
+    'PROJECT:',
+    projectName,
+    '',
+    'DESCRIPTION:',
+    description,
+    '',
+    'EXPECTED FUNCTION:',
+    expectedFunctionality,
+    '',
+    `EXPERIENCE LEVEL: ${experienceLevel}`,
+    `BUDGET RANGE: ${budgetRange}`,
+    `AI SUGGESTED PLATFORM: ${platform}`,
+    '',
+    requestType === 'missing' ? 'MISSING COMPONENTS REQUESTED:' : 'COMPONENTS REQUESTED:',
+    '',
+  ]
+
+  if (requestedComponents.length === 0) {
+    messageLines.push('No components selected.')
+  } else {
+    requestedComponents.forEach((component, index) => {
+      const name = component.product?.name || component.recommendation?.name || 'Component'
+      const quantity = Math.max(1, Math.floor(Number(component.recommendation?.quantity) || 1))
+      const sku = getCleanSupportValue(component.product?.sku)
+      messageLines.push(`${index + 1}. ${name} - Qty ${quantity}${sku ? ` - SKU ${sku}` : ''}`)
+    })
+  }
+
+  if (missingComponents.length > 0 && requestType !== 'missing') {
+    messageLines.push('', 'COMPONENTS NOT CURRENTLY LISTED:')
+    missingComponents.forEach((component) => {
+      messageLines.push(component.recommendation?.name || 'Component to confirm')
+    })
+  }
+
+  const clarificationEntries = Object.entries(clarificationAnswers).filter(
+    ([, answer]) => getCleanSupportValue(answer),
+  )
+  if (clarificationEntries.length > 0) {
+    messageLines.push('', 'CLARIFICATION ANSWERS:')
+    clarificationEntries.forEach(([question, answer]) => {
+      messageLines.push(`${question}: ${getCleanSupportValue(answer)}`)
+    })
+  }
+
+  messageLines.push(
+    '',
+    'Please check component availability and advise me on suitable compatible parts.',
+    '',
+    'Thank you.',
+  )
+
+  return messageLines.join('\n')
+}
+
+export function createAiProjectRequestUrl(requestData) {
+  return createWhatsAppUrl(createAiProjectRequestMessage(requestData))
+}

@@ -1,4 +1,14 @@
-import { CircleHelp, Cpu, Gauge, Lightbulb, ListChecks, Route, ShieldCheck } from 'lucide-react'
+import {
+  CircleHelp,
+  Cpu,
+  Gauge,
+  Lightbulb,
+  ListChecks,
+  MessageCircle,
+  Route,
+  ShieldCheck,
+  ShoppingCart,
+} from 'lucide-react'
 import ComponentSuggestion from './ComponentSuggestion'
 import './AiProjectResult.css'
 
@@ -15,7 +25,22 @@ function AdviceList({ title, items, Icon }) {
   )
 }
 
-function AiProjectResult({ result }) {
+function AiProjectResult({
+  result,
+  matchedComponents,
+  selectedComponentIds,
+  onToggleComponent,
+  onAddAvailableParts,
+  cartMessage,
+  missingRequestUrl,
+  fullRequestUrl,
+}) {
+  const requiredComponents = matchedComponents.filter((component) => component.group === 'required')
+  const optionalComponents = matchedComponents.filter((component) => component.group === 'optional')
+  const selectedComponents = matchedComponents.filter((component) => selectedComponentIds.has(component.id))
+  const selectedAvailable = selectedComponents.filter((component) => component.product?.in_stock)
+  const selectedMissing = selectedComponents.filter((component) => !component.product)
+
   return (
     <div className="ai-project-result">
       <div className="ai-result-overview">
@@ -36,18 +61,28 @@ function AiProjectResult({ result }) {
       <section className="ai-advice-section">
         <h4><ListChecks aria-hidden="true" size={17} /> Components You May Need</h4>
         <div className="ai-component-list">
-          {result.required_components.map((component, index) => (
-            <ComponentSuggestion key={`${component.name}-${index}`} component={component} />
+          {requiredComponents.map((component) => (
+            <ComponentSuggestion
+              key={component.id}
+              suggestion={component}
+              isSelected={selectedComponentIds.has(component.id)}
+              onToggle={onToggleComponent}
+            />
           ))}
         </div>
       </section>
 
-      {result.optional_components.length > 0 && (
+      {optionalComponents.length > 0 && (
         <section className="ai-advice-section">
           <h4><Lightbulb aria-hidden="true" size={17} /> Optional Components</h4>
           <div className="ai-component-list">
-            {result.optional_components.map((component, index) => (
-              <ComponentSuggestion key={`${component.name}-${index}`} component={component} />
+            {optionalComponents.map((component) => (
+              <ComponentSuggestion
+                key={component.id}
+                suggestion={component}
+                isSelected={selectedComponentIds.has(component.id)}
+                onToggle={onToggleComponent}
+              />
             ))}
           </div>
         </section>
@@ -60,6 +95,47 @@ function AiProjectResult({ result }) {
       {result.estimated_budget_note && (
         <p className="ai-budget-note">{result.estimated_budget_note}</p>
       )}
+
+      <section className="ai-request-actions" aria-labelledby="ai-request-actions-title">
+        <h4 id="ai-request-actions-title">Generate Project Request</h4>
+        <p>{selectedComponents.length} suggested components selected.</p>
+        <div>
+          <button
+            className="btn btn-secondary"
+            type="button"
+            onClick={onAddAvailableParts}
+            disabled={selectedAvailable.length === 0}
+          >
+            <ShoppingCart aria-hidden="true" size={16} />
+            Add Available Parts to Cart
+          </button>
+          <a
+            className={`btn btn-outline${selectedMissing.length === 0 ? ' is-disabled' : ''}`}
+            href={selectedMissing.length > 0 ? missingRequestUrl : undefined}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-disabled={selectedMissing.length === 0}
+          >
+            <MessageCircle aria-hidden="true" size={16} />
+            Request Missing Components
+          </a>
+          <a
+            className={`btn btn-primary${selectedComponents.length === 0 ? ' is-disabled' : ''}`}
+            href={selectedComponents.length > 0 ? fullRequestUrl : undefined}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-disabled={selectedComponents.length === 0}
+          >
+            <MessageCircle aria-hidden="true" size={16} />
+            Send Full Project Request
+          </a>
+        </div>
+        {cartMessage && <p className="ai-cart-message" role="status">{cartMessage}</p>}
+        <small>
+          AI suggestions are intended to help with planning. Confirm component
+          compatibility and availability before placing an order.
+        </small>
+      </section>
     </div>
   )
 }

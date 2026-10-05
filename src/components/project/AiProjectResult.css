@@ -85,3 +85,45 @@
   color: var(--color-text-muted);
   font-size: 0.7rem;
 }
+
+.ai-request-actions {
+  padding: var(--space-md);
+  border: 1px solid rgb(18 58 99 / 14%);
+  border-radius: var(--radius-md);
+  background: rgb(18 58 99 / 5%);
+}
+
+.ai-request-actions h4 {
+  font-size: 0.85rem;
+}
+
+.ai-request-actions > p,
+.ai-request-actions > small {
+  display: block;
+  margin-top: var(--space-xs);
+  color: var(--color-text-muted);
+  font-size: 0.65rem;
+}
+
+.ai-request-actions > div {
+  display: grid;
+  gap: var(--space-xs);
+  margin-top: var(--space-md);
+}
+
+.ai-request-actions .btn {
+  gap: var(--space-xs);
+  width: 100%;
+  font-size: 0.7rem;
+}
+
+.ai-request-actions .is-disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.ai-request-actions > .ai-cart-message {
+  color: var(--color-secondary);
+  font-weight: 700;
+}
