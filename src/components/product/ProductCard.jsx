@@ -1,12 +1,7 @@
 import { ArrowRight, ImageIcon, ShoppingCart } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { formatPriceLkr } from '../../utils/formatPrice'
 import './ProductCard.css'
-
-const priceFormatter = new Intl.NumberFormat('en-LK', {
-  style: 'currency',
-  currency: 'LKR',
-  maximumFractionDigits: 0,
-})
 
 function ProductCard({ product }) {
   const {
@@ -44,7 +39,7 @@ function ProductCard({ product }) {
         </h3>
 
         <div className="product-card-purchase-info">
-          <p className="product-card-price">{priceFormatter.format(price)}</p>
+          <p className="product-card-price">{formatPriceLkr(price)}</p>
           <span
             className={`product-stock-badge ${inStock ? 'is-in-stock' : 'is-out-of-stock'}`}
           >
