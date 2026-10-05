@@ -222,7 +222,7 @@ h3 {
 
 .style-preview {
   display: grid;
-  min-height: 100vh;
+  min-height: calc(100vh - 4.75rem);
   place-items: center;
   background: var(--color-surface);
 }
@@ -291,6 +291,12 @@ h3 {
 
   .preview-actions .btn {
     width: 100%;
+  }
+}
+
+@media (max-width: 70rem) {
+  .style-preview {
+    min-height: calc(100vh - 4.5rem);
   }
 }
 
