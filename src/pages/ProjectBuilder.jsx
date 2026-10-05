@@ -9,7 +9,7 @@ import {
   ShoppingCart,
   Sprout,
 } from 'lucide-react'
-import CustomProjectIdeaBuilder from '../components/project/CustomProjectIdeaBuilder'
+import AiProjectAdvisor from '../components/project/AiProjectAdvisor'
 import ProjectCard from '../components/project/ProjectCard'
 import ProjectComponentList from '../components/project/ProjectComponentList'
 import EmptyState from '../components/common/EmptyState'
@@ -29,7 +29,6 @@ function ProjectBuilder() {
   const [builderMode, setBuilderMode] = useState('explore')
   const [selectedProjectId, setSelectedProjectId] = useState(projects[0]?.id)
   const [cartMessage, setCartMessage] = useState('')
-  const [preparedProject, setPreparedProject] = useState(null)
   const { addToCart } = useCart()
 
   const activeProductsBySlug = useMemo(
@@ -212,23 +211,7 @@ function ProjectBuilder() {
               </p>
             </header>
 
-            <CustomProjectIdeaBuilder onAnalyze={setPreparedProject}>
-              {preparedProject && (
-                <div className="custom-project-prepared">
-                  <Lightbulb aria-hidden="true" size={30} strokeWidth={1.4} />
-                  <strong>{preparedProject.projectName || 'Custom project idea'}</strong>
-                  <p>
-                    Your project details are validated and ready for the Spark Lab
-                    Project Advisor in the next step.
-                  </p>
-                  <ul>
-                    <li>{preparedProject.experienceLevel}</li>
-                    <li>{preparedProject.preferredPlatform}</li>
-                    <li>{preparedProject.budgetRange}</li>
-                  </ul>
-                </div>
-              )}
-            </CustomProjectIdeaBuilder>
+            <AiProjectAdvisor />
           </div>
         </section>
       )}
