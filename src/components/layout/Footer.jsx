@@ -7,6 +7,7 @@ import {
   Truck,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import business from '../../config/business'
 import Logo from '../common/Logo'
 import './Footer.css'
 
@@ -87,7 +88,9 @@ function Footer() {
                 <MessageCircle aria-hidden="true" size={18} />
                 <span>
                   WhatsApp
-                  <a href="tel:+94761652728">076 165 2728</a>
+                  <a href={`tel:${business.phoneInternational}`}>
+                    {business.phoneDisplay}
+                  </a>
                 </span>
               </li>
               <li>
@@ -96,7 +99,7 @@ function Footer() {
               </li>
               <li>
                 <MapPin aria-hidden="true" size={18} />
-                <span>Sri Lanka</span>
+                <span>{business.location}</span>
               </li>
             </ul>
 

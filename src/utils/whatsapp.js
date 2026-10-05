@@ -1,4 +1,6 @@
-export const WHATSAPP_NUMBER = '94761652728'
+import business from '../config/business.js'
+
+export const WHATSAPP_NUMBER = business.whatsappNumber
 
 const whatsappPriceFormatter = new Intl.NumberFormat('en-LK', {
   maximumFractionDigits: 0,
@@ -16,6 +18,12 @@ function formatWhatsAppPrice(price) {
 function getSafeQuantity(quantity) {
   const numericQuantity = Math.floor(Number(quantity))
   return Number.isFinite(numericQuantity) && numericQuantity > 0 ? numericQuantity : 1
+}
+
+export function createWhatsAppUrl(message) {
+  const safeMessage = String(message ?? '').trim()
+  const query = safeMessage ? `?text=${encodeURIComponent(safeMessage)}` : ''
+  return `https://wa.me/${WHATSAPP_NUMBER}${query}`
 }
 
 export function createWhatsAppProductMessage(product, quantity = 1) {
@@ -45,7 +53,7 @@ export function createWhatsAppProductMessage(product, quantity = 1) {
 
 export function createWhatsAppProductUrl(product, quantity = 1) {
   const message = createWhatsAppProductMessage(product, quantity)
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
+  return createWhatsAppUrl(message)
 }
 
 export function createWhatsAppCartMessage(cartItems) {
@@ -80,7 +88,7 @@ export function createWhatsAppCartMessage(cartItems) {
 
 export function createWhatsAppCartUrl(cartItems) {
   const message = createWhatsAppCartMessage(cartItems)
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
+  return createWhatsAppUrl(message)
 }
 
 function getCleanSupportValue(value) {
@@ -129,5 +137,30 @@ export function createProjectSupportMessage(formData) {
 
 export function createProjectSupportUrl(formData) {
   const message = createProjectSupportMessage(formData)
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
+  return createWhatsAppUrl(message)
+}
+
+export function createContactMessage(formData) {
+  const name = getCleanSupportValue(formData?.name) || 'Spark Lab customer'
+  const subject = getCleanSupportValue(formData?.subject) || 'General inquiry'
+  const message = getCleanSupportValue(formData?.message) || 'I would like more information.'
+  const email = getCleanSupportValue(formData?.email)
+  const whatsappNumber = getCleanSupportValue(formData?.whatsappNumber)
+  const messageLines = [
+    'Hello Spark Lab,',
+    '',
+    `Name: ${name}`,
+    `Subject: ${subject}`,
+  ]
+
+  if (email) messageLines.push(`Email: ${email}`)
+  if (whatsappNumber) messageLines.push(`WhatsApp Number: ${whatsappNumber}`)
+
+  messageLines.push('', 'Message:', message, '', 'Thank you.')
+
+  return messageLines.join('\n')
+}
+
+export function createContactUrl(formData) {
+  return createWhatsAppUrl(createContactMessage(formData))
 }
