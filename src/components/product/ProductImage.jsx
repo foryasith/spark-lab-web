@@ -3,21 +3,26 @@ import { CircuitBoard } from 'lucide-react'
 
 function ProductImage({ imageUrl, name }) {
   const [hasImageError, setHasImageError] = useState(false)
-  const showImage = imageUrl && !hasImageError
+  const productName = String(name ?? '').trim() || 'Product'
+  const showImage = Boolean(imageUrl && !hasImageError)
 
   if (showImage) {
     return (
       <img
         className="product-detail-image"
         src={imageUrl}
-        alt={name}
+        alt={productName}
         onError={() => setHasImageError(true)}
       />
     )
   }
 
   return (
-    <div className="product-detail-placeholder" role="img" aria-label={`${name} image coming soon`}>
+    <div
+      className="product-detail-placeholder"
+      role="img"
+      aria-label={`${productName} image coming soon`}
+    >
       <span className="product-detail-placeholder-icon">
         <CircuitBoard aria-hidden="true" size={52} strokeWidth={1.3} />
       </span>

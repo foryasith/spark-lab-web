@@ -225,6 +225,19 @@ h3 {
   color: var(--color-text-muted);
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 @media (hover: hover) {
   .btn-primary:hover {
     border-color: var(--color-secondary);

@@ -34,32 +34,6 @@
   gap: var(--space-lg);
 }
 
-.featured-products-empty {
-  display: grid;
-  min-height: 16rem;
-  place-items: center;
-  align-content: center;
-  gap: var(--space-sm);
-  padding: var(--space-xl);
-  border: 1px dashed var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-  text-align: center;
-}
-
-.featured-products-empty svg {
-  color: var(--color-secondary);
-}
-
-.featured-products-empty h3 {
-  font-size: 1.125rem;
-}
-
-.featured-products-empty p {
-  color: var(--color-text-muted);
-  font-size: 0.875rem;
-}
-
 @media (max-width: 68rem) {
   .featured-products-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));

@@ -1,6 +1,7 @@
 import { ArrowRight, PackageOpen } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { products } from '../../data/products'
+import EmptyState from '../common/EmptyState'
 import ProductCard from '../product/ProductCard'
 import './FeaturedProducts.css'
 
@@ -36,11 +37,12 @@ function FeaturedProducts() {
             ))}
           </div>
         ) : (
-          <div className="featured-products-empty">
-            <PackageOpen aria-hidden="true" size={32} strokeWidth={1.5} />
-            <h3>Featured components are coming soon.</h3>
-            <p>Visit the shop to explore the latest Spark Lab products.</p>
-          </div>
+          <EmptyState
+            Icon={PackageOpen}
+            headingLevel="h3"
+            title="Featured components are coming soon."
+            message="Visit the shop to explore the latest Spark Lab products."
+          />
         )}
       </div>
     </section>

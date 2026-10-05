@@ -1,11 +1,13 @@
+import { useState } from 'react'
 import { ArrowRight, ImageIcon, ShoppingCart } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import useCart from '../../hooks/useCart'
 import { formatPriceLkr } from '../../utils/formatPrice'
 import './ProductCard.css'
 
-function ProductCard({ product }) {
+function ProductCard({ product = {} }) {
   const { addToCart } = useCart()
+  const [hasImageError, setHasImageError] = useState(false)
   const {
     name,
     slug,
@@ -16,15 +18,30 @@ function ProductCard({ product }) {
     image_url: imageUrl,
     brand,
   } = product
+  const productName = String(name ?? '').trim() || 'Unnamed component'
+  const productCategory = String(category ?? '').trim() || 'Components'
+  const productBrand = String(brand ?? '').trim()
+  const productSlug = String(slug ?? '').trim()
+  const productPath = productSlug ? `/product/${productSlug}` : '/shop'
+  const showImage = Boolean(imageUrl && !hasImageError)
 
   return (
     <article className="product-card">
       <div className="product-card-media">
         {featured && <span className="product-featured-badge">Featured</span>}
-        {imageUrl ? (
-          <img loading="lazy" src={imageUrl} alt={name} />
+        {showImage ? (
+          <img
+            loading="lazy"
+            src={imageUrl}
+            alt={productName}
+            onError={() => setHasImageError(true)}
+          />
         ) : (
-          <div className="product-image-placeholder" role="img" aria-label={`${name} image coming soon`}>
+          <div
+            className="product-image-placeholder"
+            role="img"
+            aria-label={`${productName} image coming soon`}
+          >
             <ImageIcon aria-hidden="true" size={38} strokeWidth={1.4} />
             <span>Product image coming soon</span>
           </div>
@@ -33,11 +50,11 @@ function ProductCard({ product }) {
 
       <div className="product-card-body">
         <div className="product-card-meta">
-          <span>{category}</span>
-          <span>{brand}</span>
+          <span>{productCategory}</span>
+          {productBrand && <span>{productBrand}</span>}
         </div>
         <h3 className="product-card-title">
-          <Link to={`/product/${slug}`}>{name}</Link>
+          <Link to={productPath}>{productName}</Link>
         </h3>
 
         <div className="product-card-purchase-info">
@@ -50,7 +67,7 @@ function ProductCard({ product }) {
         </div>
 
         <div className="product-card-actions">
-          <Link className="btn btn-outline product-card-button" to={`/product/${slug}`}>
+          <Link className="btn btn-outline product-card-button" to={productPath}>
             View Product
             <ArrowRight aria-hidden="true" size={16} />
           </Link>

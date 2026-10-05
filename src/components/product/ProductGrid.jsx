@@ -1,21 +1,29 @@
-import { PackageOpen } from 'lucide-react'
+import EmptyState from '../common/EmptyState'
+import ErrorState from '../common/ErrorState'
+import LoadingState from '../common/LoadingState'
 import ProductCard from './ProductCard'
 import './ProductGrid.css'
 
 function ProductGrid({
-  products,
+  products = [],
+  isLoading = false,
+  error = null,
+  onRetry,
   emptyTitle = 'No products available yet.',
   emptyMessage = 'New components are being added to Spark Lab.',
   emptyAction,
 }) {
+  if (isLoading) {
+    return <LoadingState variant="products" count={8} />
+  }
+
+  if (error) {
+    return <ErrorState onRetry={onRetry} />
+  }
+
   if (products.length === 0) {
     return (
-      <div className="product-grid-empty">
-        <PackageOpen aria-hidden="true" size={36} strokeWidth={1.5} />
-        <h2>{emptyTitle}</h2>
-        <p>{emptyMessage}</p>
-        {emptyAction}
-      </div>
+      <EmptyState title={emptyTitle} message={emptyMessage} action={emptyAction} />
     )
   }
 

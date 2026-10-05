@@ -12,15 +12,20 @@ function CartItem({ item }) {
   const [hasImageError, setHasImageError] = useState(false)
   const availableStock = Number(product.stock_qty)
   const hasStockLimit = Number.isFinite(availableStock)
-  const showImage = product.image_url && !hasImageError
+  const productName = String(product.name ?? '').trim() || 'Unnamed component'
+  const productCategory = String(product.main_category ?? '').trim() || 'Components'
+  const productSlug = String(product.slug ?? '').trim()
+  const productPath = productSlug ? `/product/${productSlug}` : '/shop'
+  const sku = String(product.sku ?? '').trim()
+  const showImage = Boolean(product.image_url && !hasImageError)
 
   return (
     <article className="cart-item">
-      <Link className="cart-item-media" to={`/product/${product.slug}`}>
+      <Link className="cart-item-media" to={productPath}>
         {showImage ? (
           <img
             src={product.image_url}
-            alt={product.name}
+            alt={productName}
             onError={() => setHasImageError(true)}
           />
         ) : (
@@ -29,18 +34,18 @@ function CartItem({ item }) {
       </Link>
 
       <div className="cart-item-details">
-        <p>{product.main_category}</p>
+        <p>{productCategory}</p>
         <h2>
-          <Link to={`/product/${product.slug}`}>{product.name}</Link>
+          <Link to={productPath}>{productName}</Link>
         </h2>
-        <span>SKU: {product.sku || 'Not listed'}</span>
+        {sku && <span>SKU: {sku}</span>}
       </div>
 
       <p className="cart-item-unit-price">{formatPriceLkr(product.price_lkr)}</p>
 
       <QuantitySelector
         quantity={quantity}
-        productName={product.name}
+        productName={productName}
         onDecrease={() => updateQuantity(product.product_id, quantity - 1)}
         onIncrease={() => updateQuantity(product.product_id, quantity + 1)}
         decreaseDisabled={quantity <= 1}
@@ -55,7 +60,7 @@ function CartItem({ item }) {
         className="cart-item-remove"
         type="button"
         onClick={() => removeFromCart(product.product_id)}
-        aria-label={`Remove ${product.name} from cart`}
+        aria-label={`Remove ${productName} from cart`}
       >
         <Trash2 aria-hidden="true" size={18} />
       </button>

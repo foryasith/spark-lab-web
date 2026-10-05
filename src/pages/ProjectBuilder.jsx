@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Bot, CloudSun, Lightbulb, RadioTower, ShoppingCart, Sprout } from 'lucide-react'
 import ProjectCard from '../components/project/ProjectCard'
 import ProjectComponentList from '../components/project/ProjectComponentList'
+import EmptyState from '../components/common/EmptyState'
 import { products } from '../data/products'
 import { projects } from '../data/projects'
 import useCart from '../hooks/useCart'
@@ -87,19 +88,27 @@ function ProjectBuilder() {
             <p>Start with one of these practical student and maker projects.</p>
           </div>
 
-          <div className="project-builder-grid">
-            {projects.map((project) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                Icon={projectIcons[project.icon] ?? Lightbulb}
-                isSelected={project.id === selectedProject.id}
-                onSelect={() => handleProjectSelect(project.id)}
-              />
-            ))}
-          </div>
+          {projects.length > 0 ? (
+            <div className="project-builder-grid">
+              {projects.map((project) => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  Icon={projectIcons[project.icon] ?? Lightbulb}
+                  isSelected={project.id === selectedProject?.id}
+                  onSelect={() => handleProjectSelect(project.id)}
+                />
+              ))}
+            </div>
+          ) : (
+            <EmptyState
+              title="No project selected."
+              message="New Spark Lab project ideas are being prepared."
+            />
+          )}
 
-          <article className="project-build-details" aria-live="polite">
+          {selectedProject && (
+            <article className="project-build-details" aria-live="polite">
             <div className="project-build-heading">
               <div>
                 <span>{selectedProject.difficulty} build</span>
@@ -150,7 +159,8 @@ function ProjectBuilder() {
               Suggested parts are development examples. Check each product page or
               contact Spark Lab to confirm compatibility and current availability.
             </p>
-          </article>
+            </article>
+          )}
         </div>
       </section>
     </div>

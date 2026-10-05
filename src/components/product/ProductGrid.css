@@ -4,35 +4,6 @@
   gap: var(--space-lg);
 }
 
-.product-grid-empty {
-  display: grid;
-  min-height: 20rem;
-  place-items: center;
-  align-content: center;
-  gap: var(--space-sm);
-  padding: var(--space-xl);
-  border: 1px dashed var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-white);
-  text-align: center;
-}
-
-.product-grid-empty svg {
-  color: var(--color-secondary);
-}
-
-.product-grid-empty h2 {
-  font-size: 1.25rem;
-}
-
-.product-grid-empty p {
-  color: var(--color-text-muted);
-}
-
-.product-grid-empty .btn {
-  margin-top: var(--space-sm);
-}
-
 @media (max-width: 72rem) {
   .product-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));

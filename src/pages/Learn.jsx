@@ -1,5 +1,6 @@
 import { ArrowRight, Bot, CircuitBoard, Cpu, Radio, Ruler, Wrench } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import EmptyState from '../components/common/EmptyState'
 import LearningCard from '../components/learn/LearningCard'
 import { learningContent, learningTopics } from '../data/learningContent'
 import './Learn.css'
@@ -80,11 +81,18 @@ function Learn() {
             <h2 id="all-guides-title">Latest Guides</h2>
             <p>Short, practical introductions created for students and makers.</p>
           </header>
-          <div className="learn-guide-grid">
-            {learningContent.map((item) => (
-              <LearningCard key={item.id} item={item} />
-            ))}
-          </div>
+          {learningContent.length > 0 ? (
+            <div className="learn-guide-grid">
+              {learningContent.map((item) => (
+                <LearningCard key={item.id} item={item} />
+              ))}
+            </div>
+          ) : (
+            <EmptyState
+              title="No guides available."
+              message="New Spark Lab learning resources are being prepared."
+            />
+          )}
         </div>
       </section>
 

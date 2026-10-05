@@ -1,6 +1,7 @@
 import { MessageCircle, ShoppingBag, Trash2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import CartItem from '../components/cart/CartItem'
+import EmptyState from '../components/common/EmptyState'
 import useCart from '../hooks/useCart'
 import { formatPriceLkr } from '../utils/formatPrice'
 import { createWhatsAppCartUrl } from '../utils/whatsapp'
@@ -13,16 +14,17 @@ function Cart() {
     return (
       <section className="cart-empty page-view tech-background section">
         <div className="container">
-          <div className="cart-empty-card">
-            <ShoppingBag aria-hidden="true" size={44} strokeWidth={1.4} />
-            <h1>Your cart is empty.</h1>
-            <p>
-              Browse Spark Lab components and add what you need for your next build.
-            </p>
-            <Link className="btn btn-primary" to="/shop">
-              Continue Shopping
-            </Link>
-          </div>
+          <EmptyState
+            Icon={ShoppingBag}
+            headingLevel="h1"
+            title="Your cart is empty."
+            message="Browse Spark Lab components and add what you need for your next build."
+            action={
+              <Link className="btn btn-primary" to="/shop">
+                Continue Shopping
+              </Link>
+            }
+          />
         </div>
       </section>
     )
