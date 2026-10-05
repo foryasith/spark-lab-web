@@ -21,8 +21,9 @@ function ProductImage({ imageUrl, name }) {
       <span className="product-detail-placeholder-icon">
         <CircuitBoard aria-hidden="true" size={52} strokeWidth={1.3} />
       </span>
-      <strong>Spark Lab Component</strong>
-      <span>Product image coming soon</span>
+      <strong>SPARK LAB</strong>
+      <span>Product Image</span>
+      <small>Coming Soon</small>
     </div>
   )
 }

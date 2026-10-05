@@ -1,9 +1,11 @@
 import { ArrowRight, ImageIcon, ShoppingCart } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import useCart from '../../hooks/useCart'
 import { formatPriceLkr } from '../../utils/formatPrice'
 import './ProductCard.css'
 
 function ProductCard({ product }) {
+  const { addToCart } = useCart()
   const {
     name,
     slug,
@@ -56,6 +58,7 @@ function ProductCard({ product }) {
             className="btn btn-secondary product-card-button"
             type="button"
             disabled={!inStock}
+            onClick={() => addToCart(product)}
           >
             <ShoppingCart aria-hidden="true" size={16} />
             Add to Cart

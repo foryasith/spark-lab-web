@@ -1,4 +1,4 @@
-const SPARK_LAB_WHATSAPP_NUMBER = '94761652728'
+export const WHATSAPP_NUMBER = '94761652728'
 
 const whatsappPriceFormatter = new Intl.NumberFormat('en-LK', {
   maximumFractionDigits: 0,
@@ -13,7 +13,12 @@ function formatWhatsAppPrice(price) {
     : 'Please confirm'
 }
 
-export function createWhatsAppProductMessage(product) {
+function getSafeQuantity(quantity) {
+  const numericQuantity = Math.floor(Number(quantity))
+  return Number.isFinite(numericQuantity) && numericQuantity > 0 ? numericQuantity : 1
+}
+
+export function createWhatsAppProductMessage(product, quantity = 1) {
   const productName = String(product?.name ?? '').trim() || 'Product inquiry'
   const sku = String(product?.sku ?? '').trim()
   const messageLines = [
@@ -28,6 +33,7 @@ export function createWhatsAppProductMessage(product) {
 
   messageLines.push(
     `Price: ${formatWhatsAppPrice(product?.price_lkr)}`,
+    `Quantity: ${getSafeQuantity(quantity)}`,
     '',
     'Please confirm availability and delivery details.',
     '',
@@ -37,7 +43,42 @@ export function createWhatsAppProductMessage(product) {
   return messageLines.join('\n')
 }
 
-export function createWhatsAppProductUrl(product) {
-  const message = createWhatsAppProductMessage(product)
-  return `https://wa.me/${SPARK_LAB_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
+export function createWhatsAppProductUrl(product, quantity = 1) {
+  const message = createWhatsAppProductMessage(product, quantity)
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
+}
+
+export function createWhatsAppCartMessage(cartItems) {
+  const messageLines = [
+    'Hello Spark Lab,',
+    '',
+    'I would like to order these products:',
+    '',
+  ]
+
+  cartItems.forEach(({ product, quantity }, index) => {
+    const productName = String(product?.name ?? '').trim() || 'Product inquiry'
+    const sku = String(product?.sku ?? '').trim()
+
+    messageLines.push(`${index + 1}. ${productName}`)
+    if (sku) messageLines.push(`SKU: ${sku}`)
+    messageLines.push(
+      `Price: ${formatWhatsAppPrice(product?.price_lkr)}`,
+      `Quantity: ${getSafeQuantity(quantity)}`,
+      '',
+    )
+  })
+
+  messageLines.push(
+    'Please confirm availability and delivery details.',
+    '',
+    'Thank you.',
+  )
+
+  return messageLines.join('\n')
+}
+
+export function createWhatsAppCartUrl(cartItems) {
+  const message = createWhatsAppCartMessage(cartItems)
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
 }

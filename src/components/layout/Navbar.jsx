@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Menu, MessageCircle, Search, ShoppingCart, X } from 'lucide-react'
 import { Link, NavLink } from 'react-router-dom'
+import useCart from '../../hooks/useCart'
 import Logo from '../common/Logo'
 import './Navbar.css'
 
@@ -15,6 +16,7 @@ const navigationItems = [
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { cartCount } = useCart()
 
   useEffect(() => {
     if (!isMenuOpen) return undefined
@@ -61,8 +63,15 @@ function Navbar() {
           <Link className="navbar-icon-link" to="/shop" aria-label="Search products">
             <Search aria-hidden="true" size={20} strokeWidth={1.8} />
           </Link>
-          <Link className="navbar-icon-link" to="/cart" aria-label="View cart">
+          <Link
+            className="navbar-icon-link navbar-cart-link"
+            to="/cart"
+            aria-label={`View cart with ${cartCount} items`}
+          >
             <ShoppingCart aria-hidden="true" size={20} strokeWidth={1.8} />
+            {cartCount > 0 && (
+              <span className="navbar-cart-badge">{cartCount > 99 ? '99+' : cartCount}</span>
+            )}
           </Link>
           <Link className="btn btn-primary navbar-cta" to="/contact">
             <MessageCircle aria-hidden="true" size={18} />

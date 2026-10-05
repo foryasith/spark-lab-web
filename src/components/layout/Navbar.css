@@ -91,6 +91,28 @@
   font-size: 0.875rem;
 }
 
+.navbar-cart-link {
+  position: relative;
+}
+
+.navbar-cart-badge {
+  position: absolute;
+  top: -0.2rem;
+  right: -0.2rem;
+  display: grid;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  place-items: center;
+  padding-inline: 0.2rem;
+  border: 2px solid var(--color-white);
+  border-radius: 999px;
+  background: var(--color-gold);
+  color: var(--color-primary);
+  font-size: 0.6rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
 .navbar-menu-button {
   display: none;
 }
