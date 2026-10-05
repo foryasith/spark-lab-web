@@ -1,5 +1,15 @@
 import { useMemo, useState } from 'react'
-import { Bot, CloudSun, Lightbulb, RadioTower, ShoppingCart, Sprout } from 'lucide-react'
+import {
+  Bot,
+  CloudSun,
+  LayoutGrid,
+  Lightbulb,
+  PencilLine,
+  RadioTower,
+  ShoppingCart,
+  Sprout,
+} from 'lucide-react'
+import CustomProjectIdeaBuilder from '../components/project/CustomProjectIdeaBuilder'
 import ProjectCard from '../components/project/ProjectCard'
 import ProjectComponentList from '../components/project/ProjectComponentList'
 import EmptyState from '../components/common/EmptyState'
@@ -16,8 +26,10 @@ const projectIcons = {
 }
 
 function ProjectBuilder() {
+  const [builderMode, setBuilderMode] = useState('explore')
   const [selectedProjectId, setSelectedProjectId] = useState(projects[0]?.id)
   const [cartMessage, setCartMessage] = useState('')
+  const [preparedProject, setPreparedProject] = useState(null)
   const { addToCart } = useCart()
 
   const activeProductsBySlug = useMemo(
@@ -75,10 +87,33 @@ function ProjectBuilder() {
             Choose a project idea, explore the suggested components and start
             turning what you learn into a working build.
           </p>
+          <div className="project-builder-modes" role="tablist" aria-label="Project builder mode">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={builderMode === 'explore'}
+              className={builderMode === 'explore' ? 'is-active' : ''}
+              onClick={() => setBuilderMode('explore')}
+            >
+              <LayoutGrid aria-hidden="true" size={18} />
+              Explore Projects
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={builderMode === 'custom'}
+              className={builderMode === 'custom' ? 'is-active' : ''}
+              onClick={() => setBuilderMode('custom')}
+            >
+              <PencilLine aria-hidden="true" size={18} />
+              Build Your Own Idea
+            </button>
+          </div>
         </div>
       </section>
 
-      <section className="project-builder-content section" aria-labelledby="project-ideas-title">
+      {builderMode === 'explore' ? (
+        <section className="project-builder-content section" aria-labelledby="project-ideas-title">
         <div className="container">
           <div className="project-builder-section-heading">
             <div>
@@ -162,7 +197,41 @@ function ProjectBuilder() {
             </article>
           )}
         </div>
-      </section>
+        </section>
+      ) : (
+        <section className="custom-project-section section" aria-labelledby="custom-project-title">
+          <div className="container">
+            <header className="project-builder-section-heading">
+              <div>
+                <span>Have Your Own Project Idea?</span>
+                <h2 id="custom-project-title">Tell Us What You Want to Build</h2>
+              </div>
+              <p>
+                Describe your idea and Spark Lab can help you identify the
+                components and technology you may need.
+              </p>
+            </header>
+
+            <CustomProjectIdeaBuilder onAnalyze={setPreparedProject}>
+              {preparedProject && (
+                <div className="custom-project-prepared">
+                  <Lightbulb aria-hidden="true" size={30} strokeWidth={1.4} />
+                  <strong>{preparedProject.projectName || 'Custom project idea'}</strong>
+                  <p>
+                    Your project details are validated and ready for the Spark Lab
+                    Project Advisor in the next step.
+                  </p>
+                  <ul>
+                    <li>{preparedProject.experienceLevel}</li>
+                    <li>{preparedProject.preferredPlatform}</li>
+                    <li>{preparedProject.budgetRange}</li>
+                  </ul>
+                </div>
+              )}
+            </CustomProjectIdeaBuilder>
+          </div>
+        </section>
+      )}
     </div>
   )
 }
