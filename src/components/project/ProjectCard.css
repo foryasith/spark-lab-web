@@ -1,0 +1,85 @@
+.project-card {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--space-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+  box-shadow: var(--shadow-sm);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.project-card.is-selected {
+  border-color: rgb(242 180 58 / 75%);
+  box-shadow: var(--shadow-md);
+}
+
+.project-card-icon {
+  display: inline-grid;
+  width: 3.25rem;
+  height: 3.25rem;
+  place-items: center;
+  border-radius: var(--radius-md);
+  background: rgb(18 58 99 / 7%);
+  color: var(--color-secondary);
+}
+
+.project-difficulty {
+  position: absolute;
+  top: var(--space-lg);
+  right: var(--space-lg);
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  background: rgb(242 180 58 / 14%);
+  color: var(--color-primary);
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.project-card h2 {
+  margin-top: var(--space-lg);
+  font-size: 1.1rem;
+}
+
+.project-card > p {
+  margin-top: var(--space-sm);
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+}
+
+.project-component-count {
+  margin-top: var(--space-lg);
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.project-card button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-top: auto;
+  padding: var(--space-lg) 0 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-secondary);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+@media (hover: hover) {
+  .project-card:hover {
+    border-color: rgb(18 58 99 / 22%);
+    transform: translateY(-2px);
+  }
+
+  .project-card button:hover {
+    color: var(--color-primary);
+  }
+}
