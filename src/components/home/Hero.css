@@ -143,7 +143,7 @@
   position: relative;
   z-index: 1;
   width: min(100%, 41rem);
-  animation: hero-image-float 6s ease-in-out infinite;
+  animation: hero-image-enter 320ms ease-out both;
   filter: drop-shadow(0 1.6rem 1.8rem rgb(10 39 71 / 18%));
 }
 
@@ -159,7 +159,7 @@
   aspect-ratio: 1;
   border-radius: 50%;
   background: radial-gradient(circle, rgb(242 180 58 / 17%), transparent 68%);
-  animation: hero-glow-pulse 5s ease-in-out infinite;
+  opacity: 0.8;
 }
 
 .hero-circuit-node {
@@ -200,27 +200,15 @@
   left: 100%;
 }
 
-@keyframes hero-image-float {
-  0%,
-  100% {
-    transform: translateY(0) rotate(-0.5deg);
+@keyframes hero-image-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.99);
   }
 
-  50% {
-    transform: translateY(-0.75rem) rotate(0.5deg);
-  }
-}
-
-@keyframes hero-glow-pulse {
-  0%,
-  100% {
-    opacity: 0.65;
-    transform: scale(0.96);
-  }
-
-  50% {
+  to {
     opacity: 1;
-    transform: scale(1.04);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -282,8 +270,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-image-wrap,
-  .hero-image-glow {
+  .hero-image-wrap {
     animation: none;
   }
 }

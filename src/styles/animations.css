@@ -1,0 +1,93 @@
+.btn {
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.learning-card,
+.learn-topic-card,
+.about-pillar-card,
+.about-reason-grid article,
+.contact-option-card,
+.support-area-card {
+  transition:
+    border-color var(--transition-normal),
+    box-shadow var(--transition-normal),
+    transform var(--transition-normal);
+}
+
+.learning-card-visual svg,
+.learning-card-action svg,
+.learn-topic-card > svg:last-child,
+.contact-option-icon svg,
+.support-area-icon svg {
+  transition: transform var(--transition-normal);
+}
+
+.hero-content {
+  animation: interface-content-enter 300ms ease-out both;
+}
+
+@keyframes interface-content-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (hover: hover) {
+  .btn:not(:disabled):hover {
+    transform: translateY(-1px);
+  }
+
+  .learning-card:hover,
+  .learn-topic-card:hover,
+  .about-pillar-card:hover,
+  .about-reason-grid article:hover,
+  .contact-option-card[href]:hover,
+  .support-area-card:hover {
+    border-color: rgb(18 58 99 / 22%);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .learning-card:hover .learning-card-visual svg,
+  .contact-option-card[href]:hover .contact-option-icon svg,
+  .support-area-card:hover .support-area-icon svg {
+    transform: scale(1.02);
+  }
+
+  .learning-card:hover .learning-card-action svg,
+  .learn-topic-card:hover > svg:last-child {
+    transform: translateX(2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-content {
+    animation: none;
+  }
+
+  .btn,
+  .learning-card,
+  .learn-topic-card,
+  .about-pillar-card,
+  .about-reason-grid article,
+  .contact-option-card,
+  .support-area-card,
+  .learning-card-visual svg,
+  .learning-card-action svg,
+  .learn-topic-card > svg:last-child,
+  .contact-option-icon svg,
+  .support-area-icon svg {
+    transition: none;
+  }
+}
