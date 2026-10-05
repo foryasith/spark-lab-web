@@ -1,10 +1,12 @@
+import Logo from './components/common/Logo'
+
 function App() {
   return (
     <main className="style-preview">
       <section className="section" aria-labelledby="preview-title">
         <div className="container">
           <div className="card preview-card">
-            <p className="preview-brand">Spark Lab</p>
+            <Logo className="preview-logo" size="large" />
             <h1 id="preview-title">Build. Test. Innovate.</h1>
             <p className="preview-description text-muted">
               Electronics, IoT, robotics and maker solutions for students and
