@@ -1,6 +1,4 @@
-function wait(milliseconds) {
-  return new Promise((resolve) => setTimeout(resolve, milliseconds))
-}
+import { normalizeAdvisorResponse } from '../utils/advisorResponse.js'
 
 function createSuggestedComponents(projectData, platform) {
   const requirements = new Set(projectData.requirements)
@@ -94,6 +92,32 @@ export function createMockProjectAdvice(projectData) {
 }
 
 export async function analyzeProject(projectData) {
-  await wait(650)
-  return createMockProjectAdvice(projectData)
+  try {
+    const response = await fetch('/api/project-advisor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(projectData),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Project advisor request failed with status ${response.status}`)
+    }
+
+    const contentType = response.headers.get('content-type') || ''
+    if (!contentType.includes('application/json')) {
+      throw new Error('Project advisor returned an unexpected response type')
+    }
+
+    const payload = await response.json()
+    return normalizeAdvisorResponse(payload.result)
+  } catch (error) {
+    if (import.meta.env?.DEV) {
+      console.info(
+        'Spark Lab Project Advisor: secure endpoint unavailable; using development mock mode.',
+      )
+      return normalizeAdvisorResponse(createMockProjectAdvice(projectData))
+    }
+
+    throw error
+  }
 }
