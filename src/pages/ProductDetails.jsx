@@ -11,9 +11,10 @@ import {
 import { Link, useParams } from 'react-router-dom'
 import QuantitySelector from '../components/cart/QuantitySelector'
 import ErrorState from '../components/common/ErrorState'
+import LoadingState from '../components/common/LoadingState'
 import ProductGrid from '../components/product/ProductGrid'
 import ProductImage from '../components/product/ProductImage'
-import { products } from '../data/products'
+import useCatalog from '../hooks/useCatalog'
 import useCart from '../hooks/useCart'
 import { formatPriceLkr } from '../utils/formatPrice'
 import { normalizeProductSpecs } from '../utils/productSpecs'
@@ -23,8 +24,29 @@ import './ProductDetails.css'
 function ProductDetails() {
   const { slug } = useParams()
   const { addToCart } = useCart()
+  const { products, isLoading, error, reload } = useCatalog()
   const [quantityState, setQuantityState] = useState({ productId: '', quantity: 1 })
-  const product = products.find((item) => item.active && item.slug === slug)
+  const product = products.find((item) => item.slug === slug)
+
+  if (isLoading) {
+    return (
+      <section className="product-not-found page-view tech-background section">
+        <div className="container">
+          <LoadingState message="Loading product details..." />
+        </div>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section className="product-not-found page-view tech-background section">
+        <div className="container">
+          <ErrorState onRetry={reload} />
+        </div>
+      </section>
+    )
+  }
 
   if (!product) {
     return (
@@ -70,7 +92,6 @@ function ProductDetails() {
     ? products
         .filter(
           (item) =>
-            item.active &&
             item.product_id !== product.product_id &&
             item.main_category === product.main_category,
         )

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { products } from '../../data/products'
+import useCatalog from '../../hooks/useCatalog'
 import { analyzeProject } from '../../services/projectAdvisor'
 import { matchAdvisorComponents } from '../../utils/componentMatching'
 import { createAiProjectRequestUrl } from '../../utils/whatsapp'
@@ -17,9 +17,14 @@ function AiProjectAdvisor() {
   const [selectedComponentIds, setSelectedComponentIds] = useState(new Set())
   const [cartMessage, setCartMessage] = useState('')
   const { addToCart } = useCart()
+  const { products, isLoading: isCatalogLoading } = useCatalog()
 
   const handleAnalyze = async (projectData) => {
     if (isAnalyzing) return
+    if (isCatalogLoading) {
+      setError('The component catalog is still loading. Please try again in a moment.')
+      return
+    }
 
     setSubmittedProject(projectData)
     setIsAnalyzing(true)

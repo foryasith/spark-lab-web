@@ -4,22 +4,20 @@ import ProductGrid from '../components/product/ProductGrid'
 import ProductSearch from '../components/shop/ProductSearch'
 import ShopFilters from '../components/shop/ShopFilters'
 import ShopSort from '../components/shop/ShopSort'
-import { products } from '../data/products'
+import useCatalog from '../hooks/useCatalog'
 import { filterProducts, getProductCategories } from '../utils/productFilters'
 import { filterProductsBySearch } from '../utils/productSearch'
 import { sortProducts } from '../utils/productSort'
 import './Shop.css'
 
-const activeProducts = products.filter((product) => product.active)
-
-const categoryOptions = getProductCategories(activeProducts)
-
 function Shop() {
+  const { products, isLoading, error, warning, reload } = useCatalog()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [availability, setAvailability] = useState('all')
   const [sortOption, setSortOption] = useState('featured')
-  const searchedProducts = filterProductsBySearch(activeProducts, searchTerm)
+  const categoryOptions = getProductCategories(products)
+  const searchedProducts = filterProductsBySearch(products, searchTerm)
   const filteredProducts = filterProducts(
     searchedProducts,
     selectedCategory,
@@ -48,6 +46,7 @@ function Shop() {
 
       <section className="shop-catalog section" aria-label="Product catalog">
         <div className="container">
+          {warning && <p className="shop-catalog-warning" role="status">{warning}</p>}
           <div className="shop-toolbar" aria-label="Shop controls preview">
             <ProductSearch
               value={searchTerm}
@@ -76,6 +75,9 @@ function Shop() {
 
           <ProductGrid
             products={displayedProducts}
+            isLoading={isLoading}
+            error={error}
+            onRetry={reload}
             emptyTitle={
               searchIsActive || filtersAreActive ? 'No components found' : undefined
             }

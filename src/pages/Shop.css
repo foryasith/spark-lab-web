@@ -12,6 +12,16 @@
   padding-top: var(--space-2xl);
 }
 
+.shop-catalog-warning {
+  margin: 0 0 var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius-sm);
+  background: rgb(242 180 58 / 10%);
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+}
+
 .shop-toolbar {
   display: grid;
   grid-template-columns: minmax(16rem, 1fr) auto auto auto;

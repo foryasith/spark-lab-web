@@ -1,15 +1,16 @@
 import { ArrowRight, PackageOpen } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { products } from '../../data/products'
+import useCatalog from '../../hooks/useCatalog'
 import EmptyState from '../common/EmptyState'
+import ErrorState from '../common/ErrorState'
+import LoadingState from '../common/LoadingState'
 import ProductCard from '../product/ProductCard'
 import './FeaturedProducts.css'
 
-const featuredProducts = products
-  .filter((product) => product.featured && product.active)
-  .slice(0, 8)
-
 function FeaturedProducts() {
+  const { products, isLoading, error, reload } = useCatalog()
+  const featuredProducts = products.filter((product) => product.featured).slice(0, 8)
+
   return (
     <section className="featured-products section" aria-labelledby="featured-products-title">
       <div className="container">
@@ -30,7 +31,11 @@ function FeaturedProducts() {
           </Link>
         </div>
 
-        {featuredProducts.length > 0 ? (
+        {isLoading ? (
+          <LoadingState variant="products" count={4} />
+        ) : error ? (
+          <ErrorState onRetry={reload} />
+        ) : featuredProducts.length > 0 ? (
           <div className="featured-products-grid">
             {featuredProducts.map((product) => (
               <ProductCard key={product.product_id} product={product} />

@@ -13,8 +13,10 @@ import AiProjectAdvisor from '../components/project/AiProjectAdvisor'
 import ProjectCard from '../components/project/ProjectCard'
 import ProjectComponentList from '../components/project/ProjectComponentList'
 import EmptyState from '../components/common/EmptyState'
-import { products } from '../data/products'
+import ErrorState from '../components/common/ErrorState'
+import LoadingState from '../components/common/LoadingState'
 import { projects } from '../data/projects'
+import useCatalog from '../hooks/useCatalog'
 import useCart from '../hooks/useCart'
 import './ProjectBuilder.css'
 
@@ -30,15 +32,14 @@ function ProjectBuilder() {
   const [selectedProjectId, setSelectedProjectId] = useState(projects[0]?.id)
   const [cartMessage, setCartMessage] = useState('')
   const { addToCart } = useCart()
+  const { products, isLoading, error, reload } = useCatalog()
 
   const activeProductsBySlug = useMemo(
     () =>
       new Map(
-        products
-          .filter((product) => product.active)
-          .map((product) => [product.slug, product]),
+        products.map((product) => [product.slug, product]),
       ),
-    [],
+    [products],
   )
 
   const selectedProject =
@@ -122,7 +123,11 @@ function ProjectBuilder() {
             <p>Start with one of these practical student and maker projects.</p>
           </div>
 
-          {projects.length > 0 ? (
+          {isLoading ? (
+            <LoadingState message="Loading project components..." />
+          ) : error ? (
+            <ErrorState onRetry={reload} />
+          ) : projects.length > 0 ? (
             <div className="project-builder-grid">
               {projects.map((project) => (
                 <ProjectCard
@@ -141,7 +146,7 @@ function ProjectBuilder() {
             />
           )}
 
-          {selectedProject && (
+          {selectedProject && !isLoading && !error && (
             <article className="project-build-details" aria-live="polite">
             <div className="project-build-heading">
               <div>
