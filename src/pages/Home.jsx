@@ -1,7 +1,13 @@
+import CategorySection from '../components/home/CategorySection'
 import Hero from '../components/home/Hero'
 
 function Home() {
-  return <Hero />
+  return (
+    <>
+      <Hero />
+      <CategorySection />
+    </>
+  )
 }
 
 export default Home
