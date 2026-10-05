@@ -11,6 +11,7 @@ import ProductImage from '../components/product/ProductImage'
 import { products } from '../data/products'
 import { formatPriceLkr } from '../utils/formatPrice'
 import { normalizeProductSpecs } from '../utils/productSpecs'
+import { createWhatsAppProductUrl } from '../utils/whatsapp'
 import './ProductDetails.css'
 
 function ProductDetails() {
@@ -35,6 +36,7 @@ function ProductDetails() {
   }
 
   const specifications = normalizeProductSpecs(product.key_specs)
+  const whatsappOrderUrl = createWhatsAppProductUrl(product)
   const relatedProducts = products
     .filter(
       (item) =>
@@ -109,10 +111,15 @@ function ProductDetails() {
                   <ShoppingCart aria-hidden="true" size={18} />
                   Add to Cart
                 </button>
-                <button className="btn product-whatsapp-button" type="button">
+                <a
+                  className="btn product-whatsapp-button"
+                  href={whatsappOrderUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <MessageCircle aria-hidden="true" size={18} />
-                  Order on WhatsApp
-                </button>
+                  {product.in_stock ? 'Order on WhatsApp' : 'Ask About Availability'}
+                </a>
               </div>
             </article>
           </div>
