@@ -1,0 +1,43 @@
+.page-header {
+  max-width: 48rem;
+}
+
+.page-header-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+  color: var(--color-secondary);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.page-header-eyebrow::before {
+  width: 2rem;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--color-gold);
+  content: '';
+}
+
+.page-header-title {
+  font-size: clamp(2.25rem, 6vw, 4.5rem);
+}
+
+.page-header-description {
+  max-width: 42rem;
+  margin-top: var(--space-lg);
+  color: var(--color-text-muted);
+  font-size: clamp(1rem, 2vw, 1.125rem);
+}
+
+.section-navy .page-header-eyebrow,
+.section-navy .page-header-title {
+  color: var(--color-white);
+}
+
+.section-navy .page-header-description {
+  color: rgb(255 255 255 / 76%);
+}

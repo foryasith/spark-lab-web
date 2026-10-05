@@ -6,6 +6,7 @@ import {
   ThumbsUp,
   Truck,
 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import Logo from '../common/Logo'
 import './Footer.css'
 
@@ -41,9 +42,9 @@ function Footer() {
       <div className="container footer-content">
         <div className="footer-grid">
           <section className="footer-brand" aria-label="About Spark Lab">
-            <a className="footer-brand-link" href="/" aria-label="Spark Lab home">
+            <Link className="footer-brand-link" to="/" aria-label="Spark Lab home">
               <Logo className="footer-logo" size="medium" />
-            </a>
+            </Link>
             <p className="footer-tagline">Build. Test. Innovate.</p>
             <p className="footer-description">
               Electronics, IoT, robotics and maker solutions for students,
@@ -58,7 +59,7 @@ function Footer() {
             <ul className="footer-links">
               {shopLinks.map((link) => (
                 <li key={link}>
-                  <a href="/categories">{link}</a>
+                  <Link to="/categories">{link}</Link>
                 </li>
               ))}
             </ul>
@@ -71,7 +72,7 @@ function Footer() {
             <ul className="footer-links">
               {quickLinks.map(({ label, href }) => (
                 <li key={href}>
-                  <a href={href}>{label}</a>
+                  <Link to={href}>{label}</Link>
                 </li>
               ))}
             </ul>
@@ -116,7 +117,7 @@ function Footer() {
         </div>
 
         <div className="footer-bottom">
-          <p>© {currentYear} Spark Lab. All rights reserved.</p>
+          <p>&copy; {currentYear} Spark Lab. All rights reserved.</p>
           <p>IoT | Robotics | Maker Solutions</p>
         </div>
       </div>

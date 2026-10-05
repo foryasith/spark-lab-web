@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Menu, MessageCircle, Search, ShoppingCart, X } from 'lucide-react'
+import { Link, NavLink } from 'react-router-dom'
 import Logo from '../common/Logo'
 import './Navbar.css'
 
@@ -14,7 +15,6 @@ const navigationItems = [
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const currentPath = window.location.pathname
 
   useEffect(() => {
     if (!isMenuOpen) return undefined
@@ -30,44 +30,44 @@ function Navbar() {
   const closeMenu = () => setIsMenuOpen(false)
 
   const renderNavigationLink = ({ label, href }) => (
-    <a
+    <NavLink
       key={href}
       className="nav-link"
-      href={href}
-      aria-current={currentPath === href ? 'page' : undefined}
+      to={href}
+      end={href === '/'}
       onClick={closeMenu}
     >
       {label}
-    </a>
+    </NavLink>
   )
 
   return (
     <header className="site-header">
       <div className="container navbar">
-        <a
+        <Link
           className="navbar-brand"
-          href="/"
+          to="/"
           aria-label="Spark Lab home"
           onClick={closeMenu}
         >
           <Logo size="small" />
-        </a>
+        </Link>
 
         <nav className="desktop-navigation" aria-label="Primary navigation">
           {navigationItems.map(renderNavigationLink)}
         </nav>
 
         <div className="navbar-actions">
-          <a className="navbar-icon-link" href="/shop" aria-label="Search products">
+          <Link className="navbar-icon-link" to="/shop" aria-label="Search products">
             <Search aria-hidden="true" size={20} strokeWidth={1.8} />
-          </a>
-          <a className="navbar-icon-link" href="/cart" aria-label="View cart">
+          </Link>
+          <Link className="navbar-icon-link" to="/cart" aria-label="View cart">
             <ShoppingCart aria-hidden="true" size={20} strokeWidth={1.8} />
-          </a>
-          <a className="btn btn-primary navbar-cta" href="/contact">
+          </Link>
+          <Link className="btn btn-primary navbar-cta" to="/contact">
             <MessageCircle aria-hidden="true" size={18} />
             Contact Us
-          </a>
+          </Link>
           <button
             className="navbar-menu-button"
             type="button"
@@ -92,10 +92,10 @@ function Navbar() {
       >
         <div className="container mobile-navigation-inner">
           {navigationItems.map(renderNavigationLink)}
-          <a className="mobile-contact-link" href="/contact" onClick={closeMenu}>
+          <Link className="mobile-contact-link" to="/contact" onClick={closeMenu}>
             <MessageCircle aria-hidden="true" size={18} />
             Contact Us
-          </a>
+          </Link>
         </div>
       </nav>
     </header>
