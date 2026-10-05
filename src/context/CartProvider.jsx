@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { loadCartItems, saveCartItems } from '../utils/cartStorage'
 import CartContext from './cartContext'
 
 function getAllowedQuantity(product, quantity) {
@@ -12,7 +13,11 @@ function getAllowedQuantity(product, quantity) {
 }
 
 function CartProvider({ children }) {
-  const [cartItems, setCartItems] = useState([])
+  const [cartItems, setCartItems] = useState(loadCartItems)
+
+  useEffect(() => {
+    saveCartItems(cartItems)
+  }, [cartItems])
 
   const addToCart = (product, quantity = 1) => {
     if (!product?.product_id || !product.active || !product.in_stock) return
