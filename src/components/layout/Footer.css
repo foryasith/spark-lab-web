@@ -173,5 +173,12 @@
   .footer-bottom {
     align-items: flex-start;
     flex-direction: column;
+    gap: var(--space-sm);
+  }
+}
+
+@media (max-width: 34rem) {
+  .footer-brand-link {
+    width: min(100%, 13rem);
   }
 }

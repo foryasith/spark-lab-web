@@ -167,4 +167,13 @@
     align-items: flex-start;
     flex-direction: column;
   }
+
+  .cart-clear-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cart-summary {
+    padding: var(--space-lg);
+  }
 }

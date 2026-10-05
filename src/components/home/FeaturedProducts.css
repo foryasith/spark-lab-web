@@ -82,6 +82,7 @@
 @media (max-width: 34rem) {
   .featured-products-grid {
     grid-template-columns: 1fr;
+    gap: var(--space-md);
   }
 
   .featured-products-link {

@@ -62,6 +62,7 @@
 @media (max-width: 42rem) {
   .shop-toolbar {
     grid-template-columns: 1fr;
+    padding: var(--space-md);
   }
 
   .shop-result-count {

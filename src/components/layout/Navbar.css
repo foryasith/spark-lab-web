@@ -193,8 +193,12 @@
 }
 
 @media (max-width: 30rem) {
+  .navbar {
+    gap: var(--space-xs);
+  }
+
   .navbar-brand .brand-logo {
-    width: 8.25rem;
+    width: 7.75rem;
   }
 
   .navbar-actions {
@@ -205,5 +209,10 @@
   .navbar-menu-button {
     width: 2.5rem;
     height: 2.5rem;
+  }
+
+  .mobile-navigation-inner {
+    max-height: calc(100vh - 4.5rem);
+    overflow-y: auto;
   }
 }

@@ -217,3 +217,13 @@
     width: 100%;
   }
 }
+
+@media (max-width: 34rem) {
+  .project-support-hero h1 {
+    font-size: clamp(2rem, 10vw, 2.75rem);
+  }
+
+  .project-support-form {
+    padding: var(--space-md);
+  }
+}

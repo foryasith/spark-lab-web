@@ -195,3 +195,17 @@
     display: grid;
   }
 }
+
+@media (max-width: 34rem) {
+  .project-builder-intro h1 {
+    font-size: clamp(2rem, 10vw, 2.75rem);
+  }
+
+  .project-build-details {
+    padding: var(--space-md);
+  }
+
+  .project-learning-outcomes {
+    padding: var(--space-md);
+  }
+}

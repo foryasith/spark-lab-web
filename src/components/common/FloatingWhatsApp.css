@@ -49,8 +49,8 @@
 
 @media (max-width: 34rem) {
   .floating-whatsapp {
-    right: max(0.875rem, env(safe-area-inset-right));
-    bottom: max(0.875rem, env(safe-area-inset-bottom));
+    right: max(0.75rem, env(safe-area-inset-right));
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
     width: 3rem;
     min-height: 3rem;
     padding: 0;

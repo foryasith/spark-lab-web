@@ -346,6 +346,22 @@
 }
 
 @media (max-width: 34rem) {
+  .product-breadcrumbs {
+    margin-bottom: var(--space-lg);
+  }
+
+  .product-detail-media {
+    aspect-ratio: 1;
+  }
+
+  .product-detail-info {
+    padding: var(--space-md);
+  }
+
+  .product-detail-title {
+    font-size: clamp(1.75rem, 9vw, 2.25rem);
+  }
+
   .product-detail-actions,
   .product-spec-list {
     grid-template-columns: 1fr;
@@ -363,5 +379,10 @@
 
   .product-trust-list {
     grid-template-columns: 1fr;
+  }
+
+  .product-information-list > div {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
   }
 }

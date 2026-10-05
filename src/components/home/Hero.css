@@ -227,6 +227,7 @@
 @media (max-width: 64rem) {
   .hero-layout {
     grid-template-columns: 1fr;
+    gap: var(--space-xl);
   }
 
   .hero-content {
@@ -246,7 +247,9 @@
   }
 
   .hero-title {
-    font-size: clamp(2.25rem, 12vw, 3rem);
+    max-width: 12ch;
+    font-size: clamp(2.125rem, 11vw, 2.75rem);
+    line-height: 1.08;
   }
 
   .hero-actions {
@@ -259,10 +262,12 @@
 
   .hero-trust-list {
     display: grid;
+    gap: var(--space-sm);
     margin-top: var(--space-xl);
   }
 
   .hero-visual {
+    width: 100%;
     padding: var(--space-md) 0;
   }
 
