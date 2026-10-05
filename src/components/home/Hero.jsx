@@ -1,28 +1,12 @@
-import {
-  Bot,
-  Boxes,
-  Cpu,
-  GraduationCap,
-  Radio,
-  ShieldCheck,
-  Truck,
-  Wrench,
-} from 'lucide-react'
+import { GraduationCap, ShieldCheck, Truck } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import makerHeroImage from '../../assets/images/spark-lab-maker-hero.png'
 import './Hero.css'
 
 const trustItems = [
   { label: 'Islandwide Delivery', Icon: Truck },
   { label: 'Student Friendly', Icon: GraduationCap },
   { label: 'Quality Components', Icon: ShieldCheck },
-]
-
-const makerCategories = [
-  { name: 'Arduino', label: 'Build', Icon: Cpu },
-  { name: 'ESP32', label: 'Connect', Icon: Radio },
-  { name: 'Sensors', label: 'Measure', Icon: Boxes },
-  { name: 'Robotics', label: 'Move', Icon: Bot },
-  { name: 'DIY Kits', label: 'Create', Icon: Wrench },
 ]
 
 function Hero() {
@@ -60,43 +44,18 @@ function Hero() {
           </ul>
         </div>
 
-        <div className="hero-visual" aria-label="Spark Lab maker categories">
+        <div className="hero-visual">
           <div className="hero-orbit" aria-hidden="true" />
-          <div className="maker-panel">
-            <div className="maker-panel-header">
-              <div>
-                <span className="maker-status-dot" aria-hidden="true" />
-                <span>Maker Toolkit</span>
-              </div>
-              <span className="maker-panel-code">SL / 01</span>
-            </div>
-
-            <div className="maker-category-grid">
-              {makerCategories.map(({ name, label, Icon }, index) => (
-                <article
-                  key={name}
-                  className={`maker-category-card${index === 0 ? ' is-featured' : ''}`}
-                >
-                  <span className="maker-category-icon">
-                    <Icon aria-hidden="true" size={24} strokeWidth={1.6} />
-                  </span>
-                  <span>
-                    <strong>{name}</strong>
-                    <small>{label}</small>
-                  </span>
-                </article>
-              ))}
-            </div>
-
-            <div className="maker-panel-footer">
-              <span>Build ready</span>
-              <span>5 core categories</span>
-            </div>
+          <div className="hero-image-glow" aria-hidden="true" />
+          <div className="hero-image-wrap">
+            <img
+              className="hero-product-image"
+              src={makerHeroImage}
+              alt="Electronics development board, sensors, robotics chassis and maker components"
+            />
           </div>
-          <span className="hero-visual-label hero-visual-label-top">IoT / 02</span>
-          <span className="hero-visual-label hero-visual-label-bottom">
-            TEST • ITERATE • CREATE
-          </span>
+          <span className="hero-circuit-node hero-circuit-node-top" aria-hidden="true" />
+          <span className="hero-circuit-node hero-circuit-node-bottom" aria-hidden="true" />
         </div>
       </div>
     </section>
