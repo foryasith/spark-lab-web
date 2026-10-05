@@ -1,17 +1,7 @@
-import PageHeader from '../components/common/PageHeader'
+import Hero from '../components/home/Hero'
 
 function Home() {
-  return (
-    <section className="page-view section-light tech-background orbit-accent section">
-      <div className="container">
-        <PageHeader
-          eyebrow="Build. Test. Innovate."
-          title="Spark Lab"
-          description="Electronics, IoT, robotics and maker solutions for students, makers and innovators."
-        />
-      </div>
-    </section>
-  )
+  return <Hero />
 }
 
 export default Home
