@@ -1,0 +1,217 @@
+.learn-page {
+  overflow: hidden;
+  background: var(--color-white);
+}
+
+.learn-hero {
+  background:
+    radial-gradient(circle at 82% 15%, rgb(242 180 58 / 9%), transparent 26rem),
+    linear-gradient(180deg, rgb(18 58 99 / 5%), var(--color-white));
+  text-align: center;
+}
+
+.learn-hero .container {
+  max-width: 52rem;
+}
+
+.learn-hero span,
+.learn-section-heading > span,
+.learn-projects-layout > div > span,
+.learn-shop-cta span {
+  color: var(--color-secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.learn-hero h1 {
+  margin-top: var(--space-sm);
+  font-size: clamp(2.25rem, 6vw, 4rem);
+}
+
+.learn-hero p {
+  margin-top: var(--space-md);
+  color: var(--color-text-muted);
+  font-size: clamp(1rem, 2vw, 1.125rem);
+}
+
+.learn-section-heading {
+  max-width: 44rem;
+  margin-bottom: var(--space-xl);
+}
+
+.learn-section-heading h2,
+.learn-projects-layout h2,
+.learn-shop-cta h2 {
+  margin-top: var(--space-xs);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.learn-section-heading p,
+.learn-projects-layout > div > p,
+.learn-shop-cta p {
+  margin-top: var(--space-sm);
+  color: var(--color-text-muted);
+}
+
+.learn-featured-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-lg);
+}
+
+.learn-topics {
+  background: var(--color-surface);
+}
+
+.learn-topic-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-md);
+}
+
+.learn-topic-card {
+  display: flex;
+  min-width: 0;
+  min-height: 5.5rem;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.learn-topic-card > svg:first-child {
+  flex: 0 0 auto;
+  color: var(--color-secondary);
+}
+
+.learn-topic-card > svg:last-child {
+  flex: 0 0 auto;
+  margin-left: auto;
+  color: var(--color-gold);
+}
+
+.learn-topic-card span {
+  display: grid;
+  min-width: 0;
+}
+
+.learn-topic-card strong {
+  color: var(--color-primary);
+  font-size: 0.8125rem;
+}
+
+.learn-topic-card small {
+  color: var(--color-text-muted);
+  font-size: 0.6875rem;
+}
+
+.learn-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-md);
+}
+
+.learn-projects {
+  background: var(--color-surface);
+}
+
+.learn-projects-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr) auto;
+  align-items: center;
+  gap: clamp(var(--space-xl), 5vw, var(--space-3xl));
+}
+
+.learn-projects-layout ul {
+  display: grid;
+  gap: var(--space-sm);
+  list-style: none;
+}
+
+.learn-projects-layout li {
+  display: grid;
+  gap: 0.15rem;
+  padding-left: var(--space-md);
+  border-left: 2px solid var(--color-gold);
+}
+
+.learn-projects-layout li strong {
+  color: var(--color-primary);
+  font-size: 0.8125rem;
+}
+
+.learn-projects-layout li span {
+  color: var(--color-text-muted);
+  font-size: 0.6875rem;
+}
+
+.learn-shop-cta {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.learn-shop-cta .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xl);
+}
+
+.learn-shop-cta span {
+  color: var(--color-gold-light);
+}
+
+.learn-shop-cta h2 {
+  color: var(--color-white);
+}
+
+.learn-shop-cta p {
+  color: rgb(255 255 255 / 70%);
+}
+
+.learn-shop-cta .btn {
+  flex: 0 0 auto;
+  gap: var(--space-xs);
+}
+
+@media (max-width: 64rem) {
+  .learn-guide-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .learn-projects-layout {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .learn-projects-layout .btn {
+    justify-self: start;
+  }
+}
+
+@media (max-width: 48rem) {
+  .learn-featured-grid,
+  .learn-topic-grid,
+  .learn-projects-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .learn-shop-cta .container {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 34rem) {
+  .learn-guide-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .learn-shop-cta .btn {
+    width: 100%;
+  }
+}

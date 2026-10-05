@@ -1,0 +1,109 @@
+.learning-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.learning-card-visual {
+  display: grid;
+  min-height: 9rem;
+  place-content: center;
+  place-items: center;
+  gap: var(--space-sm);
+  background:
+    radial-gradient(circle at 70% 20%, rgb(242 180 58 / 14%), transparent 40%),
+    rgb(18 58 99 / 6%);
+  color: var(--color-secondary);
+}
+
+.learning-card-visual span {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.learning-card-content {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  padding: var(--space-lg);
+}
+
+.learning-card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.learning-card-badges span {
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: 0.625rem;
+  font-weight: 700;
+}
+
+.learning-card-badges span:first-child {
+  background: rgb(242 180 58 / 14%);
+  color: var(--color-primary);
+}
+
+.learning-card h3 {
+  margin-top: var(--space-md);
+  font-size: 1.05rem;
+}
+
+.learning-card-content > p {
+  margin-top: var(--space-sm);
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+}
+
+.learning-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-top: auto;
+  padding-top: var(--space-lg);
+}
+
+.learning-card-time,
+.learning-card-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.learning-card-time {
+  color: var(--color-text-muted);
+}
+
+.learning-card-action {
+  color: var(--color-secondary);
+}
+
+.learning-card.is-featured {
+  display: grid;
+  grid-template-columns: minmax(9rem, 0.8fr) minmax(0, 1.2fr);
+}
+
+.learning-card.is-featured .learning-card-visual {
+  min-height: 100%;
+}
+
+@media (max-width: 38rem) {
+  .learning-card.is-featured {
+    display: flex;
+  }
+}
