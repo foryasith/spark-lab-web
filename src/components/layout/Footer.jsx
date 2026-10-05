@@ -121,6 +121,16 @@ function Footer() {
 
         <div className="footer-bottom">
           <p>&copy; {currentYear} Spark Lab. All rights reserved.</p>
+          <p className="footer-developer-credit">
+            Built by{' '}
+            <a
+              href="https://github.com/Rashini0926"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Rashini0926
+            </a>
+          </p>
           <p>IoT | Robotics | Maker Solutions</p>
         </div>
       </div>
