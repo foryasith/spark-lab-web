@@ -3,9 +3,11 @@ import PageHeader from '../components/common/PageHeader'
 import ProductGrid from '../components/product/ProductGrid'
 import ProductSearch from '../components/shop/ProductSearch'
 import ShopFilters from '../components/shop/ShopFilters'
+import ShopSort from '../components/shop/ShopSort'
 import { products } from '../data/products'
 import { filterProducts, getProductCategories } from '../utils/productFilters'
 import { filterProductsBySearch } from '../utils/productSearch'
+import { sortProducts } from '../utils/productSort'
 import './Shop.css'
 
 const activeProducts = products.filter((product) => product.active)
@@ -16,12 +18,14 @@ function Shop() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [availability, setAvailability] = useState('all')
+  const [sortOption, setSortOption] = useState('featured')
   const searchedProducts = filterProductsBySearch(activeProducts, searchTerm)
-  const displayedProducts = filterProducts(
+  const filteredProducts = filterProducts(
     searchedProducts,
     selectedCategory,
     availability,
   )
+  const displayedProducts = sortProducts(filteredProducts, sortOption)
   const searchIsActive = searchTerm.trim().length > 0
   const filtersAreActive = selectedCategory !== 'all' || availability !== 'all'
 
@@ -61,12 +65,7 @@ function Shop() {
               isActive={filtersAreActive}
             />
 
-            <label className="shop-select-preview">
-              <span>Sort</span>
-              <select defaultValue="featured">
-                <option value="featured">Featured</option>
-              </select>
-            </label>
+            <ShopSort value={sortOption} onChange={setSortOption} />
 
             <p className="shop-result-count" aria-live="polite">
               {searchIsActive || filtersAreActive

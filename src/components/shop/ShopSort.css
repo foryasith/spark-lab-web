@@ -1,0 +1,33 @@
+.shop-sort {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.shop-sort > span {
+  color: var(--color-text-muted);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.shop-sort select {
+  min-height: 2.75rem;
+  padding-inline: var(--space-sm) 2rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  color: var(--color-primary);
+}
+
+.shop-sort select:focus {
+  border-color: var(--color-secondary);
+  outline: 0;
+  box-shadow: 0 0 0 3px rgb(18 58 99 / 10%);
+}
+
+@media (max-width: 42rem) {
+  .shop-sort select {
+    width: 100%;
+  }
+}
