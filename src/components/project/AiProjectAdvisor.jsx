@@ -2,12 +2,18 @@ import { useState } from 'react'
 import useCatalog from '../../hooks/useCatalog'
 import { analyzeProject } from '../../services/projectAdvisor'
 import { matchAdvisorComponents } from '../../utils/componentMatching'
+import {
+  addRecentProjectRequest,
+  clearRecentProjectRequests,
+  loadRecentProjectRequests,
+} from '../../utils/projectStorage'
 import { createAiProjectRequestUrl } from '../../utils/whatsapp'
 import useCart from '../../hooks/useCart'
 import ErrorState from '../common/ErrorState'
 import LoadingState from '../common/LoadingState'
 import AiProjectResult from './AiProjectResult'
 import CustomProjectIdeaBuilder from './CustomProjectIdeaBuilder'
+import RecentProjectRequests from './RecentProjectRequests'
 
 function AiProjectAdvisor() {
   const [analysis, setAnalysis] = useState(null)
@@ -16,6 +22,7 @@ function AiProjectAdvisor() {
   const [error, setError] = useState('')
   const [selectedComponentIds, setSelectedComponentIds] = useState(new Set())
   const [cartMessage, setCartMessage] = useState('')
+  const [recentRequests, setRecentRequests] = useState(loadRecentProjectRequests)
   const { addToCart } = useCart()
   const { products, isLoading: isCatalogLoading } = useCatalog()
 
@@ -80,25 +87,49 @@ function AiProjectAdvisor() {
     )
   }
 
+  const handleSendFullRequest = () => {
+    if (!analysis) return
+
+    const request = {
+      id: globalThis.crypto?.randomUUID?.() ?? `${Date.now()}`,
+      projectName: analysis.projectData.projectName || 'Custom project idea',
+      createdAt: new Date().toISOString(),
+      summary: analysis.result.project_summary,
+    }
+    setRecentRequests(addRecentProjectRequest(request))
+  }
+
+  const handleClearRecentRequests = () => {
+    clearRecentProjectRequests()
+    setRecentRequests([])
+  }
+
   return (
-    <CustomProjectIdeaBuilder onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing}>
-      {isAnalyzing ? (
-        <LoadingState message="Analyzing your project idea..." />
-      ) : error ? (
-        <ErrorState message={error} onRetry={submittedProject ? retryAnalysis : undefined} />
-      ) : analysis ? (
-        <AiProjectResult
-          result={analysis.result}
-          matchedComponents={analysis.matchedComponents}
-          selectedComponentIds={selectedComponentIds}
-          onToggleComponent={toggleComponent}
-          onAddAvailableParts={handleAddAvailableParts}
-          cartMessage={cartMessage}
-          missingRequestUrl={createAiProjectRequestUrl({ ...requestData, requestType: 'missing' })}
-          fullRequestUrl={createAiProjectRequestUrl(requestData)}
-        />
-      ) : null}
-    </CustomProjectIdeaBuilder>
+    <div className="ai-project-advisor">
+      <CustomProjectIdeaBuilder onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing}>
+        {isAnalyzing ? (
+          <LoadingState message="Analyzing your project idea..." />
+        ) : error ? (
+          <ErrorState message={error} onRetry={submittedProject ? retryAnalysis : undefined} />
+        ) : analysis ? (
+          <AiProjectResult
+            result={analysis.result}
+            matchedComponents={analysis.matchedComponents}
+            selectedComponentIds={selectedComponentIds}
+            onToggleComponent={toggleComponent}
+            onAddAvailableParts={handleAddAvailableParts}
+            onSendFullRequest={handleSendFullRequest}
+            cartMessage={cartMessage}
+            missingRequestUrl={createAiProjectRequestUrl({ ...requestData, requestType: 'missing' })}
+            fullRequestUrl={createAiProjectRequestUrl(requestData)}
+          />
+        ) : null}
+      </CustomProjectIdeaBuilder>
+      <RecentProjectRequests
+        requests={recentRequests}
+        onClear={handleClearRecentRequests}
+      />
+    </div>
   )
 }
 

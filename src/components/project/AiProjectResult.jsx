@@ -34,6 +34,7 @@ function AiProjectResult({
   cartMessage,
   missingRequestUrl,
   fullRequestUrl,
+  onSendFullRequest,
 }) {
   const requiredComponents = matchedComponents.filter((component) => component.group === 'required')
   const optionalComponents = matchedComponents.filter((component) => component.group === 'optional')
@@ -125,6 +126,7 @@ function AiProjectResult({
             target="_blank"
             rel="noopener noreferrer"
             aria-disabled={selectedComponents.length === 0}
+            onClick={selectedComponents.length > 0 ? onSendFullRequest : undefined}
           >
             <MessageCircle aria-hidden="true" size={16} />
             Send Full Project Request

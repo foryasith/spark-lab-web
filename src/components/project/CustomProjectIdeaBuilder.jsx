@@ -1,11 +1,16 @@
-import { BrainCircuit, Check, Cpu, Gauge, Lightbulb, Sparkles } from 'lucide-react'
-import { useState } from 'react'
+import { BrainCircuit, Check, Cpu, Gauge, Lightbulb, Sparkles, Trash2 } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import {
   initialProjectIdea,
   normalizeProjectIdea,
   projectRequirementOptions,
   validateProjectIdea,
 } from '../../utils/projectIdea'
+import {
+  clearProjectDraft,
+  loadProjectDraft,
+  saveProjectDraft,
+} from '../../utils/projectStorage'
 import './CustomProjectIdeaBuilder.css'
 
 const experienceLevels = ['Beginner', 'Intermediate', 'Advanced', 'Not Sure']
@@ -25,8 +30,12 @@ const budgetOptions = [
 ]
 
 function CustomProjectIdeaBuilder({ onAnalyze, isAnalyzing = false, children }) {
-  const [formData, setFormData] = useState(initialProjectIdea)
+  const [formData, setFormData] = useState(loadProjectDraft)
   const [errors, setErrors] = useState({})
+
+  useEffect(() => {
+    saveProjectDraft(formData)
+  }, [formData])
 
   const handleFieldChange = (event) => {
     const { name, value } = event.target
@@ -55,6 +64,12 @@ function CustomProjectIdeaBuilder({ onAnalyze, isAnalyzing = false, children }) 
     if (Object.keys(validationErrors).length > 0 || isAnalyzing) return
 
     onAnalyze?.(projectData)
+  }
+
+  const handleClearDraft = () => {
+    clearProjectDraft()
+    setFormData({ ...initialProjectIdea, requirements: [] })
+    setErrors({})
   }
 
   return (
@@ -215,10 +230,17 @@ function CustomProjectIdeaBuilder({ onAnalyze, isAnalyzing = false, children }) 
           </div>
         </div>
 
-        <button className="btn btn-secondary custom-project-submit" type="submit" disabled={isAnalyzing}>
-          <Sparkles aria-hidden="true" size={18} />
-          {isAnalyzing ? 'Analyzing Your Project...' : 'Analyze My Project'}
-        </button>
+        <div className="custom-project-actions">
+          <button className="btn btn-secondary custom-project-submit" type="submit" disabled={isAnalyzing}>
+            <Sparkles aria-hidden="true" size={18} />
+            {isAnalyzing ? 'Analyzing Your Project...' : 'Analyze My Project'}
+          </button>
+          <button className="btn btn-outline" type="button" onClick={handleClearDraft} disabled={isAnalyzing}>
+            <Trash2 aria-hidden="true" size={16} />
+            Clear Project Draft
+          </button>
+          <small>Your project draft is saved only on this device.</small>
+        </div>
       </form>
 
       <aside className="custom-project-preview" aria-live="polite">

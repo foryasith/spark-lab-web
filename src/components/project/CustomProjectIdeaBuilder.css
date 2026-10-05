@@ -164,10 +164,26 @@
   margin-top: var(--space-lg);
 }
 
+.custom-project-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-sm);
+  margin-top: var(--space-xl);
+}
+
+.custom-project-actions .btn {
+  gap: var(--space-xs);
+}
+
+.custom-project-actions > small {
+  grid-column: 1 / -1;
+  color: var(--color-text-muted);
+  font-size: 0.65rem;
+}
+
 .custom-project-submit {
   gap: var(--space-xs);
   width: 100%;
-  margin-top: var(--space-xl);
 }
 
 .custom-project-preview {
@@ -264,5 +280,13 @@
   .custom-project-step {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .custom-project-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .custom-project-actions > small {
+    grid-column: auto;
   }
 }
