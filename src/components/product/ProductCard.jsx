@@ -1,13 +1,17 @@
 import { useState } from 'react'
-import { ArrowRight, ImageIcon, ShoppingCart } from 'lucide-react'
+import { ArrowRight, ShoppingCart } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import useCart from '../../hooks/useCart'
 import { formatPriceLkr } from '../../utils/formatPrice'
+import {
+  getPrimaryProductImage,
+  getProductImageAlt,
+  PRODUCT_PLACEHOLDER,
+} from '../../utils/productImages'
 import './ProductCard.css'
 
 function ProductCard({ product = {} }) {
   const { addToCart } = useCart()
-  const [hasImageError, setHasImageError] = useState(false)
   const {
     name,
     slug,
@@ -15,37 +19,35 @@ function ProductCard({ product = {} }) {
     price_lkr: price,
     in_stock: inStock,
     featured,
-    image_url: imageUrl,
     brand,
   } = product
+
+  const primaryImage = getPrimaryProductImage(product)
+  const imageAlt = getProductImageAlt(product, name || 'Unnamed component')
+  const [imgSrc, setImgSrc] = useState(primaryImage)
+
   const productName = String(name ?? '').trim() || 'Unnamed component'
   const productCategory = String(category ?? '').trim() || 'Components'
   const productBrand = String(brand ?? '').trim()
   const productSlug = String(slug ?? '').trim()
   const productPath = productSlug ? `/product/${productSlug}` : '/shop'
-  const showImage = Boolean(imageUrl && !hasImageError)
+
+  const handleImageError = () => {
+    if (imgSrc !== PRODUCT_PLACEHOLDER) {
+      setImgSrc(PRODUCT_PLACEHOLDER)
+    }
+  }
 
   return (
     <article className="product-card">
       <div className="product-card-media">
         {featured && <span className="product-featured-badge">Featured</span>}
-        {showImage ? (
-          <img
-            loading="lazy"
-            src={imageUrl}
-            alt={productName}
-            onError={() => setHasImageError(true)}
-          />
-        ) : (
-          <div
-            className="product-image-placeholder"
-            role="img"
-            aria-label={`${productName} image coming soon`}
-          >
-            <ImageIcon aria-hidden="true" size={38} strokeWidth={1.4} />
-            <span>Product image coming soon</span>
-          </div>
-        )}
+        <img
+          loading="lazy"
+          src={imgSrc}
+          alt={imageAlt}
+          onError={handleImageError}
+        />
       </div>
 
       <div className="product-card-body">
