@@ -1,34 +1,81 @@
 import { useState } from 'react'
-import { CircuitBoard } from 'lucide-react'
+import {
+  getProductGalleryImages,
+  getProductImageAlt,
+  PRODUCT_PLACEHOLDER,
+} from '../../utils/productImages'
+import './ProductImage.css'
 
-function ProductImage({ imageUrl, name }) {
-  const [hasImageError, setHasImageError] = useState(false)
-  const productName = String(name ?? '').trim() || 'Product'
-  const showImage = Boolean(imageUrl && !hasImageError)
+function ProductImage({ product, imageUrl, name }) {
+  const productObj =
+    product && typeof product === 'object'
+      ? product
+      : { image_url: imageUrl, name }
 
-  if (showImage) {
-    return (
-      <img
-        className="product-detail-image"
-        src={imageUrl}
-        alt={productName}
-        onError={() => setHasImageError(true)}
-      />
-    )
+  const rawGallery = getProductGalleryImages(productObj)
+  const imageAlt = getProductImageAlt(productObj, name || 'Product')
+  const productName = String(productObj.name || name || 'Product').trim()
+
+  const [selectedIndex, setSelectedIndex] = useState(0)
+  const [failedUrls, setFailedUrls] = useState(() => new Set())
+
+  const validGallery = rawGallery.filter((url) => !failedUrls.has(url))
+  const displayGallery = validGallery.length > 0 ? validGallery : [PRODUCT_PLACEHOLDER]
+
+  const safeIndex = selectedIndex < displayGallery.length ? selectedIndex : 0
+  const activeImage = displayGallery[safeIndex] || PRODUCT_PLACEHOLDER
+
+  const handleImageError = (failedUrl) => {
+    if (failedUrl && failedUrl !== PRODUCT_PLACEHOLDER) {
+      setFailedUrls((prev) => {
+        const next = new Set(prev)
+        next.add(failedUrl)
+        return next
+      })
+    }
   }
 
+  const showThumbnails = displayGallery.length > 1
+
   return (
-    <div
-      className="product-detail-placeholder"
-      role="img"
-      aria-label={`${productName} image coming soon`}
-    >
-      <span className="product-detail-placeholder-icon">
-        <CircuitBoard aria-hidden="true" size={52} strokeWidth={1.3} />
-      </span>
-      <strong>SPARK LAB</strong>
-      <span>Product Image</span>
-      <small>Coming Soon</small>
+    <div className="product-gallery">
+      <div className="product-gallery-primary">
+        <img
+          key={activeImage}
+          className="product-detail-image"
+          src={activeImage}
+          alt={imageAlt}
+          onError={() => handleImageError(activeImage)}
+        />
+      </div>
+
+      {showThumbnails && (
+        <div
+          className="product-gallery-thumbnails"
+          role="region"
+          aria-label="Product image gallery"
+        >
+          {displayGallery.map((imgUrl, index) => {
+            const isSelected = index === safeIndex
+            return (
+              <button
+                key={`${imgUrl}-${index}`}
+                type="button"
+                className={`product-gallery-thumbnail ${isSelected ? 'is-active' : ''}`}
+                onClick={() => setSelectedIndex(index)}
+                aria-label={`View ${productName} image ${index + 1} of ${displayGallery.length}`}
+                aria-current={isSelected ? 'true' : undefined}
+              >
+                <img
+                  src={imgUrl}
+                  alt={`${productName} thumbnail ${index + 1}`}
+                  onError={() => handleImageError(imgUrl)}
+                />
+              </button>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }

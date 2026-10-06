@@ -126,6 +126,7 @@ function ProductDetails() {
             <div className="product-detail-media">
               <ProductImage
                 key={product.product_id}
+                product={product}
                 imageUrl={product.image_url}
                 name={productName}
               />
