@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { MessageCircle } from 'lucide-react'
 import useCatalog from '../../hooks/useCatalog'
 import useCart from '../../hooks/useCart'
 import { analyzeProject } from '../../services/projectAdvisor'
@@ -9,7 +10,7 @@ import {
   clearRecentProjectRequests,
   loadRecentProjectRequests,
 } from '../../utils/projectStorage'
-import { createAiProjectRequestUrl } from '../../utils/whatsapp'
+import { createAiProjectRequestUrl, createWhatsAppUrl } from '../../utils/whatsapp'
 import ErrorState from '../common/ErrorState'
 import LoadingState from '../common/LoadingState'
 import AiProjectResult from './AiProjectResult'
@@ -112,7 +113,26 @@ function AiProjectAdvisor() {
         {isAnalyzing ? (
           <LoadingState message="Analyzing your project idea..." />
         ) : error ? (
-          <ErrorState message={error} onRetry={submittedProject ? retryAnalysis : undefined} />
+          <ErrorState
+            title="AI Project Advisor is temporarily unavailable."
+            message="You can still send your project idea directly to Spark Lab."
+            onRetry={submittedProject ? retryAnalysis : undefined}
+            action={
+              <a
+                className="btn btn-primary"
+                href={
+                  submittedProject
+                    ? createAiProjectRequestUrl({ projectData: submittedProject, selectedComponents: [] })
+                    : createWhatsAppUrl('Hello Spark Lab, I have a project idea I would like help with.')
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <MessageCircle aria-hidden="true" size={16} />
+                Send Project Request on WhatsApp
+              </a>
+            }
+          />
         ) : analysis ? (
           <AiProjectResult
             result={analysis.result}

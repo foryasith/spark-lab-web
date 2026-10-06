@@ -1,9 +1,10 @@
 import { AlertTriangle } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import './UiState.css'
 
 function ErrorState({
-  title = 'Something went wrong.',
-  message = "We couldn't load this content right now.",
+  title = "We couldn't load the product catalog right now.",
+  message = "Please check your internet connection or try refreshing the page.",
   onRetry,
   action,
   headingLevel = 'h2',
@@ -17,7 +18,7 @@ function ErrorState({
         <AlertTriangle aria-hidden="true" size={34} strokeWidth={1.5} />
       </span>
       <Heading>{title}</Heading>
-      <p>{message}</p>
+      {message && <p>{message}</p>}
       {(onRetry || action) && (
         <div className="ui-state-action">
           {onRetry && (
@@ -26,6 +27,13 @@ function ErrorState({
             </button>
           )}
           {action}
+        </div>
+      )}
+      {!onRetry && !action && (
+        <div className="ui-state-action">
+          <Link className="btn btn-outline" to="/contact">
+            Contact Spark Lab
+          </Link>
         </div>
       )}
     </div>

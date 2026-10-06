@@ -1,4 +1,5 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react'
+import ErrorBoundary from './components/common/ErrorBoundary'
 import MainLayout from './components/layout/MainLayout'
 import About from './pages/About'
 import Cart from './pages/Cart'
@@ -13,20 +14,22 @@ import Shop from './pages/Shop'
 
 function App() {
   return (
-    <Routes>
-      <Route element={<MainLayout />}>
-        <Route index element={<Home />} />
-        <Route path="shop" element={<Shop />} />
-        <Route path="categories" element={<Categories />} />
-        <Route path="product/:slug" element={<ProductDetails />} />
-        <Route path="project-builder" element={<ProjectBuilder />} />
-        <Route path="project-support" element={<ProjectSupport />} />
-        <Route path="learn" element={<Learn />} />
-        <Route path="about" element={<About />} />
-        <Route path="contact" element={<Contact />} />
-        <Route path="cart" element={<Cart />} />
-      </Route>
-    </Routes>
+    <ErrorBoundary>
+      <Routes>
+        <Route element={<MainLayout />}>
+          <Route index element={<Home />} />
+          <Route path="shop" element={<Shop />} />
+          <Route path="categories" element={<Categories />} />
+          <Route path="product/:slug" element={<ProductDetails />} />
+          <Route path="project-builder" element={<ProjectBuilder />} />
+          <Route path="project-support" element={<ProjectSupport />} />
+          <Route path="learn" element={<Learn />} />
+          <Route path="about" element={<About />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="cart" element={<Cart />} />
+        </Route>
+      </Routes>
+    </ErrorBoundary>
   )
 }
 
