@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import EmptyState from '../components/common/EmptyState'
 import LearningCard from '../components/learn/LearningCard'
 import { learningContent, learningTopics } from '../data/learningContent'
+import useSeo from '../hooks/useSeo'
 import './Learn.css'
 
 const topicIcons = {
@@ -15,6 +16,11 @@ const topicIcons = {
 }
 
 function Learn() {
+  useSeo({
+    title: 'Maker Guides & Learning Hub | Spark Lab',
+    description:
+      'Learn electronics, Arduino, ESP32, sensors and robotics with Spark Lab guides and project tutorials.',
+  })
   const featuredGuides = learningContent.filter((item) => item.featured).slice(0, 2)
   const projectIdeas = learningContent.filter((item) =>
     ['Robotics', 'DIY Projects'].includes(item.category),

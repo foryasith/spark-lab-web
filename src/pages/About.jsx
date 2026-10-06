@@ -15,6 +15,7 @@ import {
   Wrench,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import useSeo from '../hooks/useSeo'
 import './About.css'
 
 const brandPillars = [
@@ -94,6 +95,11 @@ const reasons = [
 ]
 
 function About() {
+  useSeo({
+    title: 'About Spark Lab | Build. Test. Innovate.',
+    description:
+      'Discover Spark Lab Sri Lanka — your trusted partner for high-quality electronics, IoT, robotics components and student maker support.',
+  })
   return (
     <div className="about-page">
       <section className="about-hero tech-background section">

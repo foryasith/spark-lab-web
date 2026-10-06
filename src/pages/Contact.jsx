@@ -13,6 +13,7 @@ import {
   Users,
 } from 'lucide-react'
 import business from '../config/business'
+import useSeo from '../hooks/useSeo'
 import { createContactUrl, createWhatsAppUrl } from '../utils/whatsapp'
 import './Contact.css'
 
@@ -28,6 +29,11 @@ const defaultWhatsAppMessage =
   'Hello Spark Lab, I would like to know more about your products and services.'
 
 function Contact() {
+  useSeo({
+    title: 'Contact & Project Support | Spark Lab',
+    description:
+      'Get in touch with Spark Lab for component availability, custom project assistance, and WhatsApp order support.',
+  })
   const [formData, setFormData] = useState(initialFormData)
   const [errors, setErrors] = useState({})
 

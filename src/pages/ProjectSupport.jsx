@@ -9,6 +9,7 @@ import {
   Wrench,
 } from 'lucide-react'
 import SupportAreaCard from '../components/support/SupportAreaCard'
+import useSeo from '../hooks/useSeo'
 import { createProjectSupportUrl } from '../utils/whatsapp'
 import './ProjectSupport.css'
 
@@ -79,6 +80,11 @@ const initialFormData = {
 }
 
 function ProjectSupport() {
+  useSeo({
+    title: 'Project Assistance & Guidance | Spark Lab',
+    description:
+      'Get practical component advice, project planning support, and technical guidance for your maker projects.',
+  })
   const [formData, setFormData] = useState(initialFormData)
   const [errors, setErrors] = useState({})
 

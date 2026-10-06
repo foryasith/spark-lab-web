@@ -16,6 +16,7 @@ import ProductGrid from '../components/product/ProductGrid'
 import ProductImage from '../components/product/ProductImage'
 import useCatalog from '../hooks/useCatalog'
 import useCart from '../hooks/useCart'
+import useSeo from '../hooks/useSeo'
 import { formatPriceLkr } from '../utils/formatPrice'
 import { normalizeProductSpecs } from '../utils/productSpecs'
 import { createWhatsAppProductUrl } from '../utils/whatsapp'
@@ -27,6 +28,17 @@ function ProductDetails() {
   const { products, isLoading, error, reload } = useCatalog()
   const [quantityState, setQuantityState] = useState({ productId: '', quantity: 1 })
   const product = products.find((item) => item.slug === slug)
+
+  const productName = product ? String(product.name ?? '').trim() : ''
+  const productTitle = productName ? `${productName} | Spark Lab` : 'Product Details | Spark Lab'
+  const productDescription = product?.short_description || (productName ? `${productName} available from Spark Lab Sri Lanka.` : '')
+  const productImage = product?.image_url || undefined
+
+  useSeo({
+    title: productTitle,
+    description: productDescription,
+    image: productImage,
+  })
 
   if (isLoading) {
     return (

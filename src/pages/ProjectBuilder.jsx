@@ -18,6 +18,7 @@ import LoadingState from '../components/common/LoadingState'
 import { projects } from '../data/projects'
 import useCatalog from '../hooks/useCatalog'
 import useCart from '../hooks/useCart'
+import useSeo from '../hooks/useSeo'
 import './ProjectBuilder.css'
 
 const projectIcons = {
@@ -28,6 +29,11 @@ const projectIcons = {
 }
 
 function ProjectBuilder() {
+  useSeo({
+    title: 'AI Project Builder & Component Advisor | Spark Lab',
+    description:
+      'Get AI recommendations for your electronics and IoT project ideas, match catalog components, and submit request lists to Spark Lab.',
+  })
   const [builderMode, setBuilderMode] = useState('explore')
   const [selectedProjectId, setSelectedProjectId] = useState(projects[0]?.id)
   const [cartMessage, setCartMessage] = useState('')

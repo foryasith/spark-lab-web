@@ -5,12 +5,18 @@ import ProductSearch from '../components/shop/ProductSearch'
 import ShopFilters from '../components/shop/ShopFilters'
 import ShopSort from '../components/shop/ShopSort'
 import useCatalog from '../hooks/useCatalog'
+import useSeo from '../hooks/useSeo'
 import { filterProducts, getProductCategories } from '../utils/productFilters'
 import { filterProductsBySearch } from '../utils/productSearch'
 import { sortProducts } from '../utils/productSort'
 import './Shop.css'
 
 function Shop() {
+  useSeo({
+    title: 'Shop Components & Kits | Spark Lab',
+    description:
+      'Browse development boards, sensors, modules, motors, robotics parts and prototyping supplies at Spark Lab Sri Lanka.',
+  })
   const { products, isLoading, error, warning, reload } = useCatalog()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')

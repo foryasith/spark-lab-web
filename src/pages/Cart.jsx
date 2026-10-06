@@ -3,11 +3,17 @@ import { Link } from 'react-router-dom'
 import CartItem from '../components/cart/CartItem'
 import EmptyState from '../components/common/EmptyState'
 import useCart from '../hooks/useCart'
+import useSeo from '../hooks/useSeo'
 import { formatPriceLkr } from '../utils/formatPrice'
 import { createWhatsAppCartUrl } from '../utils/whatsapp'
 import './Cart.css'
 
 function Cart() {
+  useSeo({
+    title: 'Shopping Cart | Spark Lab',
+    description:
+      'Review your selected components and proceed with direct WhatsApp ordering from Spark Lab Sri Lanka.',
+  })
   const { cartItems, cartCount, cartSubtotal, clearCart } = useCart()
 
   if (cartItems.length === 0) {
