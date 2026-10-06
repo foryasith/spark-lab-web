@@ -1,15 +1,24 @@
 import { useState } from 'react'
-import { CircuitBoard, Trash2 } from 'lucide-react'
+import { Trash2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import useCart from '../../hooks/useCart'
 import { formatPriceLkr } from '../../utils/formatPrice'
+import {
+  getPrimaryProductImage,
+  getProductImageAlt,
+  PRODUCT_PLACEHOLDER,
+} from '../../utils/productImages'
 import QuantitySelector from './QuantitySelector'
 import './CartItem.css'
 
 function CartItem({ item }) {
   const { product, quantity } = item
   const { removeFromCart, updateQuantity } = useCart()
-  const [hasImageError, setHasImageError] = useState(false)
+
+  const primaryImage = getPrimaryProductImage(product)
+  const imageAlt = getProductImageAlt(product, product?.name || 'Product')
+  const [imgSrc, setImgSrc] = useState(primaryImage)
+
   const availableStock = Number(product.stock_qty)
   const hasStockLimit = Number.isFinite(availableStock)
   const productName = String(product.name ?? '').trim() || 'Unnamed component'
@@ -17,20 +26,22 @@ function CartItem({ item }) {
   const productSlug = String(product.slug ?? '').trim()
   const productPath = productSlug ? `/product/${productSlug}` : '/shop'
   const sku = String(product.sku ?? '').trim()
-  const showImage = Boolean(product.image_url && !hasImageError)
+
+  const handleImageError = () => {
+    if (imgSrc !== PRODUCT_PLACEHOLDER) {
+      setImgSrc(PRODUCT_PLACEHOLDER)
+    }
+  }
 
   return (
     <article className="cart-item">
       <Link className="cart-item-media" to={productPath}>
-        {showImage ? (
-          <img
-            src={product.image_url}
-            alt={productName}
-            onError={() => setHasImageError(true)}
-          />
-        ) : (
-          <CircuitBoard aria-hidden="true" size={30} strokeWidth={1.4} />
-        )}
+        <img
+          loading="lazy"
+          src={imgSrc}
+          alt={imageAlt}
+          onError={handleImageError}
+        />
       </Link>
 
       <div className="cart-item-details">
