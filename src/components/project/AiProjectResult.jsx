@@ -10,6 +10,7 @@ import {
   ShoppingCart,
 } from 'lucide-react'
 import ComponentSuggestion from './ComponentSuggestion'
+import analytics from '../../utils/analytics'
 import './AiProjectResult.css'
 
 function AdviceList({ title, items, Icon }) {
@@ -116,6 +117,11 @@ function AiProjectResult({
             target="_blank"
             rel="noopener noreferrer"
             aria-disabled={selectedMissing.length === 0}
+            onClick={
+              selectedMissing.length > 0
+                ? () => analytics.trackProjectRequest('missing', selectedMissing.length)
+                : undefined
+            }
           >
             <MessageCircle aria-hidden="true" size={16} />
             Request Missing Components
@@ -126,7 +132,12 @@ function AiProjectResult({
             target="_blank"
             rel="noopener noreferrer"
             aria-disabled={selectedComponents.length === 0}
-            onClick={selectedComponents.length > 0 ? onSendFullRequest : undefined}
+            onClick={() => {
+              if (selectedComponents.length > 0) {
+                analytics.trackProjectRequest('full', selectedComponents.length)
+                if (onSendFullRequest) onSendFullRequest()
+              }
+            }}
           >
             <MessageCircle aria-hidden="true" size={16} />
             Send Full Project Request

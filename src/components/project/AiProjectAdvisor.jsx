@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import useCatalog from '../../hooks/useCatalog'
+import useCart from '../../hooks/useCart'
 import { analyzeProject } from '../../services/projectAdvisor'
+import analytics from '../../utils/analytics'
 import { matchAdvisorComponents } from '../../utils/componentMatching'
 import {
   addRecentProjectRequest,
@@ -8,7 +10,6 @@ import {
   loadRecentProjectRequests,
 } from '../../utils/projectStorage'
 import { createAiProjectRequestUrl } from '../../utils/whatsapp'
-import useCart from '../../hooks/useCart'
 import ErrorState from '../common/ErrorState'
 import LoadingState from '../common/LoadingState'
 import AiProjectResult from './AiProjectResult'
@@ -36,6 +37,7 @@ function AiProjectAdvisor() {
     setSubmittedProject(projectData)
     setIsAnalyzing(true)
     setError('')
+    analytics.trackProjectAiAnalysis(projectData.requestType || 'custom')
 
     try {
       const advisorResult = await analyzeProject(projectData)

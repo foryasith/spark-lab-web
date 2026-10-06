@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import useCatalog from '../hooks/useCatalog'
+import analytics from '../utils/analytics'
 import { loadCartItems, saveCartItems } from '../utils/cartStorage'
 import CartContext from './cartContext'
 
@@ -47,6 +48,8 @@ function CartProvider({ children }) {
     const quantityToAdd = getAllowedQuantity(product, quantity)
     if (quantityToAdd === 0) return
 
+    analytics.trackAddToCart(product, quantityToAdd)
+
     setCartItems((currentItems) => {
       const existingItem = currentItems.find(
         (item) => {
@@ -73,6 +76,7 @@ function CartProvider({ children }) {
   }
 
   const removeFromCart = (productId) => {
+    analytics.trackRemoveFromCart(productId)
     setCartItems((currentItems) =>
       currentItems.filter((item) => {
         const currentProduct =

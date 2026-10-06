@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Check,
   ChevronRight,
@@ -17,6 +17,7 @@ import ProductImage from '../components/product/ProductImage'
 import useCatalog from '../hooks/useCatalog'
 import useCart from '../hooks/useCart'
 import useSeo from '../hooks/useSeo'
+import analytics from '../utils/analytics'
 import { formatPriceLkr } from '../utils/formatPrice'
 import { normalizeProductSpecs } from '../utils/productSpecs'
 import { createWhatsAppProductUrl } from '../utils/whatsapp'
@@ -39,6 +40,12 @@ function ProductDetails() {
     description: productDescription,
     image: productImage,
   })
+
+  useEffect(() => {
+    if (product) {
+      analytics.trackViewProduct(product)
+    }
+  }, [product])
 
   if (isLoading) {
     return (
@@ -81,7 +88,6 @@ function ProductDetails() {
 
   const availableStock = Number(product.stock_qty)
   const hasStockLimit = Number.isFinite(availableStock)
-  const productName = String(product.name ?? '').trim() || 'Unnamed component'
   const category = String(product.main_category ?? '').trim() || 'Components'
   const subcategory = String(product.subcategory ?? '').trim()
   const brand = String(product.brand ?? '').trim()
@@ -201,6 +207,7 @@ function ProductDetails() {
                   href={whatsappOrderUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => analytics.trackWhatsAppProductOrder(product, quantity)}
                 >
                   <MessageCircle aria-hidden="true" size={18} />
                   {product.in_stock ? 'Order on WhatsApp' : 'Ask About Availability'}

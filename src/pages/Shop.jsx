@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PageHeader from '../components/common/PageHeader'
 import ProductGrid from '../components/product/ProductGrid'
 import ProductSearch from '../components/shop/ProductSearch'
@@ -6,6 +6,7 @@ import ShopFilters from '../components/shop/ShopFilters'
 import ShopSort from '../components/shop/ShopSort'
 import useCatalog from '../hooks/useCatalog'
 import useSeo from '../hooks/useSeo'
+import analytics from '../utils/analytics'
 import { filterProducts, getProductCategories } from '../utils/productFilters'
 import { filterProductsBySearch } from '../utils/productSearch'
 import { sortProducts } from '../utils/productSort'
@@ -32,6 +33,12 @@ function Shop() {
   const displayedProducts = sortProducts(filteredProducts, sortOption)
   const searchIsActive = searchTerm.trim().length > 0
   const filtersAreActive = selectedCategory !== 'all' || availability !== 'all'
+
+  useEffect(() => {
+    if (searchTerm.trim()) {
+      analytics.trackSearchProducts(searchTerm, displayedProducts.length)
+    }
+  }, [searchTerm, displayedProducts.length])
 
   const clearFilters = () => {
     setSelectedCategory('all')

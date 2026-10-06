@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   Bot,
   CloudSun,
@@ -19,6 +19,7 @@ import { projects } from '../data/projects'
 import useCatalog from '../hooks/useCatalog'
 import useCart from '../hooks/useCart'
 import useSeo from '../hooks/useSeo'
+import analytics from '../utils/analytics'
 import './ProjectBuilder.css'
 
 const projectIcons = {
@@ -35,6 +36,10 @@ function ProjectBuilder() {
       'Get AI recommendations for your electronics and IoT project ideas, match catalog components, and submit request lists to Spark Lab.',
   })
   const [builderMode, setBuilderMode] = useState('explore')
+
+  useEffect(() => {
+    analytics.trackProjectBuilderOpened(builderMode)
+  }, [builderMode])
   const [selectedProjectId, setSelectedProjectId] = useState(projects[0]?.id)
   const [cartMessage, setCartMessage] = useState('')
   const { addToCart } = useCart()

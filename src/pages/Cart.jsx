@@ -4,6 +4,7 @@ import CartItem from '../components/cart/CartItem'
 import EmptyState from '../components/common/EmptyState'
 import useCart from '../hooks/useCart'
 import useSeo from '../hooks/useSeo'
+import analytics from '../utils/analytics'
 import { formatPriceLkr } from '../utils/formatPrice'
 import { createWhatsAppCartUrl } from '../utils/whatsapp'
 import './Cart.css'
@@ -74,6 +75,7 @@ function Cart() {
               href={whatsappCartUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => analytics.trackWhatsAppCartOrder(cartCount, cartSubtotal)}
             >
               <MessageCircle aria-hidden="true" size={18} />
               Proceed via WhatsApp
