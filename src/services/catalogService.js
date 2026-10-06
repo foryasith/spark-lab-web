@@ -50,6 +50,22 @@ function normalizeKeySpecs(value) {
   return rawValue.split(/\r?\n|\s*[|;]\s*/).map(cleanString).filter(Boolean)
 }
 
+function cleanImageUrl(value) {
+  const cleaned = cleanString(value)
+  if (!cleaned || cleaned.toLowerCase() === 'undefined' || cleaned.toLowerCase() === 'null') {
+    return null
+  }
+  return cleaned
+}
+
+function cleanImageAlt(value) {
+  const cleaned = cleanString(value)
+  if (!cleaned || cleaned.toLowerCase() === 'undefined' || cleaned.toLowerCase() === 'null') {
+    return null
+  }
+  return cleaned
+}
+
 export function normalizeCatalogProduct(row = {}) {
   const name = cleanString(row.name)
   const productId = cleanString(row.product_id)
@@ -69,7 +85,11 @@ export function normalizeCatalogProduct(row = {}) {
       : stockQuantity > 0,
     featured: normalizeCatalogBoolean(row.featured),
     active: normalizeCatalogBoolean(row.active),
-    image_url: cleanString(row.image_url),
+    image_url: cleanImageUrl(row.image_url),
+    image_url_2: cleanImageUrl(row.image_url_2),
+    image_url_3: cleanImageUrl(row.image_url_3),
+    image_url_4: cleanImageUrl(row.image_url_4),
+    image_alt: cleanImageAlt(row.image_alt),
     short_description: cleanString(row.short_description),
     key_specs: normalizeKeySpecs(row.key_specs),
     brand: cleanString(row.brand),
