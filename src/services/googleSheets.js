@@ -1,7 +1,47 @@
-const CATALOG_URL_ENV_NAME = 'VITE_GOOGLE_SHEETS_CATALOG_URL'
+const SHEET_ID_ENV = 'VITE_GOOGLE_SHEET_ID'
+const SHEET_TAB_ENV = 'VITE_GOOGLE_SHEET_TAB'
+const CATALOG_URL_ENV = 'VITE_GOOGLE_SHEETS_CATALOG_URL'
+export const DEFAULT_SHEET_TAB = 'Website Products'
+
+/**
+ * Resolves the Google Sheets catalog configuration from environment variables.
+ * Supports VITE_GOOGLE_SHEET_ID + VITE_GOOGLE_SHEET_TAB (defaulting to "Website Products"),
+ * with backward compatibility for VITE_GOOGLE_SHEETS_CATALOG_URL.
+ */
+export function getGoogleSheetsCatalogConfig() {
+  const sheetId = String(import.meta.env?.[SHEET_ID_ENV] ?? '').trim()
+  const sheetTab = String(import.meta.env?.[SHEET_TAB_ENV] ?? DEFAULT_SHEET_TAB).trim() || DEFAULT_SHEET_TAB
+  const rawCatalogUrl = String(import.meta.env?.[CATALOG_URL_ENV] ?? '').trim()
+
+  if (rawCatalogUrl) {
+    return {
+      sheetId: sheetId || null,
+      sheetTab,
+      url: rawCatalogUrl,
+      isConfigured: true,
+    }
+  }
+
+  if (sheetId) {
+    const constructedUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetTab)}`
+    return {
+      sheetId,
+      sheetTab,
+      url: constructedUrl,
+      isConfigured: true,
+    }
+  }
+
+  return {
+    sheetId: null,
+    sheetTab,
+    url: '',
+    isConfigured: false,
+  }
+}
 
 export function getGoogleSheetsCatalogUrl() {
-  return String(import.meta.env?.[CATALOG_URL_ENV_NAME] ?? '').trim()
+  return getGoogleSheetsCatalogConfig().url
 }
 
 function rowsToObjects(rows) {
@@ -72,7 +112,7 @@ export async function fetchGoogleSheetRows({
   signal,
 } = {}) {
   if (!url) {
-    throw new Error(`${CATALOG_URL_ENV_NAME} is not configured.`)
+    throw new Error('Google Sheets catalog configuration is missing or incomplete.')
   }
 
   const response = await fetch(url, {

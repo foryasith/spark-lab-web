@@ -1,5 +1,8 @@
 import { products as localProducts } from '../data/products.js'
-import { fetchGoogleSheetRows, getGoogleSheetsCatalogUrl } from './googleSheets.js'
+import {
+  fetchGoogleSheetRows,
+  getGoogleSheetsCatalogConfig,
+} from './googleSheets.js'
 
 const LOCAL_FALLBACK_WARNING =
   'The live catalog is not configured. Showing the local development catalog.'
@@ -103,21 +106,27 @@ export function normalizeCatalogRows(rows) {
     .filter((product) => product.active && product.name && product.slug)
 }
 
-export async function loadCatalog({ signal, fallbackToLocal = true } = {}) {
+export async function loadCatalog({
+  signal,
+  fallbackToLocal = Boolean(import.meta.env?.DEV),
+} = {}) {
   const fallbackProducts = normalizeCatalogRows(localProducts)
-  const catalogUrl = getGoogleSheetsCatalogUrl()
+  const config = getGoogleSheetsCatalogConfig()
 
-  if (!catalogUrl) {
-    console.info(`[Spark Lab catalog] ${LOCAL_FALLBACK_WARNING}`)
-    return {
-      products: fallbackProducts,
-      source: 'local',
-      warning: LOCAL_FALLBACK_WARNING,
+  if (!config.isConfigured) {
+    if (fallbackToLocal) {
+      console.info(`[Spark Lab catalog] ${LOCAL_FALLBACK_WARNING}`)
+      return {
+        products: fallbackProducts,
+        source: 'local',
+        warning: LOCAL_FALLBACK_WARNING,
+      }
     }
+    throw new Error('Production catalog configuration is missing.')
   }
 
   try {
-    const sheetRows = await fetchGoogleSheetRows({ url: catalogUrl, signal })
+    const sheetRows = await fetchGoogleSheetRows({ url: config.url, signal })
     return {
       products: normalizeCatalogRows(sheetRows),
       source: 'google-sheets',
