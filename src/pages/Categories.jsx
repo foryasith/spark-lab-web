@@ -1,4 +1,5 @@
 import PageHeader from '../components/common/PageHeader'
+import CategorySection from '../components/home/CategorySection'
 import useSeo from '../hooks/useSeo'
 
 function Categories() {
@@ -9,15 +10,21 @@ function Categories() {
   })
 
   return (
-    <section className="page-view section-light circuit-nodes section">
-      <div className="container">
-        <PageHeader
-          eyebrow="Browse the Catalog"
-          title="Product Categories"
-          description="Find the right boards, sensors, modules, tools and parts for your next build."
-        />
-      </div>
-    </section>
+    <main className="categories-page">
+      {/* Page introduction */}
+      <section className="section section-light tech-grid">
+        <div className="container">
+          <PageHeader
+            eyebrow="Browse the Catalog"
+            title="Product Categories"
+            description="Find the right boards, sensors, modules, tools and parts for your next build."
+          />
+        </div>
+      </section>
+
+      {/* Full component category grid */}
+      <CategorySection />
+    </main>
   )
 }
 
