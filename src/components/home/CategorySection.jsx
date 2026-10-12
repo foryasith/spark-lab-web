@@ -1,58 +1,35 @@
 import {
+  BatteryCharging,
   Blocks,
   Bot,
+  Cable,
   CircuitBoard,
   Cog,
   Cpu,
+  Gauge,
   GraduationCap,
+  PanelTop,
   Radar,
   Wrench,
 } from 'lucide-react'
+import { shopCategories } from '../../data/categories'
 import CategoryCard from './CategoryCard'
 import './CategorySection.css'
 
-const categories = [
-  {
-    name: 'Development Boards',
-    description: 'Arduino, ESP32, Raspberry Pi and more.',
-    Icon: Cpu,
-  },
-  {
-    name: 'Sensors',
-    description: 'Distance, temperature, motion and environmental sensors.',
-    Icon: Radar,
-  },
-  {
-    name: 'Modules',
-    description: 'Displays, relays, communication and control modules.',
-    Icon: Blocks,
-  },
-  {
-    name: 'Robotics',
-    description: 'Chassis, wheels, controllers and robot-building parts.',
-    Icon: Bot,
-  },
-  {
-    name: 'Motors & Actuators',
-    description: 'Motors, servos and motion components for practical builds.',
-    Icon: Cog,
-  },
-  {
-    name: 'Electronic Components',
-    description: 'Essential components for circuits, repairs and prototypes.',
-    Icon: CircuitBoard,
-  },
-  {
-    name: 'Tools',
-    description: 'Soldering, measuring and workshop tools for makers.',
-    Icon: Wrench,
-  },
-  {
-    name: 'Kits & Education',
-    description: 'Learning kits and project sets for students and beginners.',
-    Icon: GraduationCap,
-  },
-]
+const categoryIcons = {
+  BatteryCharging,
+  Blocks,
+  Bot,
+  Cable,
+  CircuitBoard,
+  Cog,
+  Cpu,
+  Gauge,
+  GraduationCap,
+  PanelTop,
+  Radar,
+  Wrench,
+}
 
 function CategorySection() {
   return (
@@ -69,8 +46,12 @@ function CategorySection() {
         </header>
 
         <div className="category-grid">
-          {categories.map((category) => (
-            <CategoryCard key={category.name} {...category} />
+          {shopCategories.map((category) => (
+            <CategoryCard
+              key={category.name}
+              {...category}
+              Icon={categoryIcons[category.icon]}
+            />
           ))}
         </div>
       </div>

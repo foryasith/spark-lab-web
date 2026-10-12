@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import PageHeader from '../components/common/PageHeader'
 import ProductGrid from '../components/product/ProductGrid'
 import ProductSearch from '../components/shop/ProductSearch'
 import ShopFilters from '../components/shop/ShopFilters'
 import ShopSort from '../components/shop/ShopSort'
+import { shopCategoryNames } from '../data/categories'
 import useCatalog from '../hooks/useCatalog'
 import useSeo from '../hooks/useSeo'
 import analytics from '../utils/analytics'
@@ -18,12 +20,21 @@ function Shop() {
     description:
       'Browse development boards, sensors, modules, motors, robotics parts and prototyping supplies at Spark Lab Sri Lanka.',
   })
+  const [searchParams, setSearchParams] = useSearchParams()
   const { products, isLoading, error, warning, reload } = useCatalog()
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('all')
   const [availability, setAvailability] = useState('all')
   const [sortOption, setSortOption] = useState('featured')
-  const categoryOptions = getProductCategories(products)
+  const categoryOptions = useMemo(
+    () => [...new Set([...shopCategoryNames, ...getProductCategories(products)])].sort(
+      (firstCategory, secondCategory) => firstCategory.localeCompare(secondCategory),
+    ),
+    [products],
+  )
+  const categoryFromUrl = searchParams.get('category')
+  const selectedCategory = categoryOptions.includes(categoryFromUrl)
+    ? categoryFromUrl
+    : 'all'
   const searchedProducts = filterProductsBySearch(products, searchTerm)
   const filteredProducts = filterProducts(
     searchedProducts,
@@ -40,8 +51,28 @@ function Shop() {
     }
   }, [searchTerm, displayedProducts.length])
 
+  useEffect(() => {
+    if (!categoryFromUrl || categoryOptions.includes(categoryFromUrl)) return
+
+    const nextSearchParams = new URLSearchParams(searchParams)
+    nextSearchParams.delete('category')
+    setSearchParams(nextSearchParams, { replace: true })
+  }, [categoryFromUrl, categoryOptions, searchParams, setSearchParams])
+
+  const handleCategoryChange = (category) => {
+    const nextSearchParams = new URLSearchParams(searchParams)
+
+    if (category === 'all') {
+      nextSearchParams.delete('category')
+    } else {
+      nextSearchParams.set('category', category)
+    }
+
+    setSearchParams(nextSearchParams)
+  }
+
   const clearFilters = () => {
-    setSelectedCategory('all')
+    handleCategoryChange('all')
     setAvailability('all')
   }
 
@@ -70,7 +101,7 @@ function Shop() {
             <ShopFilters
               categories={categoryOptions}
               selectedCategory={selectedCategory}
-              onCategoryChange={setSelectedCategory}
+              onCategoryChange={handleCategoryChange}
               availability={availability}
               onAvailabilityChange={setAvailability}
               onClear={clearFilters}
