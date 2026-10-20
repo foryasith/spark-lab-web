@@ -1,0 +1,346 @@
+.smartspark-page {
+  background: #ffffff;
+  color: #102033;
+}
+
+.smartspark-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 72px 0 80px;
+  background:
+    radial-gradient(
+      circle at 88% 20%,
+      rgba(242, 180, 58, 0.12),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 12% 80%,
+      rgba(18, 58, 99, 0.07),
+      transparent 30%
+    ),
+    #ffffff;
+}
+
+.smartspark-hero__inner {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.smartspark-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding: 8px 13px;
+  border: 1px solid rgba(242, 180, 58, 0.35);
+  border-radius: 999px;
+  background: rgba(255, 209, 102, 0.13);
+  color: #0a2747;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.smartspark-hero h1 {
+  margin: 0;
+  color: #0a2747;
+  font-size: clamp(2.6rem, 6vw, 5.2rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+}
+
+.smartspark-hero h1 span {
+  color: #f2b43a;
+}
+
+.smartspark-hero__lead {
+  max-width: 650px;
+  margin: 24px 0 0;
+  color: #475467;
+  font-size: clamp(1rem, 1.7vw, 1.15rem);
+  line-height: 1.75;
+}
+
+.smartspark-hero__note {
+  max-width: 620px;
+  margin-top: 14px;
+  color: #667085;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.smartspark-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.smartspark-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.smartspark-product-preview {
+  position: relative;
+  display: grid;
+  min-height: 390px;
+  place-items: center;
+}
+
+.smartspark-orbit {
+  position: absolute;
+  width: min(390px, 90%);
+  aspect-ratio: 1;
+  border: 1px solid rgba(242, 180, 58, 0.35);
+  border-radius: 50%;
+  transform: rotate(-20deg) scaleY(0.62);
+}
+
+.smartspark-orbit::after {
+  position: absolute;
+  top: 45%;
+  right: -5px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #f2b43a;
+  content: '';
+}
+
+.smartspark-preview-card {
+  position: relative;
+  z-index: 1;
+  width: min(330px, 90%);
+  padding: 36px;
+  border: 1px solid #e4e7ec;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 20px 55px rgba(10, 39, 71, 0.1);
+}
+
+.smartspark-preview-icon,
+.smartspark-feature-icon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border-radius: 14px;
+  background: rgba(242, 180, 58, 0.13);
+  color: #0a2747;
+}
+
+.smartspark-preview-card > span {
+  display: block;
+  margin-top: 28px;
+  color: #f2b43a;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+}
+
+.smartspark-preview-card h2 {
+  margin: 7px 0 5px;
+  color: #0a2747;
+  font-size: 2rem;
+}
+
+.smartspark-preview-card p {
+  margin: 0;
+  color: #667085;
+}
+
+.smartspark-preview-status {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 7px 11px;
+  border-radius: 8px;
+  background: #f3f5f7;
+  color: #123a63;
+  font-size: 0.77rem;
+  font-weight: 700;
+}
+
+.smartspark-intro {
+  background: #f3f5f7;
+}
+
+.smartspark-section-heading {
+  max-width: 660px;
+  margin-bottom: 35px;
+}
+
+.smartspark-section-heading > span,
+.smartspark-label {
+  color: #f2b43a;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.smartspark-section-heading h2,
+.smartspark-details h2,
+.smartspark-cta h2 {
+  margin: 8px 0 12px;
+  color: #0a2747;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.smartspark-section-heading p,
+.smartspark-details p {
+  color: #667085;
+  line-height: 1.75;
+}
+
+.smartspark-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.smartspark-feature-card {
+  padding: 22px;
+  border: 1px solid #e4e7ec;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.smartspark-feature-card h3 {
+  margin: 18px 0 8px;
+  color: #0a2747;
+  font-size: 1rem;
+}
+
+.smartspark-feature-card p {
+  margin: 0;
+  color: #667085;
+  font-size: 0.87rem;
+  line-height: 1.65;
+}
+
+.smartspark-details__grid {
+  display: grid;
+  grid-template-columns: 1fr 0.8fr;
+  gap: 70px;
+  align-items: center;
+}
+
+.smartspark-info-card {
+  overflow: hidden;
+  border: 1px solid #e4e7ec;
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.smartspark-info-card div {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e4e7ec;
+}
+
+.smartspark-info-card div:last-child {
+  border-bottom: 0;
+}
+
+.smartspark-info-card span {
+  color: #667085;
+  font-size: 0.87rem;
+}
+
+.smartspark-info-card strong {
+  color: #0a2747;
+  text-align: right;
+  font-size: 0.88rem;
+}
+
+.smartspark-cta {
+  padding: 54px 0;
+  background: #0a2747;
+}
+
+.smartspark-cta__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.smartspark-cta span {
+  color: #f2b43a;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.smartspark-cta h2 {
+  color: #ffffff;
+}
+
+.smartspark-cta p {
+  max-width: 650px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.smartspark-cta__button {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f2b43a;
+  color: #0a2747;
+}
+
+@media (max-width: 900px) {
+  .smartspark-hero__inner,
+  .smartspark-details__grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .smartspark-product-preview {
+    min-height: 320px;
+  }
+
+  .smartspark-feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .smartspark-hero {
+    padding: 42px 0 55px;
+  }
+
+  .smartspark-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .smartspark-product-preview {
+    min-height: 280px;
+  }
+
+  .smartspark-preview-card {
+    padding: 27px;
+  }
+
+  .smartspark-cta__inner {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .smartspark-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .smartspark-actions .btn {
+    justify-content: center;
+  }
+}

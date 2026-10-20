@@ -1,3 +1,7 @@
+/* =========================================================
+   SPARK LAB NAVBAR
+   ========================================================= */
+
 .site-header {
   position: sticky;
   z-index: 100;
@@ -6,6 +10,10 @@
   background: rgb(255 255 255 / 96%);
   backdrop-filter: blur(8px);
 }
+
+/* =========================================================
+   MAIN NAVBAR LAYOUT
+   ========================================================= */
 
 .navbar {
   display: grid;
@@ -18,12 +26,19 @@
 .navbar-brand {
   display: inline-flex;
   align-items: center;
+  flex-shrink: 0;
   border-radius: var(--radius-sm);
 }
 
 .navbar-brand .brand-logo {
+  display: block;
   width: clamp(8.75rem, 12vw, 10rem);
+  height: auto;
 }
+
+/* =========================================================
+   DESKTOP NAVIGATION
+   ========================================================= */
 
 .desktop-navigation {
   display: flex;
@@ -34,12 +49,22 @@
 
 .nav-link {
   position: relative;
+  display: inline-flex;
+  align-items: center;
   padding-block: 0.5rem;
   color: var(--color-primary);
   font-size: 0.875rem;
   font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
   white-space: nowrap;
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
 }
+
+/* Standard nav underline */
 
 .nav-link::after {
   position: absolute;
@@ -52,6 +77,7 @@
   content: '';
   opacity: 0;
   transform: scaleX(0.5);
+  transform-origin: center;
   transition:
     opacity var(--transition-fast),
     transform var(--transition-fast);
@@ -61,6 +87,100 @@
   opacity: 1;
   transform: scaleX(1);
 }
+
+/* =========================================================
+   SPECIAL NAVIGATION
+   PROJECT BUILDER + SMARTSPARK
+   ========================================================= */
+
+.nav-link--special {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  gap: 0.3125rem;
+  font-weight: 700;
+}
+
+/*
+  Special links use a pill/card treatment instead of
+  the normal gold underline.
+*/
+
+.nav-link--special::after {
+  display: none;
+}
+
+/* ---------------------------------------------------------
+   PROJECT BUILDER
+   --------------------------------------------------------- */
+
+.nav-link--special:not(.nav-link--product) {
+  padding: 0.5rem 0.625rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  background: rgb(10 39 71 / 4.5%);
+}
+
+.nav-link--special:not(.nav-link--product):hover,
+.nav-link--special:not(.nav-link--product).is-active,
+.nav-link--special:not(.nav-link--product)[aria-current='page'] {
+  border-color: rgb(10 39 71 / 8%);
+  background: rgb(10 39 71 / 8%);
+  color: var(--color-primary);
+}
+
+/* ---------------------------------------------------------
+   SMARTSPARK
+   --------------------------------------------------------- */
+
+.nav-link--product {
+  padding: 0.4375rem 0.625rem;
+  border: 1px solid rgb(242 180 58 / 32%);
+  border-radius: 0.5625rem;
+  background: rgb(242 180 58 / 7%);
+}
+
+.nav-link--product:hover,
+.nav-link--product.is-active,
+.nav-link--product[aria-current='page'] {
+  border-color: rgb(242 180 58 / 58%);
+  background: rgb(242 180 58 / 13%);
+  color: var(--color-primary);
+}
+
+.nav-special-icon {
+  flex-shrink: 0;
+  color: var(--color-gold, #f2b43a);
+}
+
+/* ---------------------------------------------------------
+   SPECIAL BADGES
+   --------------------------------------------------------- */
+
+.nav-special-badge {
+  display: inline-flex;
+  min-width: 1.4375rem;
+  height: 1rem;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 0.3125rem;
+  border-radius: 999px;
+  background: rgb(18 58 99 / 10%);
+  color: var(--color-secondary, #123a63);
+  font-size: 0.5rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.06em;
+}
+
+.nav-special-badge--product {
+  background: var(--color-gold, #f2b43a);
+  color: var(--color-primary, #0a2747);
+}
+
+/* =========================================================
+   NAVBAR ACTIONS
+   ========================================================= */
 
 .navbar-actions {
   display: flex;
@@ -74,11 +194,13 @@
   display: inline-grid;
   width: 2.75rem;
   height: 2.75rem;
+  flex-shrink: 0;
   place-items: center;
   border: 1px solid transparent;
   border-radius: var(--radius-md);
   background: transparent;
   color: var(--color-primary);
+  cursor: pointer;
   transition:
     border-color var(--transition-fast),
     background-color var(--transition-fast),
@@ -86,10 +208,17 @@
 }
 
 .navbar-cta {
+  display: inline-flex;
+  align-items: center;
   gap: var(--space-xs);
   margin-left: var(--space-xs);
   font-size: 0.875rem;
+  white-space: nowrap;
 }
+
+/* =========================================================
+   CART
+   ========================================================= */
 
 .navbar-cart-link {
   position: relative;
@@ -113,9 +242,17 @@
   line-height: 1;
 }
 
+/* =========================================================
+   MOBILE MENU BUTTON
+   ========================================================= */
+
 .navbar-menu-button {
   display: none;
 }
+
+/* =========================================================
+   MOBILE NAVIGATION
+   ========================================================= */
 
 .mobile-navigation {
   display: none;
@@ -134,9 +271,12 @@
 }
 
 .mobile-navigation .nav-link {
+  width: 100%;
   padding: 0.75rem;
   border-radius: var(--radius-sm);
 }
+
+/* No underline inside mobile navigation */
 
 .mobile-navigation .nav-link::after {
   display: none;
@@ -145,6 +285,28 @@
 .mobile-navigation .nav-link[aria-current='page'] {
   background: var(--color-surface);
 }
+
+/* Special mobile links */
+
+.mobile-navigation .nav-link--special {
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.mobile-navigation
+  .nav-link--special:not(.nav-link--product) {
+  margin-top: 0.125rem;
+  padding: 0.75rem;
+}
+
+.mobile-navigation .nav-link--product {
+  margin-top: 0.1875rem;
+  padding: 0.75rem;
+}
+
+/* =========================================================
+   MOBILE CONTACT
+   ========================================================= */
 
 .mobile-contact-link {
   display: flex;
@@ -156,10 +318,15 @@
   background: var(--color-primary);
   color: var(--color-white);
   font-weight: 600;
+  text-decoration: none;
 }
 
+/* =========================================================
+   HOVER STATES
+   ========================================================= */
+
 @media (hover: hover) {
-  .nav-link:hover::after {
+  .nav-link:not(.nav-link--special):hover::after {
     opacity: 1;
     transform: scaleX(1);
   }
@@ -171,10 +338,55 @@
     color: var(--color-secondary);
   }
 
-  .mobile-navigation .nav-link:hover {
+  .mobile-navigation
+    .nav-link:not(.nav-link--special):hover {
     background: var(--color-surface);
   }
+
+  .mobile-contact-link:hover {
+    background: var(--color-secondary);
+    color: var(--color-white);
+  }
 }
+
+/* =========================================================
+   FOCUS ACCESSIBILITY
+   ========================================================= */
+
+.nav-link:focus-visible,
+.navbar-brand:focus-visible,
+.navbar-icon-link:focus-visible,
+.navbar-menu-button:focus-visible,
+.mobile-contact-link:focus-visible {
+  outline: 3px solid rgb(242 180 58 / 35%);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   SMALLER DESKTOP
+   ========================================================= */
+
+@media (max-width: 73.75rem) {
+  .desktop-navigation {
+    gap: 0.25rem;
+  }
+
+  .desktop-navigation .nav-link {
+    font-size: 0.82rem;
+  }
+
+  .desktop-navigation .nav-link--special {
+    padding-inline: 0.4375rem;
+  }
+
+  .nav-special-badge {
+    font-size: 0.46rem;
+  }
+}
+
+/* =========================================================
+   TABLET / MOBILE NAVIGATION SWITCH
+   ========================================================= */
 
 @media (max-width: 70rem) {
   .navbar {
@@ -191,6 +403,10 @@
     display: inline-grid;
   }
 }
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
 
 @media (max-width: 30rem) {
   .navbar {
@@ -214,5 +430,23 @@
   .mobile-navigation-inner {
     max-height: calc(100vh - 4.5rem);
     overflow-y: auto;
+  }
+
+  .mobile-navigation .nav-link,
+  .mobile-contact-link {
+    font-size: 0.875rem;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-link,
+  .nav-link::after,
+  .navbar-icon-link,
+  .navbar-menu-button {
+    transition: none;
   }
 }

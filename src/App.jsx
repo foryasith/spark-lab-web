@@ -10,6 +10,7 @@ const Categories = lazy(() => import('./pages/Categories'))
 const ProductDetails = lazy(() => import('./pages/ProductDetails'))
 const ProjectBuilder = lazy(() => import('./pages/ProjectBuilder'))
 const ProjectSupport = lazy(() => import('./pages/ProjectSupport'))
+const SmartSpark = lazy(() => import('./pages/SmartSpark'))
 const Learn = lazy(() => import('./pages/Learn'))
 const About = lazy(() => import('./pages/About'))
 const Contact = lazy(() => import('./pages/Contact'))
@@ -30,14 +31,37 @@ function App() {
         <Routes>
           <Route element={<MainLayout />}>
             <Route index element={<Home />} />
+
             <Route path="shop" element={<Shop />} />
+
             <Route path="categories" element={<Categories />} />
-            <Route path="product/:slug" element={<ProductDetails />} />
-            <Route path="project-builder" element={<ProjectBuilder />} />
-            <Route path="project-support" element={<ProjectSupport />} />
+
+            <Route
+              path="product/:slug"
+              element={<ProductDetails />}
+            />
+
+            <Route
+              path="project-builder"
+              element={<ProjectBuilder />}
+            />
+
+            <Route
+              path="project-support"
+              element={<ProjectSupport />}
+            />
+
+            <Route
+              path="smartspark"
+              element={<SmartSpark />}
+            />
+
             <Route path="learn" element={<Learn />} />
+
             <Route path="about" element={<About />} />
+
             <Route path="contact" element={<Contact />} />
+
             <Route path="cart" element={<Cart />} />
           </Route>
         </Routes>
