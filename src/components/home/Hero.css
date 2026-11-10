@@ -143,13 +143,91 @@
   position: relative;
   z-index: 1;
   width: min(100%, 41rem);
-  animation: hero-image-enter 320ms ease-out both;
   filter: drop-shadow(0 1.6rem 1.8rem rgb(10 39 71 / 18%));
 }
 
 .hero-product-image {
+  display: block;
   width: 100%;
   object-fit: contain;
+}
+
+.hero-component-assembly {
+  aspect-ratio: 3 / 2;
+  animation: hero-assembly-ready 450ms 1.65s ease-out both;
+}
+
+.hero-assembly-part {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform-origin: center;
+  will-change: opacity, transform;
+}
+
+.hero-assembly-sensor {
+  clip-path: inset(0 62% 58% 0);
+  animation: hero-part-sensor 540ms 80ms cubic-bezier(0.22, 0.8, 0.32, 1) both;
+}
+
+.hero-assembly-board {
+  clip-path: inset(6% 25% 27% 28%);
+  animation: hero-part-board 620ms 210ms cubic-bezier(0.22, 0.8, 0.32, 1) both;
+}
+
+.hero-assembly-servo {
+  clip-path: inset(4% 0 38% 68%);
+  animation: hero-part-servo 540ms 390ms cubic-bezier(0.22, 0.8, 0.32, 1) both;
+}
+
+.hero-assembly-chassis {
+  clip-path: inset(42% 52% 0 0);
+  animation: hero-part-chassis 600ms 510ms cubic-bezier(0.22, 0.8, 0.32, 1) both;
+}
+
+.hero-assembly-connectors {
+  clip-path: inset(45% 0 0 54%);
+  animation: hero-part-connectors 560ms 650ms cubic-bezier(0.22, 0.8, 0.32, 1) both;
+}
+
+.hero-final-robot {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(0.75rem) scale(0.88);
+  transform-origin: center;
+  animation: hero-final-robot-reveal 700ms 1.05s cubic-bezier(0.22, 0.8, 0.32, 1) both;
+  will-change: opacity, transform;
+}
+
+.hero-assembly-part {
+  animation-duration: 540ms, 430ms;
+  animation-fill-mode: both, forwards;
+}
+
+.hero-assembly-sensor {
+  animation-name: hero-part-sensor, hero-parts-resolve;
+  animation-delay: 80ms, 870ms;
+}
+
+.hero-assembly-board {
+  animation-name: hero-part-board, hero-parts-resolve;
+  animation-delay: 210ms, 870ms;
+}
+
+.hero-assembly-servo {
+  animation-name: hero-part-servo, hero-parts-resolve;
+  animation-delay: 390ms, 870ms;
+}
+
+.hero-assembly-chassis {
+  animation-name: hero-part-chassis, hero-parts-resolve;
+  animation-delay: 510ms, 870ms;
+}
+
+.hero-assembly-connectors {
+  animation-name: hero-part-connectors, hero-parts-resolve;
+  animation-delay: 650ms, 870ms;
 }
 
 .hero-image-glow {
@@ -200,15 +278,105 @@
   left: 100%;
 }
 
-@keyframes hero-image-enter {
+@keyframes hero-part-sensor {
   from {
     opacity: 0;
-    transform: translateY(0.75rem) scale(0.99);
+    transform: translate(-2.75rem, -2rem) rotate(-7deg) scale(0.9);
   }
 
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes hero-part-board {
+  from {
+    opacity: 0;
+    transform: translateY(-3.5rem) scale(0.84);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes hero-part-servo {
+  from {
+    opacity: 0;
+    transform: translate(3.25rem, -1.8rem) rotate(6deg) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0) rotate(0) scale(1);
+  }
+}
+
+@keyframes hero-part-chassis {
+  from {
+    opacity: 0;
+    transform: translate(-3rem, 2.4rem) rotate(-5deg) scale(0.88);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0) rotate(0) scale(1);
+  }
+}
+
+@keyframes hero-part-connectors {
+  from {
+    opacity: 0;
+    transform: translate(3rem, 2.4rem) rotate(5deg) scale(0.88);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0) rotate(0) scale(1);
+  }
+}
+
+@keyframes hero-parts-resolve {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+}
+
+@keyframes hero-final-robot-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.88);
+  }
+
+  68% {
+    opacity: 1;
+    transform: translateY(-0.1rem) scale(1.015);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes hero-assembly-ready {
+  from {
+    filter: brightness(1);
+  }
+
+  55% {
+    filter: brightness(1.08) saturate(1.05);
+  }
+
+  to {
+    filter: brightness(1);
   }
 }
 
@@ -270,7 +438,19 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-image-wrap {
+  .hero-component-assembly,
+  .hero-assembly-part,
+  .hero-final-robot {
     animation: none;
+  }
+
+  .hero-assembly-part {
+    opacity: 0;
+    transform: none;
+  }
+
+  .hero-final-robot {
+    opacity: 1;
+    transform: none;
   }
 }

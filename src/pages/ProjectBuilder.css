@@ -164,6 +164,35 @@
   padding-block: var(--space-xl);
 }
 
+.project-function-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+}
+
+.project-function-summary > div {
+  min-width: 0;
+  padding: var(--space-md);
+  border: 1px solid rgb(18 58 99 / 12%);
+  border-radius: var(--radius-md);
+  background: rgb(18 58 99 / 4%);
+}
+
+.project-function-summary span {
+  color: var(--color-secondary);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.project-function-summary p {
+  margin-top: var(--space-xs);
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
 .project-learning-outcomes {
   display: flex;
   align-items: flex-start;
@@ -236,6 +265,10 @@
 
   .project-learning-outcomes ul {
     display: grid;
+  }
+
+  .project-function-summary {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -1,6 +1,7 @@
 import { GraduationCap, ShieldCheck, Truck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import makerHeroImage from '../../assets/images/spark-lab-maker-hero.png'
+import obstacleRobotImage from '../../assets/images/spark-lab-obstacle-robot.png'
 import './Hero.css'
 
 const trustItems = [
@@ -47,11 +48,46 @@ function Hero() {
         <div className="hero-visual">
           <div className="hero-orbit" aria-hidden="true" />
           <div className="hero-image-glow" aria-hidden="true" />
-          <div className="hero-image-wrap">
+          <div
+            className="hero-image-wrap hero-component-assembly"
+            role="img"
+            aria-label="Electronics components assembling into a finished obstacle-avoiding robot"
+          >
             <img
-              className="hero-product-image"
+              className="hero-product-image hero-assembly-part hero-assembly-sensor"
               src={makerHeroImage}
-              alt="Electronics development board, sensors, robotics chassis and maker components"
+              alt=""
+              aria-hidden="true"
+            />
+            <img
+              className="hero-product-image hero-assembly-part hero-assembly-board"
+              src={makerHeroImage}
+              alt=""
+              aria-hidden="true"
+            />
+            <img
+              className="hero-product-image hero-assembly-part hero-assembly-servo"
+              src={makerHeroImage}
+              alt=""
+              aria-hidden="true"
+            />
+            <img
+              className="hero-product-image hero-assembly-part hero-assembly-chassis"
+              src={makerHeroImage}
+              alt=""
+              aria-hidden="true"
+            />
+            <img
+              className="hero-product-image hero-assembly-part hero-assembly-connectors"
+              src={makerHeroImage}
+              alt=""
+              aria-hidden="true"
+            />
+            <img
+              className="hero-product-image hero-final-robot"
+              src={obstacleRobotImage}
+              alt=""
+              aria-hidden="true"
             />
           </div>
           <span className="hero-circuit-node hero-circuit-node-top" aria-hidden="true" />

@@ -1,21 +1,18 @@
-import Hero from '../components/home/Hero'
 import FeaturedProducts from '../components/home/FeaturedProducts'
-import ProjectBuilderPromo from '../components/home/ProjectBuilderPromo'
-import WhySparkLab from '../components/home/WhySparkLab'
-import SupportPromo from '../components/home/SupportPromo'
-import LearnPromo from '../components/home/LearnPromo'
-import FinalShopCTA from '../components/home/FinalShopCTA'
+import Hero from '../components/home/Hero'
+import useSeo from '../hooks/useSeo'
 
 function Home() {
+  useSeo({
+    title: 'Spark Lab | IoT, Robotics & Electronics Components Sri Lanka',
+    description:
+      'Shop electronics, IoT, robotics and maker components for student projects and innovative builds with Spark Lab Sri Lanka.',
+  })
+
   return (
     <>
       <Hero />
       <FeaturedProducts />
-      <ProjectBuilderPromo />
-      <WhySparkLab />
-      <SupportPromo />
-      <LearnPromo />
-      <FinalShopCTA />
     </>
   )
 }

@@ -1,13 +1,28 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
+  BellRing,
   Bot,
+  BookOpen,
+  CarFront,
   CloudSun,
+  DoorOpen,
+  Droplets,
+  Fan,
+  Flame,
+  Hand,
+  HeartPulse,
+  House,
   LayoutGrid,
+  Lamp,
+  Leaf,
   Lightbulb,
+  LockKeyhole,
   PencilLine,
   RadioTower,
   ShoppingCart,
   Sprout,
+  Trash2,
+  Waves,
 } from 'lucide-react'
 import AiProjectAdvisor from '../components/project/AiProjectAdvisor'
 import ProjectCard from '../components/project/ProjectCard'
@@ -23,8 +38,23 @@ import analytics from '../utils/analytics'
 import './ProjectBuilder.css'
 
 const projectIcons = {
+  'street-light': Lamp,
+  door: DoorOpen,
+  dustbin: Trash2,
+  fan: Fan,
+  fire: Flame,
+  greenhouse: Leaf,
+  health: HeartPulse,
+  home: House,
+  leak: Droplets,
+  learning: BookOpen,
+  lock: LockKeyhole,
+  parking: CarFront,
+  pump: Waves,
   robot: Bot,
   plant: Sprout,
+  sanitizer: Hand,
+  water: BellRing,
   weather: CloudSun,
   rfid: RadioTower,
 }
@@ -192,6 +222,26 @@ function ProjectBuilder() {
                 productsBySlug={activeProductsBySlug}
               />
             </div>
+
+            {selectedProject.projectFunctions && (
+              <section
+                className="project-function-summary"
+                aria-label="Assignment requirements covered by this project"
+              >
+                <div>
+                  <span>Sensor / Input</span>
+                  <p>{selectedProject.projectFunctions.input}</p>
+                </div>
+                <div>
+                  <span>Output</span>
+                  <p>{selectedProject.projectFunctions.output}</p>
+                </div>
+                <div>
+                  <span>Memory / Data</span>
+                  <p>{selectedProject.projectFunctions.memory}</p>
+                </div>
+              </section>
+            )}
 
             <div className="project-learning-outcomes">
               <Lightbulb aria-hidden="true" size={22} />
