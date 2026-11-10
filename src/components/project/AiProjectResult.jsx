@@ -1,6 +1,8 @@
 import {
   CircleHelp,
   Cpu,
+  BatteryCharging,
+  Cable,
   Gauge,
   Lightbulb,
   ListChecks,
@@ -26,6 +28,24 @@ function AdviceList({ title, items, Icon }) {
   )
 }
 
+function AdviceItems({ title, items, Icon }) {
+  if (!Array.isArray(items) || items.length === 0) return null
+
+  return (
+    <section className="ai-advice-section">
+      <h4><Icon aria-hidden="true" size={17} /> {title}</h4>
+      <div className="ai-advice-items">
+        {items.map((item, index) => (
+          <div key={`${item.name}-${index}`}>
+            <strong>{item.name}</strong>
+            <p>{item.reason}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 function AiProjectResult({
   result,
   matchedComponents,
@@ -36,6 +56,10 @@ function AiProjectResult({
   missingRequestUrl,
   fullRequestUrl,
   onSendFullRequest,
+  clarificationAnswers,
+  onClarificationAnswerChange,
+  onRefinePlan,
+  isRefining,
 }) {
   const requiredComponents = matchedComponents.filter((component) => component.group === 'required')
   const optionalComponents = matchedComponents.filter((component) => component.group === 'optional')
@@ -59,6 +83,32 @@ function AiProjectResult({
         <h4><Route aria-hidden="true" size={17} /> Suggested Architecture</h4>
         <p>{result.recommended_approach}</p>
       </section>
+
+      <section className="ai-advice-section ai-controller-advice">
+        <h4><Cpu aria-hidden="true" size={17} /> Recommended Controller</h4>
+        <strong>{result.recommended_platform}</strong>
+        {result.recommended_controller_reason && <p>{result.recommended_controller_reason}</p>}
+      </section>
+
+      <AdviceItems title="Required Sensors" items={result.required_sensors} Icon={Gauge} />
+      <AdviceItems title="Actuators & Outputs" items={result.actuators_outputs} Icon={Lightbulb} />
+
+      {(result.communication_method || result.power_advice) && (
+        <section className="ai-advice-section ai-project-facts">
+          {result.communication_method && (
+            <div>
+              <h4><Cable aria-hidden="true" size={17} /> Communication</h4>
+              <p>{result.communication_method}</p>
+            </div>
+          )}
+          {result.power_advice && (
+            <div>
+              <h4><BatteryCharging aria-hidden="true" size={17} /> Power Advice</h4>
+              <p>{result.power_advice}</p>
+            </div>
+          )}
+        </section>
+      )}
 
       <section className="ai-advice-section">
         <h4><ListChecks aria-hidden="true" size={17} /> Components You May Need</h4>
@@ -91,7 +141,32 @@ function AiProjectResult({
       )}
 
       <AdviceList title="Things to Consider" items={result.technical_considerations} Icon={ShieldCheck} />
-      <AdviceList title="Questions Before You Build" items={result.clarifying_questions} Icon={CircleHelp} />
+      <AdviceList title="Simple System Flow" items={result.system_flow} Icon={Route} />
+      <AdviceList title="Beginner Tips" items={result.beginner_tips} Icon={Lightbulb} />
+
+      {result.clarifying_questions.length > 0 && (
+        <section className="ai-advice-section ai-clarification-section">
+          <h4><CircleHelp aria-hidden="true" size={17} /> A Few Questions to Refine Your Plan</h4>
+          <p>Answer what you can, then Spark Lab AI will refine these recommendations.</p>
+          <div className="ai-clarification-fields">
+            {result.clarifying_questions.slice(0, 4).map((question) => (
+              <label key={question}>
+                <span>{question}</span>
+                <input
+                  type="text"
+                  value={clarificationAnswers?.[question] || ''}
+                  onChange={(event) => onClarificationAnswerChange(question, event.target.value)}
+                  placeholder="Your answer"
+                />
+              </label>
+            ))}
+          </div>
+          <button className="btn btn-secondary" type="button" onClick={onRefinePlan} disabled={isRefining}>
+            {isRefining ? 'Refining Your Plan...' : 'Refine My Plan'}
+          </button>
+        </section>
+      )}
+
       <AdviceList title="Next Steps" items={result.next_steps} Icon={ListChecks} />
 
       {result.estimated_budget_note && (
@@ -124,7 +199,7 @@ function AiProjectResult({
             }
           >
             <MessageCircle aria-hidden="true" size={16} />
-            Request Missing Components
+            Request Missing Parts
           </a>
           <a
             className={`btn btn-primary${selectedComponents.length === 0 ? ' is-disabled' : ''}`}

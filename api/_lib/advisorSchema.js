@@ -5,6 +5,25 @@ export const advisorResponseSchema = {
     recommended_approach: { type: 'string' },
     difficulty: { type: 'string' },
     recommended_platform: { type: 'string' },
+    recommended_controller_reason: { type: 'string' },
+    required_sensors: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: { name: { type: 'string' }, reason: { type: 'string' } },
+        required: ['name', 'reason'],
+      },
+    },
+    actuators_outputs: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: { name: { type: 'string' }, reason: { type: 'string' } },
+        required: ['name', 'reason'],
+      },
+    },
+    communication_method: { type: 'string' },
+    power_advice: { type: 'string' },
     required_components: {
       type: 'array',
       items: {
@@ -35,18 +54,27 @@ export const advisorResponseSchema = {
     clarifying_questions: { type: 'array', items: { type: 'string' } },
     estimated_budget_note: { type: 'string' },
     next_steps: { type: 'array', items: { type: 'string' } },
+    system_flow: { type: 'array', items: { type: 'string' } },
+    beginner_tips: { type: 'array', items: { type: 'string' } },
   },
   required: [
     'project_summary',
     'recommended_approach',
     'difficulty',
     'recommended_platform',
+    'recommended_controller_reason',
+    'required_sensors',
+    'actuators_outputs',
+    'communication_method',
+    'power_advice',
     'required_components',
     'optional_components',
     'technical_considerations',
     'clarifying_questions',
     'estimated_budget_note',
     'next_steps',
+    'system_flow',
+    'beginner_tips',
   ],
 }
 
@@ -69,6 +97,15 @@ function cleanComponents(value) {
   }))
 }
 
+function cleanAdviceItems(value) {
+  if (!Array.isArray(value)) return []
+
+  return value.slice(0, 12).map((item) => ({
+    name: cleanString(item?.name) || 'To confirm',
+    reason: cleanString(item?.reason) || 'Confirm the exact requirement before purchasing.',
+  }))
+}
+
 export function validateAdvisorOutput(value) {
   if (!value || typeof value !== 'object') throw new Error('Invalid advisor output')
 
@@ -77,12 +114,19 @@ export function validateAdvisorOutput(value) {
     recommended_approach: cleanString(value.recommended_approach),
     difficulty: cleanString(value.difficulty) || 'Needs Confirmation',
     recommended_platform: cleanString(value.recommended_platform) || 'Needs Confirmation',
+    recommended_controller_reason: cleanString(value.recommended_controller_reason),
+    required_sensors: cleanAdviceItems(value.required_sensors),
+    actuators_outputs: cleanAdviceItems(value.actuators_outputs),
+    communication_method: cleanString(value.communication_method),
+    power_advice: cleanString(value.power_advice),
     required_components: cleanComponents(value.required_components),
     optional_components: cleanComponents(value.optional_components),
     technical_considerations: cleanList(value.technical_considerations),
     clarifying_questions: cleanList(value.clarifying_questions),
     estimated_budget_note: cleanString(value.estimated_budget_note),
     next_steps: cleanList(value.next_steps),
+    system_flow: cleanList(value.system_flow),
+    beginner_tips: cleanList(value.beginner_tips),
   }
 
   if (

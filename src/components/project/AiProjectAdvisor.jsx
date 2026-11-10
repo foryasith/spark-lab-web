@@ -24,6 +24,7 @@ function AiProjectAdvisor() {
   const [error, setError] = useState('')
   const [selectedComponentIds, setSelectedComponentIds] = useState(new Set())
   const [cartMessage, setCartMessage] = useState('')
+  const [clarificationAnswers, setClarificationAnswers] = useState({})
   const [recentRequests, setRecentRequests] = useState(loadRecentProjectRequests)
   const { addToCart } = useCart()
   const { products, isLoading: isCatalogLoading } = useCatalog()
@@ -35,15 +36,20 @@ function AiProjectAdvisor() {
       return
     }
 
-    setSubmittedProject(projectData)
+    const projectWithClarifications = {
+      ...projectData,
+      clarificationAnswers: projectData.clarificationAnswers || {},
+    }
+    setSubmittedProject(projectWithClarifications)
     setIsAnalyzing(true)
     setError('')
-    analytics.trackProjectAiAnalysis(projectData.requestType || 'custom')
+    analytics.trackProjectAiAnalysis(projectWithClarifications.requestType || 'custom')
 
     try {
-      const advisorResult = await analyzeProject(projectData)
+      const advisorResult = await analyzeProject(projectWithClarifications)
       const matchedComponents = matchAdvisorComponents(advisorResult, products)
-      setAnalysis({ projectData, result: advisorResult, matchedComponents })
+      setAnalysis({ projectData: projectWithClarifications, result: advisorResult, matchedComponents })
+      setClarificationAnswers(projectWithClarifications.clarificationAnswers)
       setSelectedComponentIds(new Set(matchedComponents.map((component) => component.id)))
       setCartMessage('')
     } catch {
@@ -55,6 +61,15 @@ function AiProjectAdvisor() {
 
   const retryAnalysis = () => {
     if (submittedProject) handleAnalyze(submittedProject)
+  }
+
+  const handleClarificationAnswerChange = (question, answer) => {
+    setClarificationAnswers((currentAnswers) => ({ ...currentAnswers, [question]: answer }))
+  }
+
+  const handleRefinePlan = () => {
+    if (!analysis || isAnalyzing) return
+    handleAnalyze({ ...analysis.projectData, clarificationAnswers })
   }
 
   const toggleComponent = (componentId) => {
@@ -75,6 +90,7 @@ function AiProjectAdvisor() {
         projectData: analysis.projectData,
         advisorResult: analysis.result,
         selectedComponents,
+        clarificationAnswers,
       }
     : null
 
@@ -141,6 +157,10 @@ function AiProjectAdvisor() {
             onToggleComponent={toggleComponent}
             onAddAvailableParts={handleAddAvailableParts}
             onSendFullRequest={handleSendFullRequest}
+            clarificationAnswers={clarificationAnswers}
+            onClarificationAnswerChange={handleClarificationAnswerChange}
+            onRefinePlan={handleRefinePlan}
+            isRefining={isAnalyzing}
             cartMessage={cartMessage}
             missingRequestUrl={createAiProjectRequestUrl({ ...requestData, requestType: 'missing' })}
             fullRequestUrl={createAiProjectRequestUrl(requestData)}

@@ -44,6 +44,63 @@ function createSuggestedComponents(projectData, platform) {
 
 export function createMockProjectAdvice(projectData) {
   const requirements = new Set(projectData.requirements)
+  const projectText = `${projectData.description} ${projectData.expectedFunctionality}`.toLowerCase()
+  const hasClarificationAnswers = Object.values(projectData.clarificationAnswers || {}).some(
+    (answer) => String(answer).trim(),
+  )
+  const ideaIsUnclear =
+    !hasClarificationAnswers &&
+    (projectData.description.trim().length < 50 || projectData.expectedFunctionality.trim().length < 35)
+  const requiredSensors = []
+
+  if (/accident|tilt|fall|helmet|movement|vibration/.test(projectText)) {
+    requiredSensors.push({
+      name: 'Accelerometer and gyroscope module',
+      reason: 'Measures sudden movement, impact, tilt, or fall patterns that the controller can evaluate.',
+    })
+  }
+  if (/temperature|humidity|weather|greenhouse/.test(projectText)) {
+    requiredSensors.push({
+      name: 'Temperature and humidity sensor',
+      reason: 'Measures environmental conditions for monitoring or control decisions.',
+    })
+  }
+  if (/distance|obstacle|ultrasonic|tank|water level/.test(projectText)) {
+    requiredSensors.push({
+      name: 'Distance or level sensor',
+      reason: 'Measures distance to an obstacle or liquid level for the main project decision.',
+    })
+  }
+  if (/motion|security|presence/.test(projectText) && requiredSensors.length === 0) {
+    requiredSensors.push({
+      name: 'Motion sensor',
+      reason: 'Detects movement or presence to trigger the project response.',
+    })
+  }
+  if (requiredSensors.length === 0) {
+    requiredSensors.push({
+      name: 'Primary sensor to confirm',
+      reason: 'Choose the sensor based on the exact event or measurement the project must detect.',
+    })
+  }
+
+  const actuatorsOutputs = /motor|pump|door|robot|wheel/.test(projectText)
+    ? [
+        {
+          name: 'Motor driver and motor output',
+          reason: 'Lets the controller safely operate a motor without drawing motor current through the board.',
+        },
+        {
+          name: 'Status LED and buzzer',
+          reason: 'Provides simple visual and audible feedback while testing.',
+        },
+      ]
+    : [
+        {
+          name: 'Status LED and buzzer',
+          reason: 'Provides simple visual and audible feedback while testing.',
+        },
+      ]
   const recommendedPlatform =
     projectData.preferredPlatform !== 'No Preference' &&
     projectData.preferredPlatform !== 'Other / Not Sure'
@@ -57,8 +114,27 @@ export function createMockProjectAdvice(projectData) {
     recommended_approach:
       'Start with a small proof of concept: validate the main input, process it on one development board, then add communication, output and power features in separate tested stages.',
     difficulty:
-      projectData.experienceLevel === 'Advanced' ? 'Advanced' : 'Intermediate',
+      projectData.experienceLevel === 'Advanced'
+        ? 'Advanced'
+        : projectData.experienceLevel === 'Beginner'
+          ? 'Beginner'
+          : 'Intermediate',
     recommended_platform: recommendedPlatform,
+    recommended_controller_reason:
+      recommendedPlatform === 'ESP32'
+        ? 'ESP32 is a practical choice when the project needs built-in Wi-Fi or Bluetooth alongside general sensor control.'
+        : 'Arduino is a beginner-friendly controller for reading sensors, controlling simple outputs, and testing a prototype step by step.',
+    required_sensors: requiredSensors,
+    actuators_outputs: actuatorsOutputs,
+    communication_method:
+      requirements.has('Wi-Fi') || requirements.has('Cloud')
+        ? 'Wi-Fi can send readings to a dashboard or phone service when a reliable network is available.'
+        : requirements.has('Bluetooth')
+          ? 'Bluetooth can provide a simple short-range connection to a nearby phone.'
+          : 'No wireless connection is required for the first prototype; add one after the core circuit works.',
+    power_advice: requirements.has('Battery Powered')
+      ? 'Use a battery pack with a suitable regulator, and confirm that its voltage and current capacity safely support the board, sensors, and any motors.'
+      : 'Begin with a stable USB power supply, then calculate total current requirements before selecting a permanent power source.',
     required_components: createSuggestedComponents(projectData, recommendedPlatform),
     optional_components: [
       {
@@ -76,17 +152,30 @@ export function createMockProjectAdvice(projectData) {
         ? 'Estimate current consumption before selecting the battery and regulator.'
         : 'Plan a stable power source with enough current for every connected component.',
     ],
-    clarifying_questions: [
-      'What environment will the project operate in?',
-      'How quickly must the project detect and respond to an event?',
-      'Does the project need to work when internet access is unavailable?',
-    ],
+    clarifying_questions: ideaIsUnclear
+      ? [
+          'What exactly should the project detect or measure?',
+          'What should happen after the project detects that event?',
+          'Will it be used indoors, outdoors, or in another specific environment?',
+        ]
+      : [],
     estimated_budget_note:
       'The selected budget is a planning guide only. Final cost depends on compatible catalog products and current availability.',
     next_steps: [
       'Confirm the main input, output and communication requirements.',
       'Review compatible development boards and modules.',
       'Build and test a basic prototype before adding optional features.',
+    ],
+    system_flow: [
+      'Sensor reads the main input or event.',
+      `${recommendedPlatform} processes the input using the project rules.`,
+      'The output gives feedback or performs the required action.',
+      'Optional communication shares useful status information.',
+    ],
+    beginner_tips: [
+      'Test one sensor or output at a time before combining the whole circuit.',
+      'Use a breadboard and jumper wires for the first prototype so changes are easy and safe.',
+      'Keep a simple wiring diagram and label every power connection before switching on.',
     ],
   }
 }

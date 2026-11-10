@@ -62,6 +62,89 @@
   color: var(--color-gold);
 }
 
+.ai-controller-advice,
+.ai-project-facts,
+.ai-clarification-section {
+  padding: var(--space-md);
+  border: 1px solid rgb(18 58 99 / 12%);
+  border-radius: var(--radius-md);
+  background: rgb(18 58 99 / 3%);
+}
+
+.ai-controller-advice > strong {
+  display: block;
+  margin-top: var(--space-sm);
+  color: var(--color-primary);
+  font-size: 0.82rem;
+}
+
+.ai-advice-items {
+  display: grid;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
+}
+
+.ai-advice-items > div {
+  padding: var(--space-sm);
+  border-left: 2px solid var(--color-gold);
+  background: var(--color-surface);
+}
+
+.ai-advice-items strong {
+  color: var(--color-primary);
+  font-size: 0.72rem;
+}
+
+.ai-advice-items p {
+  margin-top: 0.2rem;
+}
+
+.ai-project-facts {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.ai-project-facts > div + div {
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.ai-clarification-fields {
+  display: grid;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.ai-clarification-fields label {
+  display: grid;
+  gap: 0.3rem;
+  color: var(--color-primary);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.ai-clarification-fields input {
+  width: 100%;
+  min-height: 2.4rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.ai-clarification-fields input:focus {
+  border-color: var(--color-secondary);
+  outline: 2px solid rgb(242 180 58 / 20%);
+  outline-offset: 1px;
+}
+
+.ai-clarification-section .btn {
+  width: 100%;
+  margin-top: var(--space-md);
+  font-size: 0.7rem;
+}
+
 .ai-component-list {
   display: grid;
   gap: var(--space-sm);

@@ -21,6 +21,15 @@ function validateRequestBody(value) {
     requirements: Array.isArray(value.requirements)
       ? value.requirements.map((item) => cleanText(item, 80)).filter(Boolean).slice(0, 20)
       : [],
+    clarificationAnswers:
+      value.clarificationAnswers && typeof value.clarificationAnswers === 'object'
+        ? Object.fromEntries(
+            Object.entries(value.clarificationAnswers)
+              .slice(0, 4)
+              .map(([question, answer]) => [cleanText(question, 300), cleanText(answer, 800)])
+              .filter(([question, answer]) => question && answer),
+          )
+        : {},
   }
 
   if (!projectData.description || !projectData.expectedFunctionality) {

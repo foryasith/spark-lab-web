@@ -20,7 +20,13 @@ function ComponentSuggestion({ suggestion, isSelected, onToggle }) {
       ? 'available'
       : 'similar'
     : 'not-listed'
-  const statusLabel = status || statusLabels[legacyStatus]
+  const statusLabel = product
+    ? matchType === 'exact'
+      ? 'Available'
+      : 'Alternative'
+    : status === 'Not Listed'
+      ? 'Missing'
+      : statusLabels[legacyStatus]
 
   return (
     <article className={`component-suggestion is-${statusClass}`}>
@@ -48,6 +54,7 @@ function ComponentSuggestion({ suggestion, isSelected, onToggle }) {
           <div className="component-catalog-match">
             <strong>{product.name}</strong>
             <span>{formatPriceLkr(product.price_lkr)}</span>
+            {product.sku && <small>SKU: {product.sku}</small>}
             <small>{product.in_stock ? 'In Stock' : 'Out of Stock'}</small>
             <Link to={`/product/${product.slug}`}>
               View Product <ExternalLink aria-hidden="true" size={13} />
