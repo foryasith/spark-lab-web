@@ -17,6 +17,7 @@ import {
   Leaf,
   Lightbulb,
   LockKeyhole,
+  MessageCircle,
   PencilLine,
   RadioTower,
   ShoppingCart,
@@ -35,6 +36,7 @@ import useCatalog from '../hooks/useCatalog'
 import useCart from '../hooks/useCart'
 import useSeo from '../hooks/useSeo'
 import analytics from '../utils/analytics'
+import { createWhatsAppUrl } from '../utils/whatsapp'
 import './ProjectBuilder.css'
 
 const projectIcons = {
@@ -71,6 +73,10 @@ function ProjectBuilder() {
     analytics.trackProjectBuilderOpened(builderMode)
   }, [builderMode])
   const [selectedProjectId, setSelectedProjectId] = useState(projects[0]?.id)
+  const [projectComponentSelection, setProjectComponentSelection] = useState({
+    projectId: null,
+    slugs: new Set(),
+  })
   const [cartMessage, setCartMessage] = useState('')
   const { addToCart } = useCart()
   const { products, isLoading, error, reload } = useCatalog()
@@ -86,6 +92,22 @@ function ProjectBuilder() {
   const selectedProject =
     projects.find((project) => project.id === selectedProjectId) ?? projects[0]
 
+  const defaultProjectProductSlugs = useMemo(() => {
+    if (!selectedProject) return new Set()
+
+    return new Set(
+      [...selectedProject.requiredComponents, ...selectedProject.optionalComponents]
+        .map((component) => activeProductsBySlug.get(component.productSlug))
+        .filter((product) => product?.in_stock)
+        .map((product) => product.slug),
+    )
+  }, [activeProductsBySlug, selectedProject])
+
+  const selectedProductSlugs =
+    projectComponentSelection.projectId === selectedProject?.id
+      ? projectComponentSelection.slugs
+      : defaultProjectProductSlugs
+
   const availableProjectProducts = useMemo(() => {
     if (!selectedProject) return []
 
@@ -99,13 +121,42 @@ function ProjectBuilder() {
         projectComponents
           .map((component) => activeProductsBySlug.get(component.productSlug))
           .filter((product) => product?.in_stock)
+          .filter((product) => selectedProductSlugs.has(product.slug))
           .map((product) => [product.product_id, product]),
       ).values(),
     ]
+  }, [activeProductsBySlug, selectedProject, selectedProductSlugs])
+
+  const unavailableProjectComponents = useMemo(() => {
+    if (!selectedProject) return []
+
+    return [...selectedProject.requiredComponents, ...selectedProject.optionalComponents].filter(
+      (component) => {
+        const product = component.productSlug
+          ? activeProductsBySlug.get(component.productSlug)
+          : null
+        return !product || !product.in_stock
+      },
+    )
   }, [activeProductsBySlug, selectedProject])
 
   const handleProjectSelect = (projectId) => {
     setSelectedProjectId(projectId)
+    setProjectComponentSelection({ projectId: null, slugs: new Set() })
+    setCartMessage('')
+  }
+
+  const handleToggleProduct = (productSlug) => {
+    setProjectComponentSelection((currentSelection) => {
+      const currentSlugs =
+        currentSelection.projectId === selectedProject?.id
+          ? currentSelection.slugs
+          : defaultProjectProductSlugs
+      const nextSlugs = new Set(currentSlugs)
+      if (nextSlugs.has(productSlug)) nextSlugs.delete(productSlug)
+      else nextSlugs.add(productSlug)
+      return { projectId: selectedProject?.id ?? null, slugs: nextSlugs }
+    })
     setCartMessage('')
   }
 
@@ -117,6 +168,21 @@ function ProjectBuilder() {
       } added to your cart.`,
     )
   }
+
+  const missingPartsRequestUrl = selectedProject
+    ? createWhatsAppUrl([
+        'Hello Spark Lab,',
+        '',
+        `I need help finding parts for this project: ${selectedProject.name}`,
+        '',
+        'Parts to confirm:',
+        ...unavailableProjectComponents.map((component, index) => `${index + 1}. ${component.name}`),
+        '',
+        'Please confirm suitable compatible components and availability.',
+        '',
+        'Thank you.',
+      ].join('\n'))
+    : ''
 
   return (
     <div className="project-builder-page tech-grid">
@@ -215,13 +281,29 @@ function ProjectBuilder() {
                 title="Required Components"
                 components={selectedProject.requiredComponents}
                 productsBySlug={activeProductsBySlug}
+                selectedProductSlugs={selectedProductSlugs}
+                onToggleProduct={handleToggleProduct}
               />
               <ProjectComponentList
                 title="Optional Components"
                 components={selectedProject.optionalComponents}
                 productsBySlug={activeProductsBySlug}
+                selectedProductSlugs={selectedProductSlugs}
+                onToggleProduct={handleToggleProduct}
               />
             </div>
+
+            {unavailableProjectComponents.length > 0 && (
+              <a
+                className="btn btn-outline project-missing-parts-button"
+                href={missingPartsRequestUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <MessageCircle aria-hidden="true" size={17} />
+                Request Missing Parts
+              </a>
+            )}
 
             {selectedProject.projectFunctions && (
               <section

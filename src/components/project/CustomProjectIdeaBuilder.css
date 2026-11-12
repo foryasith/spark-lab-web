@@ -70,8 +70,7 @@
   grid-column: 1 / -1;
 }
 
-.custom-project-field label,
-.custom-requirements legend {
+.custom-project-field label {
   color: var(--color-primary);
   font-size: 0.75rem;
   font-weight: 700;
@@ -119,49 +118,6 @@
 .custom-project-field > .custom-project-error {
   color: #8b2d20;
   font-weight: 600;
-}
-
-.custom-requirements {
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.custom-requirements > p {
-  margin-top: 0.2rem;
-  color: var(--color-text-muted);
-  font-size: 0.7rem;
-}
-
-.custom-requirement-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-xs);
-  margin-top: var(--space-md);
-}
-
-.custom-requirement-grid button {
-  display: inline-flex;
-  min-height: 2.4rem;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0.45rem 0.7rem;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  background: var(--color-surface);
-  color: var(--color-text-muted);
-  font-size: 0.7rem;
-  font-weight: 600;
-}
-
-.custom-requirement-grid button.is-selected {
-  border-color: rgb(242 180 58 / 70%);
-  background: rgb(242 180 58 / 13%);
-  color: var(--color-primary);
-}
-
-.custom-project-optional-fields {
-  margin-top: var(--space-lg);
 }
 
 .custom-project-actions {

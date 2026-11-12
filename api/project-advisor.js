@@ -63,6 +63,7 @@ export default async function handler(request, response) {
     const result = await requestGeminiProjectAdvice(projectData, {
       apiKey,
       model: process.env.GEMINI_MODEL,
+      thinkingBudget: process.env.GEMINI_THINKING_BUDGET,
     })
     return response.status(200).json({ result })
   } catch (error) {

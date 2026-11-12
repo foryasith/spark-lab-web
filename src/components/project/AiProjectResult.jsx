@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import ComponentSuggestion from './ComponentSuggestion'
 import analytics from '../../utils/analytics'
+import { formatPriceLkr } from '../../utils/formatPrice'
 import './AiProjectResult.css'
 
 function AdviceList({ title, items, Icon }) {
@@ -66,6 +67,11 @@ function AiProjectResult({
   const selectedComponents = matchedComponents.filter((component) => selectedComponentIds.has(component.id))
   const selectedAvailable = selectedComponents.filter((component) => component.product?.in_stock)
   const selectedMissing = selectedComponents.filter((component) => !component.product)
+  const catalogSubtotal = selectedAvailable.reduce((total, component) => {
+    const price = Number(component.product?.price_lkr)
+    const quantity = Math.max(1, Number(component.recommendation?.quantity) || 1)
+    return Number.isFinite(price) ? total + price * quantity : total
+  }, 0)
 
   return (
     <div className="ai-project-result">
@@ -141,6 +147,16 @@ function AiProjectResult({
       )}
 
       <AdviceList title="Things to Consider" items={result.technical_considerations} Icon={ShieldCheck} />
+      {result.feasibility_assessment && (
+        <section className="ai-advice-section ai-feasibility-section">
+          <h4><ShieldCheck aria-hidden="true" size={17} /> Research Feasibility</h4>
+          <p>{result.feasibility_assessment}</p>
+        </section>
+      )}
+      <AdviceList title="Key Assumptions" items={result.assumptions} Icon={CircleHelp} />
+      <AdviceList title="Engineering Risks & Validation" items={result.engineering_risks} Icon={ShieldCheck} />
+      <AdviceList title="Suggested Implementation Phases" items={result.implementation_phases} Icon={ListChecks} />
+      <AdviceList title="Research Considerations" items={result.research_considerations} Icon={Lightbulb} />
       <AdviceList title="Simple System Flow" items={result.system_flow} Icon={Route} />
       <AdviceList title="Beginner Tips" items={result.beginner_tips} Icon={Lightbulb} />
 
@@ -173,9 +189,16 @@ function AiProjectResult({
         <p className="ai-budget-note">{result.estimated_budget_note}</p>
       )}
 
+      {catalogSubtotal > 0 && (
+        <p className="ai-catalog-total">
+          Selected available parts from the Spark Lab catalog: <strong>{formatPriceLkr(catalogSubtotal)}</strong>
+          <small>This is a component subtotal only; final compatibility and availability need confirmation.</small>
+        </p>
+      )}
+
       <section className="ai-request-actions" aria-labelledby="ai-request-actions-title">
-        <h4 id="ai-request-actions-title">Generate Project Request</h4>
-        <p>{selectedComponents.length} suggested components selected.</p>
+        <h4 id="ai-request-actions-title">Need More Help With This Project?</h4>
+        <p>Select available parts for your cart, or message Spark Lab for compatibility advice or complete project support.</p>
         <div>
           <button
             className="btn btn-secondary"
@@ -215,7 +238,7 @@ function AiProjectResult({
             }}
           >
             <MessageCircle aria-hidden="true" size={16} />
-            Send Full Project Request
+            Talk to Spark Lab About This Project
           </a>
         </div>
         {cartMessage && <p className="ai-cart-message" role="status">{cartMessage}</p>}

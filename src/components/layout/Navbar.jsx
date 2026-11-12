@@ -4,7 +4,6 @@ import {
   MessageCircle,
   Search,
   ShoppingCart,
-  Sparkles,
   X,
 } from 'lucide-react'
 import { Link, NavLink } from 'react-router-dom'
@@ -30,13 +29,6 @@ const navigationItems = [
     href: '/project-builder',
     special: true,
     badge: 'AI',
-  },
-  {
-    label: 'SmartSpark',
-    href: '/smartspark',
-    special: true,
-    badge: 'NEW',
-    product: true,
   },
   {
     label: 'Learn',
@@ -77,7 +69,6 @@ function Navbar() {
     href,
     special,
     badge,
-    product,
   }) => (
     <NavLink
       key={href}
@@ -88,29 +79,17 @@ function Navbar() {
         [
           'nav-link',
           special ? 'nav-link--special' : '',
-          product ? 'nav-link--product' : '',
           isActive ? 'is-active' : '',
         ]
           .filter(Boolean)
           .join(' ')
       }
     >
-      {product && (
-        <Sparkles
-          className="nav-special-icon"
-          aria-hidden="true"
-          size={14}
-          strokeWidth={2}
-        />
-      )}
-
       <span>{label}</span>
 
       {badge && (
         <span
-          className={`nav-special-badge${
-            product ? ' nav-special-badge--product' : ''
-          }`}
+          className="nav-special-badge"
         >
           {badge}
         </span>

@@ -21,6 +21,23 @@
   background: var(--color-surface);
 }
 
+.project-component-section li.is-selected {
+  border-color: rgb(242 180 58 / 50%);
+  background: rgb(242 180 58 / 6%);
+}
+
+.project-component-select {
+  display: grid;
+  flex: 0 0 auto;
+  margin-top: 0.15rem;
+}
+
+.project-component-select input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--color-secondary);
+}
+
 .project-component-section li > svg {
   flex: 0 0 auto;
   margin-top: 0.15rem;

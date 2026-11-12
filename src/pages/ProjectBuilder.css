@@ -164,6 +164,14 @@
   padding-block: var(--space-xl);
 }
 
+.project-missing-parts-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-xl);
+  font-size: 0.75rem;
+}
+
 .project-function-summary {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

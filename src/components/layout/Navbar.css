@@ -90,7 +90,7 @@
 
 /* =========================================================
    SPECIAL NAVIGATION
-   PROJECT BUILDER + SMARTSPARK
+   PROJECT BUILDER
    ========================================================= */
 
 .nav-link--special {
@@ -130,30 +130,6 @@
 }
 
 /* ---------------------------------------------------------
-   SMARTSPARK
-   --------------------------------------------------------- */
-
-.nav-link--product {
-  padding: 0.4375rem 0.625rem;
-  border: 1px solid rgb(242 180 58 / 32%);
-  border-radius: 0.5625rem;
-  background: rgb(242 180 58 / 7%);
-}
-
-.nav-link--product:hover,
-.nav-link--product.is-active,
-.nav-link--product[aria-current='page'] {
-  border-color: rgb(242 180 58 / 58%);
-  background: rgb(242 180 58 / 13%);
-  color: var(--color-primary);
-}
-
-.nav-special-icon {
-  flex-shrink: 0;
-  color: var(--color-gold, #f2b43a);
-}
-
-/* ---------------------------------------------------------
    SPECIAL BADGES
    --------------------------------------------------------- */
 
@@ -171,11 +147,6 @@
   font-weight: 800;
   line-height: 1;
   letter-spacing: 0.06em;
-}
-
-.nav-special-badge--product {
-  background: var(--color-gold, #f2b43a);
-  color: var(--color-primary, #0a2747);
 }
 
 /* =========================================================
@@ -296,11 +267,6 @@
 .mobile-navigation
   .nav-link--special:not(.nav-link--product) {
   margin-top: 0.125rem;
-  padding: 0.75rem;
-}
-
-.mobile-navigation .nav-link--product {
-  margin-top: 0.1875rem;
   padding: 0.75rem;
 }
 

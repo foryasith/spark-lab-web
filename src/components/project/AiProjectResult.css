@@ -64,7 +64,8 @@
 
 .ai-controller-advice,
 .ai-project-facts,
-.ai-clarification-section {
+.ai-clarification-section,
+.ai-feasibility-section {
   padding: var(--space-md);
   border: 1px solid rgb(18 58 99 / 12%);
   border-radius: var(--radius-md);
@@ -167,6 +168,26 @@
   background: rgb(242 180 58 / 9%);
   color: var(--color-text-muted);
   font-size: 0.7rem;
+}
+
+.ai-catalog-total {
+  display: grid;
+  gap: 0.3rem;
+  padding: var(--space-md);
+  border: 1px solid rgb(18 58 99 / 14%);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+}
+
+.ai-catalog-total strong {
+  color: var(--color-primary);
+  font-size: 0.9rem;
+}
+
+.ai-catalog-total small {
+  font-size: 0.625rem;
 }
 
 .ai-request-actions {

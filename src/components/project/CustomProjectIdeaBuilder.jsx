@@ -1,9 +1,8 @@
-import { BrainCircuit, Check, Cpu, Gauge, Lightbulb, Sparkles, Trash2 } from 'lucide-react'
+import { BrainCircuit, Gauge, Lightbulb, Sparkles, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import {
   initialProjectIdea,
   normalizeProjectIdea,
-  projectRequirementOptions,
   validateProjectIdea,
 } from '../../utils/projectIdea'
 import {
@@ -44,15 +43,6 @@ function CustomProjectIdeaBuilder({ onAnalyze, isAnalyzing = false, children }) 
     if (errors[name]) {
       setErrors((currentErrors) => ({ ...currentErrors, [name]: '' }))
     }
-  }
-
-  const toggleRequirement = (requirement) => {
-    setFormData((currentData) => ({
-      ...currentData,
-      requirements: currentData.requirements.includes(requirement)
-        ? currentData.requirements.filter((item) => item !== requirement)
-        : [...currentData.requirements, requirement],
-    }))
   }
 
   const handleSubmit = (event) => {
@@ -178,58 +168,6 @@ function CustomProjectIdeaBuilder({ onAnalyze, isAnalyzing = false, children }) 
           </div>
         </div>
 
-        <div className="custom-project-step">
-          <span><Cpu aria-hidden="true" size={17} /> Step 03</span>
-          <h3>Add Technical Details</h3>
-        </div>
-
-        <fieldset className="custom-requirements">
-          <legend>Special Requirements</legend>
-          <p>Select every feature that may be useful.</p>
-          <div className="custom-requirement-grid">
-            {projectRequirementOptions.map((requirement) => {
-              const isSelected = formData.requirements.includes(requirement)
-              return (
-                <button
-                  className={isSelected ? 'is-selected' : ''}
-                  type="button"
-                  aria-pressed={isSelected}
-                  key={requirement}
-                  onClick={() => toggleRequirement(requirement)}
-                >
-                  {isSelected && <Check aria-hidden="true" size={14} />}
-                  {requirement}
-                </button>
-              )
-            })}
-          </div>
-        </fieldset>
-
-        <div className="custom-project-form-grid custom-project-optional-fields">
-          <div className="custom-project-field">
-            <label htmlFor="custom-existing-components">Components Already Available</label>
-            <textarea
-              id="custom-existing-components"
-              name="existingComponents"
-              rows="3"
-              value={formData.existingComponents}
-              onChange={handleFieldChange}
-              placeholder="e.g. Arduino UNO, breadboard"
-            />
-          </div>
-          <div className="custom-project-field">
-            <label htmlFor="custom-special-notes">Other Special Requirements</label>
-            <textarea
-              id="custom-special-notes"
-              name="specialRequirements"
-              rows="3"
-              value={formData.specialRequirements}
-              onChange={handleFieldChange}
-              placeholder="Environment, size, safety or other constraints"
-            />
-          </div>
-        </div>
-
         <div className="custom-project-actions">
           <button className="btn btn-secondary custom-project-submit" type="submit" disabled={isAnalyzing}>
             <Sparkles aria-hidden="true" size={18} />
@@ -247,13 +185,13 @@ function CustomProjectIdeaBuilder({ onAnalyze, isAnalyzing = false, children }) 
         <div className="custom-preview-heading">
           <span><BrainCircuit aria-hidden="true" size={18} /> Spark Lab Assistant</span>
           <h3>Project Analysis Preview</h3>
-          <p>Your structured project guidance will appear here.</p>
+          <p>Get simple guidance, component suggestions and catalog-based pricing.</p>
         </div>
         {children ?? (
           <div className="custom-preview-empty">
             <Sparkles aria-hidden="true" size={30} strokeWidth={1.4} />
             <strong>Ready when you are</strong>
-            <p>Complete the project details to prepare your idea for analysis.</p>
+            <p>Describe your project and Spark Lab will guide your next steps.</p>
           </div>
         )}
       </aside>

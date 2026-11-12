@@ -135,6 +135,27 @@ export function createMockProjectAdvice(projectData) {
     power_advice: requirements.has('Battery Powered')
       ? 'Use a battery pack with a suitable regulator, and confirm that its voltage and current capacity safely support the board, sensors, and any motors.'
       : 'Begin with a stable USB power supply, then calculate total current requirements before selecting a permanent power source.',
+    feasibility_assessment:
+      'The concept is suitable for a staged research prototype when the sensing method, operating environment, and measurable success criteria are defined before selecting final hardware.',
+    assumptions: [
+      'The first prototype will be tested in a controlled environment before real-world deployment.',
+      'The selected controller has sufficient input/output pins and memory for the first version.',
+    ],
+    engineering_risks: [
+      'Sensor readings can be affected by placement, calibration, noise, and environmental conditions.',
+      'Power instability or inadequate current capacity can cause resets or unreliable output behavior.',
+      'Communication features require testing for signal coverage, failures, and secure handling of data.',
+    ],
+    implementation_phases: [
+      'Define measurable inputs, outputs, and success criteria for the prototype.',
+      'Build and validate each sensor and output circuit independently.',
+      'Integrate controller logic, then test normal and failure cases.',
+      'Document results, limitations, and improvements for the final demonstration.',
+    ],
+    research_considerations: [
+      'Record repeated test results so the project can compare accuracy, response time, and reliability.',
+      'State the project limitations clearly instead of assuming the prototype is production-ready.',
+    ],
     required_components: createSuggestedComponents(projectData, recommendedPlatform),
     optional_components: [
       {
