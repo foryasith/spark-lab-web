@@ -1,5 +1,6 @@
 import { CircleCheck, CircleHelp } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { getPrimaryProductImage, getProductImageAlt, PRODUCT_PLACEHOLDER } from '../../utils/productImages'
 import './ProjectComponentList.css'
 
 function ProjectComponentList({
@@ -21,6 +22,7 @@ function ProjectComponentList({
             : null
           const canSelect = Boolean(product?.in_stock)
           const isSelected = Boolean(product && selectedProductSlugs.has(product.slug))
+          const imageSrc = product ? getPrimaryProductImage(product) : null
 
           return (
             <li key={component.name} className={isSelected ? 'is-selected' : ''}>
@@ -37,6 +39,19 @@ function ProjectComponentList({
                 <CircleCheck aria-hidden="true" size={18} />
               ) : (
                 <CircleHelp aria-hidden="true" size={18} />
+              )}
+              {product && (
+                <Link className="project-component-image" to={`/product/${product.slug}`} aria-label={`View ${component.name}`}>
+                  <img
+                    src={imageSrc}
+                    alt={getProductImageAlt(product, component.name)}
+                    onError={(event) => {
+                      if (event.currentTarget.src !== PRODUCT_PLACEHOLDER) {
+                        event.currentTarget.src = PRODUCT_PLACEHOLDER
+                      }
+                    }}
+                  />
+                </Link>
               )}
               <span>
                 {product ? (
