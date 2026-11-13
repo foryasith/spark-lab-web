@@ -17,17 +17,15 @@ import {
   Leaf,
   Lightbulb,
   LockKeyhole,
-  MessageCircle,
   PencilLine,
   RadioTower,
-  ShoppingCart,
   Sprout,
   Trash2,
   Waves,
 } from 'lucide-react'
 import AiProjectAdvisor from '../components/project/AiProjectAdvisor'
+import ProjectBuildModal from '../components/project/ProjectBuildModal'
 import ProjectCard from '../components/project/ProjectCard'
-import ProjectComponentList from '../components/project/ProjectComponentList'
 import EmptyState from '../components/common/EmptyState'
 import ErrorState from '../components/common/ErrorState'
 import LoadingState from '../components/common/LoadingState'
@@ -73,6 +71,7 @@ function ProjectBuilder() {
     analytics.trackProjectBuilderOpened(builderMode)
   }, [builderMode])
   const [selectedProjectId, setSelectedProjectId] = useState(projects[0]?.id)
+  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false)
   const [projectComponentSelection, setProjectComponentSelection] = useState({
     projectId: null,
     slugs: new Set(),
@@ -144,6 +143,7 @@ function ProjectBuilder() {
     setSelectedProjectId(projectId)
     setProjectComponentSelection({ projectId: null, slugs: new Set() })
     setCartMessage('')
+    setIsProjectModalOpen(true)
   }
 
   const handleToggleProduct = (productSlug) => {
@@ -210,7 +210,10 @@ function ProjectBuilder() {
               role="tab"
               aria-selected={builderMode === 'custom'}
               className={builderMode === 'custom' ? 'is-active' : ''}
-              onClick={() => setBuilderMode('custom')}
+              onClick={() => {
+                setIsProjectModalOpen(false)
+                setBuilderMode('custom')
+              }}
             >
               <PencilLine aria-hidden="true" size={18} />
               Build Your Own Idea
@@ -241,7 +244,7 @@ function ProjectBuilder() {
                   key={project.id}
                   project={project}
                   Icon={projectIcons[project.icon] ?? Lightbulb}
-                  isSelected={project.id === selectedProject?.id}
+                  isSelected={isProjectModalOpen && project.id === selectedProject?.id}
                   onSelect={() => handleProjectSelect(project.id)}
                 />
               ))}
@@ -253,96 +256,19 @@ function ProjectBuilder() {
             />
           )}
 
-          {selectedProject && !isLoading && !error && (
-            <article className="project-build-details" aria-live="polite">
-            <div className="project-build-heading">
-              <div>
-                <span>{selectedProject.difficulty} build</span>
-                <h2>{selectedProject.name}</h2>
-                <p>{selectedProject.description}</p>
-              </div>
-              {availableProjectProducts.length > 0 && (
-                <div className="project-build-cart-action">
-                  <button
-                    className="btn btn-secondary"
-                    type="button"
-                    onClick={handleAddAvailableParts}
-                  >
-                    <ShoppingCart aria-hidden="true" size={18} />
-                    Add Available Parts to Cart
-                  </button>
-                  {cartMessage && <p role="status">{cartMessage}</p>}
-                </div>
-              )}
-            </div>
-
-            <div className="project-build-component-groups">
-              <ProjectComponentList
-                title="Required Components"
-                components={selectedProject.requiredComponents}
-                productsBySlug={activeProductsBySlug}
-                selectedProductSlugs={selectedProductSlugs}
-                onToggleProduct={handleToggleProduct}
-              />
-              <ProjectComponentList
-                title="Optional Components"
-                components={selectedProject.optionalComponents}
-                productsBySlug={activeProductsBySlug}
-                selectedProductSlugs={selectedProductSlugs}
-                onToggleProduct={handleToggleProduct}
-              />
-            </div>
-
-            {unavailableProjectComponents.length > 0 && (
-              <a
-                className="btn btn-outline project-missing-parts-button"
-                href={missingPartsRequestUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <MessageCircle aria-hidden="true" size={17} />
-                Request Missing Parts
-              </a>
-            )}
-
-            {selectedProject.projectFunctions && (
-              <section
-                className="project-function-summary"
-                aria-label="Assignment requirements covered by this project"
-              >
-                <div>
-                  <span>Sensor / Input</span>
-                  <p>{selectedProject.projectFunctions.input}</p>
-                </div>
-                <div>
-                  <span>Output</span>
-                  <p>{selectedProject.projectFunctions.output}</p>
-                </div>
-                <div>
-                  <span>Memory / Data</span>
-                  <p>{selectedProject.projectFunctions.memory}</p>
-                </div>
-              </section>
-            )}
-
-            <div className="project-learning-outcomes">
-              <Lightbulb aria-hidden="true" size={22} />
-              <div>
-                <h3>What You Will Learn</h3>
-                <ul>
-                  {selectedProject.learningOutcomes.map((outcome) => (
-                    <li key={outcome}>{outcome}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <p className="project-availability-note">
-              Suggested parts are development examples. Check each product page or
-              contact Spark Lab to confirm compatibility and current availability.
-            </p>
-            </article>
-          )}
+          <ProjectBuildModal
+            isOpen={isProjectModalOpen && !isLoading && !error}
+            project={selectedProject}
+            productsBySlug={activeProductsBySlug}
+            selectedProductSlugs={selectedProductSlugs}
+            onToggleProduct={handleToggleProduct}
+            availableProductCount={availableProjectProducts.length}
+            onAddAvailableParts={handleAddAvailableParts}
+            cartMessage={cartMessage}
+            missingPartsRequestUrl={missingPartsRequestUrl}
+            unavailableComponentCount={unavailableProjectComponents.length}
+            onClose={() => setIsProjectModalOpen(false)}
+          />
         </div>
         </section>
       ) : (
