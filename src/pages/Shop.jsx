@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import PageHeader from '../components/common/PageHeader'
 import ProductGrid from '../components/product/ProductGrid'
 import ProductSearch from '../components/shop/ProductSearch'
 import ShopFilters from '../components/shop/ShopFilters'
@@ -78,16 +77,6 @@ function Shop() {
 
   return (
     <div className="shop-page tech-grid">
-      <section className="shop-header section">
-        <div className="container">
-          <PageHeader
-            eyebrow="Spark Lab Store"
-            title="Shop Components"
-            description="Explore electronics, IoT, robotics and maker components for your next project."
-          />
-        </div>
-      </section>
-
       <section className="shop-catalog section" aria-label="Product catalog">
         <div className="container">
           {warning && <p className="shop-catalog-warning" role="status">{warning}</p>}
