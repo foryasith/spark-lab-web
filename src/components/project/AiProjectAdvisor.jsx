@@ -72,6 +72,12 @@ function AiProjectAdvisor() {
     handleAnalyze({ ...analysis.projectData, clarificationAnswers })
   }
 
+  const handleEditProject = () => {
+    setAnalysis(null)
+    setError('')
+    setCartMessage('')
+  }
+
   const toggleComponent = (componentId) => {
     setSelectedComponentIds((currentIds) => {
       const nextIds = new Set(currentIds)
@@ -125,7 +131,12 @@ function AiProjectAdvisor() {
 
   return (
     <div className="ai-project-advisor">
-      <CustomProjectIdeaBuilder onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing}>
+      <CustomProjectIdeaBuilder
+        onAnalyze={handleAnalyze}
+        isAnalyzing={isAnalyzing}
+        hasAnalysis={Boolean(analysis)}
+        onEditProject={handleEditProject}
+      >
         {isAnalyzing ? (
           <LoadingState message="Analyzing your project idea..." />
         ) : error ? (
@@ -161,6 +172,7 @@ function AiProjectAdvisor() {
             onClarificationAnswerChange={handleClarificationAnswerChange}
             onRefinePlan={handleRefinePlan}
             isRefining={isAnalyzing}
+            projectName={analysis.projectData.projectName}
             cartMessage={cartMessage}
             missingRequestUrl={createAiProjectRequestUrl({ ...requestData, requestType: 'missing' })}
             fullRequestUrl={createAiProjectRequestUrl(requestData)}

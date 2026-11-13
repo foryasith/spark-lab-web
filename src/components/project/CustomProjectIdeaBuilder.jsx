@@ -1,4 +1,4 @@
-import { BrainCircuit, Gauge, Lightbulb, Sparkles, Trash2 } from 'lucide-react'
+import { BrainCircuit, Gauge, Lightbulb, PencilLine, Sparkles, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import {
   initialProjectIdea,
@@ -28,7 +28,13 @@ const budgetOptions = [
   'Rs. 25,000+',
 ]
 
-function CustomProjectIdeaBuilder({ onAnalyze, isAnalyzing = false, children }) {
+function CustomProjectIdeaBuilder({
+  onAnalyze,
+  isAnalyzing = false,
+  hasAnalysis = false,
+  onEditProject,
+  children,
+}) {
   const [formData, setFormData] = useState(loadProjectDraft)
   const [errors, setErrors] = useState({})
 
@@ -60,6 +66,21 @@ function CustomProjectIdeaBuilder({ onAnalyze, isAnalyzing = false, children }) 
     clearProjectDraft()
     setFormData({ ...initialProjectIdea, requirements: [] })
     setErrors({})
+  }
+
+  if (hasAnalysis) {
+    return (
+      <section className="custom-project-solution" aria-live="polite">
+        <header className="custom-project-solution-heading">
+          <span><BrainCircuit aria-hidden="true" size={19} /> Spark Lab Project Advisor</span>
+          <button className="btn btn-outline" type="button" onClick={onEditProject}>
+            <PencilLine aria-hidden="true" size={16} />
+            Edit Project Details
+          </button>
+        </header>
+        {children}
+      </section>
+    )
   }
 
   return (
