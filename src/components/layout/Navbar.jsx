@@ -31,10 +31,6 @@ const navigationItems = [
     badge: 'AI',
   },
   {
-    label: 'Learn',
-    href: '/learn',
-  },
-  {
     label: 'About',
     href: '/about',
   },
