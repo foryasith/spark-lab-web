@@ -34,6 +34,30 @@
   gap: var(--space-lg);
 }
 
+@media (min-width: 75rem) {
+  .featured-products-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--space-md);
+  }
+
+  .featured-products-grid .product-card-media {
+    aspect-ratio: 4 / 3;
+  }
+
+  .featured-products-grid .product-card-title {
+    min-height: 2.25rem;
+    font-size: 0.9375rem;
+  }
+
+  .featured-products-grid .product-card-purchase-info {
+    margin-top: var(--space-sm);
+  }
+
+  .featured-products-grid .product-card-actions {
+    padding-top: 0;
+  }
+}
+
 @media (max-width: 68rem) {
   .featured-products-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
