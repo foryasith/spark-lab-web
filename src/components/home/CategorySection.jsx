@@ -31,19 +31,25 @@ const categoryIcons = {
   Wrench,
 }
 
-function CategorySection() {
+function CategorySection({ showHeader = true, compact = false }) {
   return (
-    <section className="category-section section" aria-labelledby="categories-title">
+    <section
+      className="category-section section"
+      aria-labelledby={showHeader ? 'categories-title' : undefined}
+      aria-label={showHeader ? undefined : 'Product categories'}
+    >
       <div className="container">
-        <header className="section-header category-section-header">
-          <p className="category-section-label">Component Library</p>
-          <h2 id="categories-title" className="section-title">
-            Explore Components
-          </h2>
-          <p className="section-subtitle">
-            Everything you need to build, test and innovate.
-          </p>
-        </header>
+        {showHeader && (
+          <header className="section-header category-section-header">
+            <p className="category-section-label">Component Library</p>
+            <h2 id="categories-title" className="section-title">
+              Explore Components
+            </h2>
+            <p className="section-subtitle">
+              Everything you need to build, test and innovate.
+            </p>
+          </header>
+        )}
 
         <div className="category-grid">
           {shopCategories.map((category) => (
@@ -51,6 +57,7 @@ function CategorySection() {
               key={category.name}
               {...category}
               Icon={categoryIcons[category.icon]}
+              compact={compact}
             />
           ))}
         </div>

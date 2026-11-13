@@ -1,4 +1,3 @@
-import PageHeader from '../components/common/PageHeader'
 import CategorySection from '../components/home/CategorySection'
 import useSeo from '../hooks/useSeo'
 
@@ -11,19 +10,7 @@ function Categories() {
 
   return (
     <main className="categories-page">
-      {/* Page introduction */}
-      <section className="section section-light tech-grid">
-        <div className="container">
-          <PageHeader
-            eyebrow="Browse the Catalog"
-            title="Product Categories"
-            description="Find the right boards, sensors, modules, tools and parts for your next build."
-          />
-        </div>
-      </section>
-
-      {/* Full component category grid */}
-      <CategorySection />
+      <CategorySection showHeader={false} compact />
     </main>
   )
 }

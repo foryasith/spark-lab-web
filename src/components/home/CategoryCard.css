@@ -69,6 +69,67 @@
   transition: transform var(--transition-fast);
 }
 
+.category-card.is-compact {
+  min-height: 13.25rem;
+  justify-content: flex-start;
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+}
+
+.category-card.is-compact::before {
+  display: none;
+}
+
+.category-card.is-compact .category-card-icon {
+  position: absolute;
+  right: var(--space-md);
+  bottom: var(--space-md);
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 50%;
+  background: rgb(242 180 58 / 8%);
+  color: var(--color-secondary);
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.category-card.is-compact h3 {
+  display: -webkit-box;
+  position: relative;
+  z-index: 1;
+  min-height: 2.25rem;
+  max-width: 76%;
+  margin-top: 0;
+  overflow: hidden;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.category-card.is-compact p {
+  display: -webkit-box;
+  position: relative;
+  z-index: 1;
+  min-height: 2.5rem;
+  max-width: 76%;
+  margin-top: var(--space-sm);
+  overflow: hidden;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.category-card.is-compact .category-card-link {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  margin-top: auto;
+  padding-top: var(--space-sm);
+  font-size: 0.75rem;
+}
+
 @media (hover: hover) {
   .category-card:hover {
     border-color: rgb(242 180 58 / 55%);
