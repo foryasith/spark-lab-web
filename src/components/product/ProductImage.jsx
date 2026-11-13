@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
+import { Search, X } from 'lucide-react'
 import {
   getProductGalleryImages,
   getProductImageAlt,
@@ -18,6 +20,7 @@ function ProductImage({ product, imageUrl, name }) {
 
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [failedUrls, setFailedUrls] = useState(() => new Set())
+  const [isZoomed, setIsZoomed] = useState(false)
 
   const validGallery = rawGallery.filter((url) => !failedUrls.has(url))
   const displayGallery = validGallery.length > 0 ? validGallery : [PRODUCT_PLACEHOLDER]
@@ -37,9 +40,16 @@ function ProductImage({ product, imageUrl, name }) {
 
   const showThumbnails = displayGallery.length > 1
 
+  const closeZoom = () => setIsZoomed(false)
+
   return (
     <div className="product-gallery">
-      <div className="product-gallery-primary">
+      <button
+        className="product-gallery-primary"
+        type="button"
+        onClick={() => setIsZoomed(true)}
+        aria-label={`View full image of ${productName}`}
+      >
         <img
           key={activeImage}
           className="product-detail-image"
@@ -47,7 +57,11 @@ function ProductImage({ product, imageUrl, name }) {
           alt={imageAlt}
           onError={() => handleImageError(activeImage)}
         />
-      </div>
+        <span className="product-gallery-zoom" aria-hidden="true">
+          <Search size={18} />
+          Zoom image
+        </span>
+      </button>
 
       {showThumbnails && (
         <div
@@ -75,6 +89,34 @@ function ProductImage({ product, imageUrl, name }) {
             )
           })}
         </div>
+      )}
+
+      {isZoomed && createPortal(
+        <div
+          className="product-gallery-lightbox"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) closeZoom()
+          }}
+        >
+          <section
+            className="product-gallery-lightbox-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${productName} full image`}
+          >
+            <button
+              className="product-gallery-lightbox-close"
+              type="button"
+              onClick={closeZoom}
+              aria-label="Close full image"
+            >
+              <X aria-hidden="true" size={22} />
+            </button>
+            <img src={activeImage} alt={imageAlt} onError={() => handleImageError(activeImage)} />
+          </section>
+        </div>,
+        document.body,
       )}
     </div>
   )
