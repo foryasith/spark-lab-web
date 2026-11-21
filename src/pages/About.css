@@ -23,3 +23,6 @@
 @media (max-width: 64rem) { .about-quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 46rem) { .about-hero-layout { grid-template-columns: 1fr; } .about-brand-mark { min-height: 11rem; } }
 @media (max-width: 32rem) { .about-quick-grid { grid-template-columns: 1fr; } .about-hero-actions, .about-hero-actions .btn { width: 100%; } }
+
+
+/* commit 02 */
