@@ -130,6 +130,26 @@
   font-size: 0.75rem;
 }
 
+@media (max-width: 52rem) {
+  .category-card.is-compact {
+    min-height: 12.5rem;
+  }
+}
+
+@media (max-width: 36rem) {
+  .category-card.is-compact {
+    min-height: 11.75rem;
+    padding: var(--space-md);
+  }
+
+  .category-card.is-compact .category-card-icon {
+    right: var(--space-sm);
+    bottom: var(--space-sm);
+    width: 4.75rem;
+    height: 4.75rem;
+  }
+}
+
 @media (hover: hover) {
   .category-card:hover {
     border-color: rgb(242 180 58 / 55%);

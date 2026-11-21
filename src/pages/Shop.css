@@ -48,16 +48,22 @@
 
   .shop-result-count {
     grid-column: 1 / -1;
+    order: 4;
   }
 }
 
 @media (max-width: 42rem) {
   .shop-toolbar {
+    gap: var(--space-sm);
     grid-template-columns: 1fr;
     padding: var(--space-md);
   }
 
   .shop-result-count {
     grid-column: auto;
+  }
+
+  .shop-toolbar > * {
+    width: 100%;
   }
 }
