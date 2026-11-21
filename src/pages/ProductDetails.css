@@ -301,6 +301,11 @@
   .product-detail-sections {
     grid-template-columns: 1fr;
   }
+
+  .product-detail-media {
+    max-width: 38rem;
+    margin-inline: auto;
+  }
 }
 
 @media (max-width: 34rem) {

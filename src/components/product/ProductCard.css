@@ -173,6 +173,18 @@
 }
 
 @media (max-width: 24rem) {
+  .product-card-body {
+    padding: var(--space-sm);
+  }
+
+  .product-card-actions {
+    padding: 0 var(--space-sm) var(--space-sm);
+  }
+
+  .product-card-meta {
+    font-size: 0.625rem;
+  }
+
   .product-card-actions {
     grid-template-columns: 1fr;
   }
