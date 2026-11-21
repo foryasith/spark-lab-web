@@ -93,6 +93,13 @@ picture {
   height: auto;
 }
 
+input,
+textarea,
+select,
+button {
+  max-width: 100%;
+}
+
 button,
 input,
 textarea,
@@ -257,12 +264,20 @@ h3 {
 }
 
 @media (max-width: 34rem) {
+  :root {
+    --container-padding: 1rem;
+  }
+
   .section {
     padding-block: 3rem;
   }
 
   .section-header {
     margin-bottom: var(--space-xl);
+  }
+
+  .btn {
+    min-height: 3rem;
   }
 }
 

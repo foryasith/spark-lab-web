@@ -50,7 +50,7 @@
 @media (max-width: 34rem) {
   .floating-whatsapp {
     right: max(0.75rem, env(safe-area-inset-right));
-    bottom: max(0.75rem, env(safe-area-inset-bottom));
+    bottom: max(1rem, env(safe-area-inset-bottom));
     width: 3rem;
     min-height: 3rem;
     padding: 0;
@@ -64,6 +64,15 @@
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
     white-space: nowrap;
+  }
+}
+
+@media (max-width: 24rem) {
+  .floating-whatsapp {
+    right: max(0.5rem, env(safe-area-inset-right));
+    bottom: max(0.5rem, env(safe-area-inset-bottom));
+    width: 2.75rem;
+    min-height: 2.75rem;
   }
 }
 
