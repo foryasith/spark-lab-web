@@ -59,16 +59,37 @@ const projectIcons = {
   rfid: RadioTower,
 }
 
+const PROJECT_BUILDER_MODE_STORAGE_KEY = 'spark-lab-project-builder-mode'
+
+function loadBuilderMode() {
+  try {
+    return globalThis.localStorage?.getItem(PROJECT_BUILDER_MODE_STORAGE_KEY) === 'custom'
+      ? 'custom'
+      : 'explore'
+  } catch {
+    return 'explore'
+  }
+}
+
+function saveBuilderMode(mode) {
+  try {
+    globalThis.localStorage?.setItem(PROJECT_BUILDER_MODE_STORAGE_KEY, mode)
+  } catch {
+    // The builder remains usable when browser storage is unavailable.
+  }
+}
+
 function ProjectBuilder() {
   useSeo({
     title: 'AI Project Builder & Component Advisor | Spark Lab',
     description:
       'Get AI recommendations for your electronics and IoT project ideas, match catalog components, and submit request lists to Spark Lab.',
   })
-  const [builderMode, setBuilderMode] = useState('explore')
+  const [builderMode, setBuilderMode] = useState(loadBuilderMode)
 
   useEffect(() => {
     analytics.trackProjectBuilderOpened(builderMode)
+    saveBuilderMode(builderMode)
   }, [builderMode])
   const [selectedProjectId, setSelectedProjectId] = useState(projects[0]?.id)
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false)

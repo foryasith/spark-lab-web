@@ -1,5 +1,5 @@
 import { BrainCircuit, Gauge, Lightbulb, PencilLine, Sparkles, Trash2 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
   initialProjectIdea,
   normalizeProjectIdea,
@@ -38,13 +38,13 @@ function CustomProjectIdeaBuilder({
   const [formData, setFormData] = useState(loadProjectDraft)
   const [errors, setErrors] = useState({})
 
-  useEffect(() => {
-    saveProjectDraft(formData)
-  }, [formData])
-
   const handleFieldChange = (event) => {
     const { name, value } = event.target
-    setFormData((currentData) => ({ ...currentData, [name]: value }))
+    setFormData((currentData) => {
+      const nextData = { ...currentData, [name]: value }
+      saveProjectDraft(nextData)
+      return nextData
+    })
 
     if (errors[name]) {
       setErrors((currentErrors) => ({ ...currentErrors, [name]: '' }))
