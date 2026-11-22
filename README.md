@@ -97,3 +97,4 @@ Before triggering a public production release:
 - [ ] `npm run build` generates `dist/` cleanly.
 - [ ] Direct deep links (e.g., `/shop`, `/project-builder`, `/product/:slug`) render properly after browser refresh.
 - [ ] WhatsApp ordering links open correctly on desktop and mobile.
+<!-- Production deployment trigger -->
