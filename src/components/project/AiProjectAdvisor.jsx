@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { MessageCircle } from 'lucide-react'
 import useCatalog from '../../hooks/useCatalog'
 import useCart from '../../hooks/useCart'
@@ -10,6 +10,17 @@ import {
   clearRecentProjectRequests,
   loadRecentProjectRequests,
 } from '../../utils/projectStorage'
+import {
+  clearProjectAdvisorSession,
+  loadProjectAdvisorSession,
+  saveProjectAdvisorSession,
+} from '../../utils/projectAdvisorSession'
+import {
+  createProjectPlanText,
+  downloadProjectPlanText,
+  downloadProjectPlanWord,
+  printProjectPlanPdf,
+} from '../../utils/projectPlanDownload'
 import { createAiProjectRequestUrl, createWhatsAppUrl } from '../../utils/whatsapp'
 import ErrorState from '../common/ErrorState'
 import LoadingState from '../common/LoadingState'
@@ -18,16 +29,48 @@ import CustomProjectIdeaBuilder from './CustomProjectIdeaBuilder'
 import RecentProjectRequests from './RecentProjectRequests'
 
 function AiProjectAdvisor() {
-  const [analysis, setAnalysis] = useState(null)
-  const [submittedProject, setSubmittedProject] = useState(null)
+  const [savedSession] = useState(loadProjectAdvisorSession)
+  const [analysis, setAnalysis] = useState(() => (
+    savedSession
+      ? { projectData: savedSession.projectData, result: savedSession.result }
+      : null
+  ))
+  const [submittedProject, setSubmittedProject] = useState(() => savedSession?.projectData ?? null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [error, setError] = useState('')
-  const [selectedComponentIds, setSelectedComponentIds] = useState(new Set())
+  const [selectedComponentIds, setSelectedComponentIds] = useState(
+    () => new Set(savedSession?.selectedComponentIds ?? []),
+  )
   const [cartMessage, setCartMessage] = useState('')
-  const [clarificationAnswers, setClarificationAnswers] = useState({})
+  const [clarificationAnswers, setClarificationAnswers] = useState(
+    () => savedSession?.clarificationAnswers ?? {},
+  )
   const [recentRequests, setRecentRequests] = useState(loadRecentProjectRequests)
   const { addToCart } = useCart()
   const { products, isLoading: isCatalogLoading } = useCatalog()
+
+  const matchedComponents = useMemo(
+    () => (
+      analysis?.result && !isCatalogLoading
+        ? matchAdvisorComponents(analysis.result, products)
+        : []
+    ),
+    [analysis, isCatalogLoading, products],
+  )
+
+  useEffect(() => {
+    if (!analysis) {
+      clearProjectAdvisorSession()
+      return
+    }
+
+    saveProjectAdvisorSession({
+      projectData: analysis.projectData,
+      result: analysis.result,
+      selectedComponentIds,
+      clarificationAnswers,
+    })
+  }, [analysis, clarificationAnswers, selectedComponentIds])
 
   const handleAnalyze = async (projectData) => {
     if (isAnalyzing) return
@@ -48,7 +91,7 @@ function AiProjectAdvisor() {
     try {
       const advisorResult = await analyzeProject(projectWithClarifications)
       const matchedComponents = matchAdvisorComponents(advisorResult, products)
-      setAnalysis({ projectData: projectWithClarifications, result: advisorResult, matchedComponents })
+      setAnalysis({ projectData: projectWithClarifications, result: advisorResult })
       setClarificationAnswers(projectWithClarifications.clarificationAnswers)
       setSelectedComponentIds(new Set(matchedComponents.map((component) => component.id)))
       setCartMessage('')
@@ -89,8 +132,9 @@ function AiProjectAdvisor() {
   }
 
   const selectedComponents = analysis
-    ? analysis.matchedComponents.filter((component) => selectedComponentIds.has(component.id))
+    ? matchedComponents.filter((component) => selectedComponentIds.has(component.id))
     : []
+  const selectedAvailable = selectedComponents.filter((component) => component.product?.in_stock)
   const requestData = analysis
     ? {
         projectData: analysis.projectData,
@@ -129,6 +173,36 @@ function AiProjectAdvisor() {
     setRecentRequests([])
   }
 
+  const createDownloadPlan = () => {
+    if (!analysis) return null
+
+    const catalogSubtotal = selectedAvailable.reduce((total, component) => {
+      const price = Number(component.product?.price_lkr)
+      const quantity = Math.max(1, Number(component.recommendation?.quantity) || 1)
+      return Number.isFinite(price) ? total + price * quantity : total
+    }, 0)
+
+    return {
+      projectName: analysis.projectData.projectName || 'Spark Lab Project Plan',
+      text: createProjectPlanText({
+        projectName: analysis.projectData.projectName,
+        projectData: analysis.projectData,
+        result: analysis.result,
+        components: selectedComponents,
+        catalogSubtotal,
+      }),
+    }
+  }
+
+  const handleDownload = (format) => {
+    const plan = createDownloadPlan()
+    if (!plan) return
+
+    if (format === 'pdf') printProjectPlanPdf(plan)
+    if (format === 'word') downloadProjectPlanWord(plan)
+    if (format === 'text') downloadProjectPlanText(plan)
+  }
+
   return (
     <div className="ai-project-advisor">
       <CustomProjectIdeaBuilder
@@ -163,7 +237,7 @@ function AiProjectAdvisor() {
         ) : analysis ? (
           <AiProjectResult
             result={analysis.result}
-            matchedComponents={analysis.matchedComponents}
+            matchedComponents={matchedComponents}
             selectedComponentIds={selectedComponentIds}
             onToggleComponent={toggleComponent}
             onAddAvailableParts={handleAddAvailableParts}
@@ -176,6 +250,7 @@ function AiProjectAdvisor() {
             cartMessage={cartMessage}
             missingRequestUrl={createAiProjectRequestUrl({ ...requestData, requestType: 'missing' })}
             fullRequestUrl={createAiProjectRequestUrl(requestData)}
+            onDownload={handleDownload}
           />
         ) : null}
       </CustomProjectIdeaBuilder>

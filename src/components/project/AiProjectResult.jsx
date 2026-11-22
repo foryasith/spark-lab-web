@@ -1,9 +1,12 @@
 import {
   CircleHelp,
   Cpu,
+  FileDown,
+  FileText,
   Gauge,
   Lightbulb,
   MessageCircle,
+  Printer,
   Route,
   ShieldCheck,
   ShoppingCart,
@@ -59,6 +62,7 @@ function AiProjectResult({
   onRefinePlan,
   isRefining,
   projectName,
+  onDownload,
 }) {
   const selectedComponents = matchedComponents.filter((component) => selectedComponentIds.has(component.id))
   const selectedAvailable = selectedComponents.filter((component) => component.product?.in_stock)
@@ -138,6 +142,12 @@ function AiProjectResult({
             <CompactComponentList components={matchedComponents} selectedComponentIds={selectedComponentIds} onToggleComponent={onToggleComponent} />
           </section>
 
+          <section className="ai-sidebar-card ai-catalog-card">
+            <span className="ai-sidebar-label">Available Catalog Subtotal</span>
+            <strong>{catalogSubtotal > 0 ? formatPriceLkr(catalogSubtotal) : 'Select available parts'}</strong>
+            <small>Calculated only from currently matched, in-stock Spark Lab catalog items.</small>
+          </section>
+
           {result.clarifying_questions.length > 0 && (
             <section className="ai-sidebar-card ai-refine-card">
               <span className="ai-sidebar-label">Refine with AI</span>
@@ -154,12 +164,6 @@ function AiProjectResult({
               </button>
             </section>
           )}
-
-          <section className="ai-sidebar-card ai-catalog-card">
-            <span className="ai-sidebar-label">Available Catalog Subtotal</span>
-            <strong>{catalogSubtotal > 0 ? formatPriceLkr(catalogSubtotal) : 'Select available parts'}</strong>
-            <small>Calculated only from currently matched, in-stock Spark Lab catalog items.</small>
-          </section>
 
           <section className="ai-request-actions" aria-labelledby="ai-request-actions-title">
             <h4 id="ai-request-actions-title">Next Actions</h4>
@@ -178,6 +182,16 @@ function AiProjectResult({
               <MessageCircle aria-hidden="true" size={16} /> Talk to Spark Lab
             </a>
             {cartMessage && <p className="ai-cart-message" role="status">{cartMessage}</p>}
+          </section>
+
+          <section className="ai-download-actions" aria-labelledby="ai-download-actions-title">
+            <h4 id="ai-download-actions-title">Save Project Plan</h4>
+            <p>Your result stays available until this browser session is closed.</p>
+            <div>
+              <button type="button" onClick={() => onDownload?.('pdf')}><Printer aria-hidden="true" size={15} /> Save as PDF</button>
+              <button type="button" onClick={() => onDownload?.('word')}><FileText aria-hidden="true" size={15} /> Word</button>
+              <button type="button" onClick={() => onDownload?.('text')}><FileDown aria-hidden="true" size={15} /> Text</button>
+            </div>
           </section>
         </aside>
       </div>
