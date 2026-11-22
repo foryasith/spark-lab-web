@@ -98,3 +98,4 @@ Before triggering a public production release:
 - [ ] Direct deep links (e.g., `/shop`, `/project-builder`, `/product/:slug`) render properly after browser refresh.
 - [ ] WhatsApp ordering links open correctly on desktop and mobile.
 <!-- Production deployment trigger -->
+<!-- Project Builder draft persistence deployment -->
